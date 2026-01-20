@@ -1,7 +1,7 @@
 "use client";
 import { useHeroSection } from '@taotask/modules/welcome/react/sections/hero/use-hero-section';
 
-export const HeroSection: React.FC<{showGuestSection: any}> = ({showGuestSection}) => {
+export const HeroSection: React.FC<{showParcoursSection: any}> = ({showParcoursSection}) => {
     const presenter:any = useHeroSection();
     const fontFamily = presenter.font;
     const city='de Provence';
@@ -16,7 +16,7 @@ export const HeroSection: React.FC<{showGuestSection: any}> = ({showGuestSection
                         Les plus belle tables {city}<br /><span className="text-[#485] square">La perfection du goût</span>
                     </h1>
                     <button type="button"
-                        onClick={showGuestSection}
+                        onClick={showParcoursSection}
                         className="button opacity-0 font-mono rounded border-2 border-gray-50 px-6 sm:px-[46px] pt-3 sm:pt-[14px] pb-2.5 sm:pb-[12px] 
                         text-xs sm:text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out 
                         hover:border-gray-100 hover:bg-gray-100 hover:bg-opacity-10 hover:text-gray-100 
