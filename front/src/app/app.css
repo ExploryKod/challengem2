@@ -1,0 +1,114 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+    /* Header temporairement caché : hauteur à 0px */
+    --header-height: 0px;
+    --header-height-mobile: 0px;
+    /* Hauteur du footer - approximative, ajuster si nécessaire */
+    --footer-height: 120px;
+    --footer-height-mobile: 140px;
+}
+
+.custom-hero-bg {
+    background-position: 50%;
+    background-size: cover;
+    background-image: url('https://images.pexels.com/photos/206665/pexels-photo-206665.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    /* Mobile-first: height plus petite sur mobile */
+    height: 300px;
+}
+
+/* Tablette et plus */
+@media (min-width: 640px) {
+    .custom-hero-bg {
+        height: 400px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .custom-hero-bg {
+        height: 500px;
+    }
+}
+
+@layer components {
+    .header-minh {
+        min-height: var(--header-height-mobile);
+    }
+
+    /* Tablette et plus */
+    @media (min-width: 640px) {
+        .header-minh {
+            min-height: var(--header-height);
+        }
+    }
+
+    .hero-section-minh {
+        /* Le calcul reste pour plus tard : quand le header sera réactivé, changer juste les variables CSS */
+        /* La hero section reste à 100vh, elle ne soustrait pas le footer */
+        min-height: calc(100vh - var(--header-height-mobile));
+    }
+
+    /* Tablette et plus */
+    @media (min-width: 640px) {
+        .hero-section-minh {
+            min-height: calc(100vh - var(--header-height));
+        }
+    }
+
+    .content-section-minh {
+        /* Sections de contenu : soustraire la hauteur du footer pour ne pas dépasser 100vh */
+        min-height: calc(100vh - var(--footer-height-mobile));
+    }
+
+    /* Tablette et plus */
+    @media (min-width: 640px) {
+        .content-section-minh {
+            min-height: calc(100vh - var(--footer-height));
+        }
+    }
+
+    /* Animations pour le menu mobile (utilisées via style inline) */
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutToLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
