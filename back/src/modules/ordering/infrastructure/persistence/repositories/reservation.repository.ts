@@ -27,7 +27,7 @@ export class ReservationRepository implements IReservationRepository {
     return entities.map((entity) => ReservationMapper.toDomain(entity));
   }
 
-  async findById(id: string): Promise<Reservation | null> {
+  async findById(id: number): Promise<Reservation | null> {
     const entity = await this.repository.findOne({
       where: { id },
       relations: ['guests'],

@@ -13,12 +13,12 @@ export class TableRepository implements ITableRepository {
     private readonly repository: Repository<TableOrmEntity>,
   ) {}
 
-  async findByRestaurantId(restaurantId: string): Promise<Table[]> {
+  async findByRestaurantId(restaurantId: number): Promise<Table[]> {
     const entities = await this.repository.find({ where: { restaurantId } });
     return entities.map((entity) => TableMapper.toDomain(entity));
   }
 
-  async findById(id: string): Promise<Table | null> {
+  async findById(id: number): Promise<Table | null> {
     const entity = await this.repository.findOne({ where: { id } });
     return entity ? TableMapper.toDomain(entity) : null;
   }

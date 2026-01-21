@@ -18,7 +18,7 @@ export class RestaurantRepository implements IRestaurantRepository {
     return entities.map((entity) => RestaurantMapper.toDomain(entity));
   }
 
-  async findById(id: string): Promise<Restaurant | null> {
+  async findById(id: number): Promise<Restaurant | null> {
     const entity = await this.repository.findOne({ where: { id } });
     return entity ? RestaurantMapper.toDomain(entity) : null;
   }
