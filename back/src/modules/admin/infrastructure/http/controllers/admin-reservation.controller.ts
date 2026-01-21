@@ -50,16 +50,7 @@ export class AdminReservationController {
     return this.createReservationUseCase.execute({
       restaurantId: dto.restaurantId,
       tableId: dto.tableId,
-      guests: dto.guests.map((g) => ({
-        firstName: g.firstName,
-        lastName: g.lastName,
-        age: g.age,
-        isOrganizer: g.isOrganizer,
-        entryId: g.entryId,
-        mainCourseId: g.mainCourseId,
-        dessertId: g.dessertId,
-        drinkId: g.drinkId,
-      })),
+      guests: dto.guests,
     });
   }
 
@@ -68,44 +59,7 @@ export class AdminReservationController {
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateReservationDto,
   ): Promise<Reservation> {
-    const updateData: {
-      restaurantId?: number;
-      tableId?: number;
-      guests?: Array<{
-        firstName: string;
-        lastName: string;
-        age: number;
-        isOrganizer: boolean;
-        entryId?: number | null;
-        mainCourseId?: number | null;
-        dessertId?: number | null;
-        drinkId?: number | null;
-      }>;
-    } = {};
-
-    if (dto.restaurantId !== undefined) {
-      updateData.restaurantId = dto.restaurantId;
-    }
-    if (dto.tableId !== undefined) {
-      updateData.tableId = dto.tableId;
-    }
-    if (dto.guests !== undefined) {
-      updateData.guests = dto.guests.map((g) => ({
-        firstName: g.firstName,
-        lastName: g.lastName,
-        age: g.age,
-        isOrganizer: g.isOrganizer,
-        entryId: g.entryId,
-        mainCourseId: g.mainCourseId,
-        dessertId: g.dessertId,
-        drinkId: g.drinkId,
-      }));
-    }
-
-    const reservation = await this.updateReservationUseCase.execute(
-      id,
-      updateData,
-    );
+    const reservation = await this.updateReservationUseCase.execute(id, dto);
     if (!reservation) {
       throw new NotFoundException(`Reservation with id ${id} not found`);
     }
