@@ -1,9 +1,14 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { OrderingDomainModel } from '@taotask/modules/order/core/model/ordering.domain-model';
+import { useAppDispatch } from '@taotask/modules/store/store';
+import { orderingActions } from '@taotask/modules/order/core/store/ordering.slice';
+import { useDependencies } from '@taotask/modules/app/react/DependenciesProvider';
 import gsap from "gsap"; 
 
 
 export const useOrderPage = () => {
+    const dispatch = useAppDispatch();
+    const dependencies = useDependencies();
 
     /** Variables and Functions **/
 
@@ -18,20 +23,28 @@ export const useOrderPage = () => {
         goToGuestSectionBottom(toggle);
     };
 
-    function displayRestaurants() {
-        const newState = {
-            restaurants: [
-                { id:"1", restaurantName: 'Triviala', restaurantType: 'Italien', stars: 6}, 
-                { id:"2", restaurantName: 'Chez Marie', restaurantType: 'Provençal', stars: 5},
-                { id:"3", restaurantName: 'Chez Tom', restaurantType: 'Cuisine du Ventoux', stars: 5}],
-            restaurantId: ""
-        } as OrderingDomainModel.RestaurantList;
-        setRestaurantList(newState);
+    async function displayRestaurants() {
+        try {
+            const restaurants = await dependencies.restaurantGateway?.getRestaurants() || [];
+            const newState = {
+                restaurants,
+                restaurantId: ""
+            } as OrderingDomainModel.RestaurantList;
+            setRestaurantList(newState);
+        } catch (error) {
+            console.error('Failed to fetch restaurants:', error);
+            const newState = {
+                restaurants: [],
+                restaurantId: ""
+            } as OrderingDomainModel.RestaurantList;
+            setRestaurantList(newState);
+        }
     }
 
  
     function selectRestaurant(id:string) {
         setRestaurantList({...restaurantList, restaurantId: id});
+        dispatch(orderingActions.setRestaurantId(id));
     }
 
     /** Manage states, ref & gsap **/

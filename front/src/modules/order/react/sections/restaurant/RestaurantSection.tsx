@@ -62,7 +62,6 @@ const RestaurantRows: React.FC<{
     stars: number,
     selectRestaurant: any,
 }> = ({id, restaurantName,restaurantType, stars, selectRestaurant, selectedRestaurantId}) => {
-    console.log("selectedRestaurantId", selectedRestaurantId)
     return (
     
     <div onClick={() => selectRestaurant(id)} className={`w-full sm:w-auto my-3 sm:my-5 mx-auto flex gap-2`} >

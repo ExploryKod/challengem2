@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-      domains: ['picsum.photos', 'localhost:3000'],
+      domains: ['picsum.photos', 'localhost:3000', 'images.unsplash.com'],
   },
   async headers() {
       return [
