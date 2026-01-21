@@ -2,7 +2,8 @@ export namespace OrderingDomainModel {
     
     export type Form = {
         guests: Guest[],
-        organizerId: string | number | null
+        organizerId: string | number | null,
+        tableId: string | null
     }
   
     export type RestaurantId = string | number | null;
@@ -29,7 +30,14 @@ export namespace OrderingDomainModel {
     }
 
     export enum OrderingStep {
-        GUESTS = 0
+        GUESTS = 0,
+        TABLE = 1
+    }
+
+    export type Table = {
+        id: string, 
+        title: string,
+        capacity: number
     }
    
 }

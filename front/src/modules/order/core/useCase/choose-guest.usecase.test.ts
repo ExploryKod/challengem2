@@ -10,7 +10,8 @@ describe("Choose a guest", () => {
             guests: [
                 GuestFactory.create({ id: "1" }),
             ],
-            organizerId: null
+            organizerId: null,
+            tableId: null
         }
 
         await store.dispatch(chooseGuests(form));
