@@ -24,6 +24,8 @@ import { RESERVATION_REPOSITORY } from './application/ports/reservation.reposito
 import { GetRestaurantsUseCase } from './application/use-cases/get-restaurants.use-case';
 import { GetTablesUseCase } from './application/use-cases/get-tables.use-case';
 import { GetMealsUseCase } from './application/use-cases/get-meals.use-case';
+import { GetReservationsUseCase } from './application/use-cases/get-reservations.use-case';
+import { GetReservationByIdUseCase } from './application/use-cases/get-reservation-by-id.use-case';
 import { CreateReservationUseCase } from './application/use-cases/create-reservation.use-case';
 
 // Controllers
@@ -70,6 +72,8 @@ import { ReservationController } from './infrastructure/http/controllers/reserva
     GetRestaurantsUseCase,
     GetTablesUseCase,
     GetMealsUseCase,
+    GetReservationsUseCase,
+    GetReservationByIdUseCase,
     CreateReservationUseCase,
   ],
   exports: [
