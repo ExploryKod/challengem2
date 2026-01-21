@@ -1,6 +1,6 @@
 export class Table {
-  id: string;
-  restaurantId: string;
+  id: number;
+  restaurantId: number;
   title: string;
   capacity: number;
 }

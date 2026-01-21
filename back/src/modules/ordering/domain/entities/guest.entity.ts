@@ -1,13 +1,13 @@
 export interface GuestMeals {
-  entry: string | null;
-  mainCourse: string | null;
-  dessert: string | null;
-  drink: string | null;
+  entry: number | null;
+  mainCourse: number | null;
+  dessert: number | null;
+  drink: number | null;
 }
 
 export class Guest {
-  id: string;
-  reservationId: string;
+  id: number;
+  reservationId: number;
   firstName: string;
   lastName: string;
   age: number;

@@ -1,9 +1,9 @@
 import { Guest } from './guest.entity';
 
 export class Reservation {
-  id: string;
-  restaurantId: string;
-  tableId: string;
+  id: number;
+  restaurantId: number;
+  tableId: number;
   guests: Guest[];
   createdAt: Date;
 }

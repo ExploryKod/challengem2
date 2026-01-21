@@ -1,8 +1,8 @@
 import { MealType } from '../enums/meal-type.enum';
 
 export class Meal {
-  id: string;
-  restaurantId: string;
+  id: number;
+  restaurantId: number;
   title: string;
   type: MealType;
   price: number;
