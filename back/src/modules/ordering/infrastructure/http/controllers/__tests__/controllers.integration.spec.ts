@@ -175,6 +175,73 @@ describe('Controllers (Integration)', () => {
     });
   });
 
+  describe('GET /reservations', () => {
+    let createdReservationId: string;
+
+    beforeAll(async () => {
+      // Create a reservation for testing GET endpoints
+      const dto = {
+        restaurantId: testRestaurant.id,
+        tableId: testTables[0].id,
+        guests: [
+          {
+            firstName: 'Test',
+            lastName: 'Guest',
+            age: 25,
+            isOrganizer: true,
+          },
+        ],
+      };
+
+      const response = await request(app.getHttpServer())
+        .post('/reservations')
+        .send(dto);
+
+      createdReservationId = response.body.id;
+    });
+
+    it('should return all reservations', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/reservations')
+        .expect(200);
+
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThanOrEqual(1);
+
+      const found = response.body.find(
+        (r: { id: string }) => r.id === createdReservationId,
+      );
+      expect(found).toBeDefined();
+      expect(found.restaurantId).toBe(testRestaurant.id);
+    });
+
+    it('should return a reservation by id', async () => {
+      const response = await request(app.getHttpServer())
+        .get(`/reservations/${createdReservationId}`)
+        .expect(200);
+
+      expect(response.body.id).toBe(createdReservationId);
+      expect(response.body.restaurantId).toBe(testRestaurant.id);
+      expect(response.body.guests).toHaveLength(1);
+      expect(response.body.guests[0].firstName).toBe('Test');
+    });
+
+    it('should return 404 for non-existent reservation', async () => {
+      const fakeId = '00000000-0000-0000-0000-000000000000';
+      const response = await request(app.getHttpServer())
+        .get(`/reservations/${fakeId}`)
+        .expect(404);
+
+      expect(response.body.message).toContain('not found');
+    });
+
+    it('should return 400 for invalid UUID', async () => {
+      await request(app.getHttpServer())
+        .get('/reservations/invalid-uuid')
+        .expect(400);
+    });
+  });
+
   describe('POST /reservations', () => {
     it('should create a reservation with guests', async () => {
       const dto = {
