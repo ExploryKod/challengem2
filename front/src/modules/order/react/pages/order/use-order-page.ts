@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { OrderingDomainModel } from '@taotask/modules/order/core/model/ordering.domain-model';
+import { useAppDispatch } from '@taotask/modules/store/store';
+import { orderingActions } from '@taotask/modules/order/core/store/ordering.slice';
 import gsap from "gsap"; 
 
 
 export const useOrderPage = () => {
+    const dispatch = useAppDispatch();
 
     /** Variables and Functions **/
 
@@ -32,6 +35,7 @@ export const useOrderPage = () => {
  
     function selectRestaurant(id:string) {
         setRestaurantList({...restaurantList, restaurantId: id});
+        dispatch(orderingActions.setRestaurantId(id));
     }
 
     /** Manage states, ref & gsap **/
