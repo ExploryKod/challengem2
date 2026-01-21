@@ -1,4 +1,3 @@
-import { set } from 'husky';
 import { useState, useEffect } from 'react';
 
 type MyFonts = "font-mono" | "font-oswald" | "font-inter";

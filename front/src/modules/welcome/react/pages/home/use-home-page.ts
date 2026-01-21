@@ -28,7 +28,7 @@ export const useHomePage = () => {
 
     /** Manage states, ref & gsap **/
     const animText = useRef<HTMLDivElement>(null);
-    const tl = useRef<GSAPTimeline>()
+    const tl = useRef<GSAPTimeline | undefined>(undefined);
     const [toggle, setToggle] = useState<boolean>(false);
     const [parcoursList, setParcoursList] = useState<WelcomingDomainModel.ParcoursList>({
         parcours: [],

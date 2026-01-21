@@ -46,7 +46,6 @@ export const useGuestSection = () => {
     const checkBoxOrganizer = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        // 👇️ scroll to bottom every time a guest is added
         bottomGuestRef.current?.scrollIntoView({behavior: 'smooth'});
       }, [form.guests.length]);
 

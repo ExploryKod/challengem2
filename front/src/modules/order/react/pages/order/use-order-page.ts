@@ -49,7 +49,7 @@ export const useOrderPage = () => {
 
     /** Manage states, ref & gsap **/
     const animText = useRef<HTMLDivElement>(null);
-    const tl = useRef<GSAPTimeline>()
+    const tl = useRef<GSAPTimeline | undefined>(undefined);
     const [restaurantList, setRestaurantList] = useState<OrderingDomainModel.RestaurantList>({restaurants:[], restaurantId: ""});
     const [toggle, setToggle] = useState<boolean>(false);
     const bottomRef = useRef<HTMLDivElement>(null);

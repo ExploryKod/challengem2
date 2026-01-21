@@ -2,8 +2,9 @@
 import React from 'react';
 import { useGuestSection } from "@taotask/modules/order/react/sections/guest/use-guest-section";
 import { Button } from "flowbite-react";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { Checkbox } from "@material-tailwind/react";
+import { Trash2 } from "lucide-react";
+import * as Checkbox from "@radix-ui/react-checkbox";
+import { Check } from "lucide-react";
 import { OrderingDomainModel } from '@taotask/modules/order/core/model/ordering.domain-model';
 
 export const GuestSection: React.FC<{restaurantList: OrderingDomainModel.RestaurantList}> = ({restaurantList}) => {
@@ -117,40 +118,43 @@ const GuestRows: React.FC<{
           
             <div className="relative md:flex flex-col justify-end items-center hidden">
                 <Button className="block bg-gray-100 shadow-[0_2px_3px_-2px_#000] mb-1 ml-5 p-0 rounded w-auto h-auto text-sm group" onClick={() => remove(id)}>
-                    <RiDeleteBin6Line className="group-hover:text-white w-4 h-4 text-red-600 self-center" />
+                    <Trash2 className="group-hover:text-white w-4 h-4 text-red-600 self-center" />
                 </Button>
             </div>
             <div className="relative md:flex flex-col justify-end items-center hidden">
                 <span className="top-0 left-0 absolute text-orange-900 text-xs italic">Organisateur</span>
                 <div className="bottom-[-5px] left-1 absolute">
-                    <Checkbox  
-                    defaultChecked={isOrganizer}
-                    onChange={() => changeOrganizer(id)} 
-                    ref={checkboxRef}
-                    ripple={true}
-                    color="teal"
-                 
-                    className="bg-gray-100 shadow-[0_2px_3px_-2px_#000] rounded w-6 h-6"
-                    />
+                    <Checkbox.Root  
+                        defaultChecked={isOrganizer}
+                        onCheckedChange={() => changeOrganizer(id)} 
+                        ref={checkboxRef}
+                        className="bg-gray-100 shadow-[0_2px_3px_-2px_#000] rounded w-6 h-6 flex items-center justify-center border-2 border-teal-500 data-[state=checked]:bg-teal-500 hover:bg-teal-50 transition-colors"
+                    >
+                        <Checkbox.Indicator>
+                            <Check className="w-4 h-4 text-white" />
+                        </Checkbox.Indicator>
+                    </Checkbox.Root>
                 </div>
              </div>
 
             <div className="flex justify-between items-center md:hidden mx-auto w-full max-w-[204px]">
                 <div className="relative flex flex-col justify-end items-center md:hidden">
                     <Button className="block bg-gray-100 shadow-[0_2px_3px_-2px_#000] p-0 rounded w-auto h-auto text-sm group" onClick={() => remove(id)}>
-                        <RiDeleteBin6Line className="group-hover:text-white w-4 h-4 text-red-600 self-center" />
+                        <Trash2 className="group-hover:text-white w-4 h-4 text-red-600 self-center" />
                     </Button>
                 </div>
                 <div className="flex justify-end items-center">
                 <span className="text-orange-900 text-xs italic">J&#39;organise</span>
-                <Checkbox  
-                defaultChecked={isOrganizer}
-                onChange={() => changeOrganizer(id)} 
-                ref={checkboxRef}
-                ripple={true}
-                color="teal"
-                className="bg-gray-100 shadow-[0_2px_3px_-2px_#000] rounded w-6 h-6"
-                />
+                <Checkbox.Root  
+                    defaultChecked={isOrganizer}
+                    onCheckedChange={() => changeOrganizer(id)} 
+                    ref={checkboxRef}
+                    className="bg-gray-100 shadow-[0_2px_3px_-2px_#000] rounded w-6 h-6 flex items-center justify-center border-2 border-teal-500 data-[state=checked]:bg-teal-500 hover:bg-teal-50 transition-colors"
+                >
+                    <Checkbox.Indicator>
+                        <Check className="w-4 h-4 text-white" />
+                    </Checkbox.Indicator>
+                </Checkbox.Root>
                 </div>
             </div>
     </div>

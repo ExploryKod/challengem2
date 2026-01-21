@@ -41,7 +41,7 @@ export interface ICarouselProps {
   renderPreviousButton?: (
     previousItem: () => void,
     defaultClass?: string
-  ) => JSX.Element
+  ) => React.ReactElement
 
   /**
    * Render custom next button
@@ -61,7 +61,7 @@ export interface ICarouselProps {
   renderNextButton?: (
     nextItem: () => void,
     defaultClassName?: string
-  ) => JSX.Element
+  ) => React.ReactElement
 
   /**
    * additional className for container element
@@ -142,7 +142,7 @@ export interface ICarouselProps {
   renderDot?: (
     index: number,
     defaultClassName: string
-  ) => JSX.Element
+  ) => React.ReactElement
 }
 
 const Carousel = ({
@@ -151,7 +151,7 @@ const Carousel = ({
   containerClassName, wrapperClassName, contentWrapperClassName, contentClassName,
   containerProps, wrapperProps, contentWrapperProps, contentProps,
   indicatorContainerClassName, indicatorContainerProps, indicatorClassNames,
-}: ICarouselProps): JSX.Element => {
+}: ICarouselProps): React.ReactElement => {
   const indicatorContainerRef = React.useRef<HTMLDivElement>(null)
 
   /**
