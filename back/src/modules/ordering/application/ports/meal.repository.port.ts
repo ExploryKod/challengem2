@@ -1,0 +1,13 @@
+import { Meal } from '../../domain/entities/meal.entity';
+import { MealType } from '../../domain/enums/meal-type.enum';
+
+export const MEAL_REPOSITORY = Symbol('MEAL_REPOSITORY');
+
+export interface MealFilters {
+  restaurantId: string;
+  type?: MealType;
+}
+
+export interface IMealRepository {
+  findByFilters(filters: MealFilters): Promise<Meal[]>;
+}
