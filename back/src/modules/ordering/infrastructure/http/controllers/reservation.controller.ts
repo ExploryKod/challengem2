@@ -5,7 +5,7 @@ import {
   Param,
   Body,
   NotFoundException,
-  ParseUUIDPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CreateReservationUseCase } from '../../../application/use-cases/create-reservation.use-case';
 import { GetReservationsUseCase } from '../../../application/use-cases/get-reservations.use-case';
@@ -27,7 +27,7 @@ export class ReservationController {
   }
 
   @Get(':id')
-  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Reservation> {
+  async findById(@Param('id', ParseIntPipe) id: number): Promise<Reservation> {
     const reservation = await this.getReservationByIdUseCase.execute(id);
     if (!reservation) {
       throw new NotFoundException(`Reservation with id ${id} not found`);

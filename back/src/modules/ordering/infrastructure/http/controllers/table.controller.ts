@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, ParseIntPipe } from '@nestjs/common';
 import { GetTablesUseCase } from '../../../application/use-cases/get-tables.use-case';
 import { Table } from '../../../domain/entities/table.entity';
 
@@ -8,7 +8,7 @@ export class TableController {
 
   @Get()
   async findByRestaurant(
-    @Query('restaurantId') restaurantId: string,
+    @Query('restaurantId', ParseIntPipe) restaurantId: number,
   ): Promise<Table[]> {
     return this.getTablesUseCase.execute(restaurantId);
   }
