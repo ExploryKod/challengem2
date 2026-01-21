@@ -4,13 +4,15 @@ import { ITableGateway } from '@taotask/modules/order/core/gateway/table.gateway
 import { IReservationGateway } from "@taotask/modules/order/core/gateway/reservation.gateway";
 import { IRestaurantGateway } from "@taotask/modules/order/core/gateway/restaurant.gateway";
 import { IParcoursGateway } from "@taotask/modules/welcome/core/gateway/parcours.gateway";
+import { IRestaurantManagementGateway } from "@taotask/modules/backoffice/core/gateway/restaurant.gateway";
 
 export type Dependencies = {
     idProvider?: IIDProvider;
     parcoursGateway?: IParcoursGateway;
-    // Nouvelle dépendance ajoutée pour les test de fetch-table.usecase.test.ts
     tableGateway?: ITableGateway;
     mealGateway?: IMealGateway;
     reservationGateway?: IReservationGateway;
     restaurantGateway?: IRestaurantGateway;
+    restaurantManagementGateway?: IRestaurantManagementGateway;
 };
+

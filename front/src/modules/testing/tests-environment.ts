@@ -18,7 +18,7 @@ const createDependencies = (
   tableGateway: new StubTableGateway(),
   mealGateway: new StubMealGateway(),
   reservationGateway: new MockReservationGateway(),
-  restaurantGateway: new StubRestaurantGateway(),
+  restaurantManagementGateway: new StubRestaurantGateway(),  
   ...dependencies,
 });
 

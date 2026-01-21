@@ -19,7 +19,16 @@ export const backofficeSlice = createSlice({
     reducers: {
         storeRestaurant: (state, action: PayloadAction<BackofficeDomainModel.Restaurant>) => {
             state.restaurants.push(action.payload);
-        }
+        },
+        setRestaurants: (state, action: PayloadAction<BackofficeDomainModel.Restaurant[]>) => {
+            state.restaurants = action.payload;
+        },
+        setLoading: (state, action: PayloadAction<boolean>) => {
+            state.isLoading = action.payload;
+        },
+        setError: (state, action: PayloadAction<string | null>) => {
+            state.error = action.payload;
+        },
     }
 });
 

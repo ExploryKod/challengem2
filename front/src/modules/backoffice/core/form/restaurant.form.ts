@@ -7,7 +7,7 @@ export class RestaurantForm {
         return {
             name: '',
             type: '',
-            stars: 3
+            stars: 0
         };
     }
 
