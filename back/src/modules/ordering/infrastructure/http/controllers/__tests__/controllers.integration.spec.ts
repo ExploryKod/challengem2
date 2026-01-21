@@ -1,6 +1,7 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
+import { App } from 'supertest/types';
 import { AppModule } from '../../../../../../app.module';
 import { DataSource } from 'typeorm';
 import { RestaurantOrmEntity } from '../../../persistence/orm-entities/restaurant.orm-entity';
@@ -9,6 +10,34 @@ import { MealOrmEntity } from '../../../persistence/orm-entities/meal.orm-entity
 import { ReservationOrmEntity } from '../../../persistence/orm-entities/reservation.orm-entity';
 import { GuestOrmEntity } from '../../../persistence/orm-entities/guest.orm-entity';
 import { MealType } from '../../../../domain/enums/meal-type.enum';
+
+interface ReservationResponse {
+  id: number;
+  restaurantId: number;
+  tableId: number;
+  guests: GuestResponse[];
+  createdAt: string;
+}
+
+interface GuestResponse {
+  id: number;
+  firstName: string;
+  lastName: string;
+  age: number;
+  isOrganizer: boolean;
+  meals: {
+    entry: number | null;
+    mainCourse: number | null;
+    dessert: number | null;
+    drink: number | null;
+  };
+}
+
+interface ErrorResponse {
+  message: string | string[];
+  error: string;
+  statusCode: number;
+}
 
 describe('Controllers (Integration)', () => {
   let app: INestApplication;
@@ -113,40 +142,38 @@ describe('Controllers (Integration)', () => {
 
   describe('GET /restaurants', () => {
     it('should return all restaurants', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .get('/restaurants')
         .expect(200);
 
-      expect(Array.isArray(response.body)).toBe(true);
-      expect(response.body.length).toBeGreaterThanOrEqual(1);
+      const restaurants = response.body as RestaurantOrmEntity[];
+      expect(Array.isArray(restaurants)).toBe(true);
+      expect(restaurants.length).toBeGreaterThanOrEqual(1);
 
-      const found = response.body.find(
-        (r: RestaurantOrmEntity) => r.id === testRestaurant.id,
-      );
+      const found = restaurants.find((r) => r.id === testRestaurant.id);
       expect(found).toBeDefined();
-      expect(found.name).toBe('Test Restaurant');
-      expect(found.type).toBe('Test Type');
-      expect(found.stars).toBe(4);
+      expect(found?.name).toBe('Test Restaurant');
+      expect(found?.type).toBe('Test Type');
+      expect(found?.stars).toBe(4);
     });
   });
 
   describe('GET /tables', () => {
     it('should return tables for a given restaurant', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .get(`/tables?restaurantId=${testRestaurant.id}`)
         .expect(200);
 
-      expect(Array.isArray(response.body)).toBe(true);
-      expect(response.body.length).toBe(2);
-      expect(response.body[0].restaurantId).toBe(testRestaurant.id);
-      expect(response.body.map((t: TableOrmEntity) => t.title)).toContain(
-        'Test Table 1',
-      );
+      const tables = response.body as TableOrmEntity[];
+      expect(Array.isArray(tables)).toBe(true);
+      expect(tables.length).toBe(2);
+      expect(tables[0].restaurantId).toBe(testRestaurant.id);
+      expect(tables.map((t) => t.title)).toContain('Test Table 1');
     });
 
     it('should return empty array for unknown restaurant', async () => {
       const fakeId = 999999;
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .get(`/tables?restaurantId=${fakeId}`)
         .expect(200);
 
@@ -156,22 +183,24 @@ describe('Controllers (Integration)', () => {
 
   describe('GET /meals', () => {
     it('should return all meals for a restaurant', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .get(`/meals?restaurantId=${testRestaurant.id}`)
         .expect(200);
 
-      expect(Array.isArray(response.body)).toBe(true);
-      expect(response.body.length).toBe(3);
+      const meals = response.body as MealOrmEntity[];
+      expect(Array.isArray(meals)).toBe(true);
+      expect(meals.length).toBe(3);
     });
 
     it('should filter meals by type', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .get(`/meals?restaurantId=${testRestaurant.id}&type=${MealType.ENTRY}`)
         .expect(200);
 
-      expect(response.body.length).toBe(1);
-      expect(response.body[0].title).toBe('Test Entry');
-      expect(response.body[0].type).toBe(MealType.ENTRY);
+      const meals = response.body as MealOrmEntity[];
+      expect(meals.length).toBe(1);
+      expect(meals[0].title).toBe('Test Entry');
+      expect(meals[0].type).toBe(MealType.ENTRY);
     });
   });
 
@@ -193,50 +222,52 @@ describe('Controllers (Integration)', () => {
         ],
       };
 
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .post('/reservations')
         .send(dto);
 
-      createdReservationId = response.body.id;
+      const reservation = response.body as ReservationResponse;
+      createdReservationId = reservation.id;
     });
 
     it('should return all reservations', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .get('/reservations')
         .expect(200);
 
-      expect(Array.isArray(response.body)).toBe(true);
-      expect(response.body.length).toBeGreaterThanOrEqual(1);
+      const reservations = response.body as ReservationResponse[];
+      expect(Array.isArray(reservations)).toBe(true);
+      expect(reservations.length).toBeGreaterThanOrEqual(1);
 
-      const found = response.body.find(
-        (r: { id: number }) => r.id === createdReservationId,
-      );
+      const found = reservations.find((r) => r.id === createdReservationId);
       expect(found).toBeDefined();
-      expect(found.restaurantId).toBe(testRestaurant.id);
+      expect(found?.restaurantId).toBe(testRestaurant.id);
     });
 
     it('should return a reservation by id', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .get(`/reservations/${createdReservationId}`)
         .expect(200);
 
-      expect(response.body.id).toBe(createdReservationId);
-      expect(response.body.restaurantId).toBe(testRestaurant.id);
-      expect(response.body.guests).toHaveLength(1);
-      expect(response.body.guests[0].firstName).toBe('Test');
+      const reservation = response.body as ReservationResponse;
+      expect(reservation.id).toBe(createdReservationId);
+      expect(reservation.restaurantId).toBe(testRestaurant.id);
+      expect(reservation.guests).toHaveLength(1);
+      expect(reservation.guests[0].firstName).toBe('Test');
     });
 
     it('should return 404 for non-existent reservation', async () => {
       const fakeId = 999999;
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .get(`/reservations/${fakeId}`)
         .expect(404);
 
-      expect(response.body.message).toContain('not found');
+      const error = response.body as ErrorResponse;
+      expect(error.message).toContain('not found');
     });
 
     it('should return 400 for invalid id format', async () => {
-      await request(app.getHttpServer())
+      await request(app.getHttpServer() as App)
         .get('/reservations/not-a-number')
         .expect(400);
     });
@@ -265,24 +296,23 @@ describe('Controllers (Integration)', () => {
         ],
       };
 
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .post('/reservations')
         .send(dto)
         .expect(201);
 
-      expect(response.body.id).toBeDefined();
-      expect(response.body.restaurantId).toBe(testRestaurant.id);
-      expect(response.body.tableId).toBe(testTables[0].id);
-      expect(response.body.guests).toHaveLength(2);
-      expect(response.body.createdAt).toBeDefined();
+      const reservation = response.body as ReservationResponse;
+      expect(reservation.id).toBeDefined();
+      expect(reservation.restaurantId).toBe(testRestaurant.id);
+      expect(reservation.tableId).toBe(testTables[0].id);
+      expect(reservation.guests).toHaveLength(2);
+      expect(reservation.createdAt).toBeDefined();
 
       // Verify organizer guest
-      const organizer = response.body.guests.find(
-        (g: { isOrganizer: boolean }) => g.isOrganizer,
-      );
-      expect(organizer.firstName).toBe('John');
-      expect(organizer.meals.entry).toBe(testMeals[0].id);
-      expect(organizer.meals.mainCourse).toBe(testMeals[1].id);
+      const organizer = reservation.guests.find((g) => g.isOrganizer);
+      expect(organizer?.firstName).toBe('John');
+      expect(organizer?.meals.entry).toBe(testMeals[0].id);
+      expect(organizer?.meals.mainCourse).toBe(testMeals[1].id);
     });
 
     it('should reject invalid reservation (missing guests)', async () => {
@@ -292,12 +322,13 @@ describe('Controllers (Integration)', () => {
         guests: [],
       };
 
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .post('/reservations')
         .send(dto)
         .expect(400);
 
-      expect(response.body.message).toContain(
+      const error = response.body as ErrorResponse;
+      expect(error.message).toContain(
         'guests must contain at least 1 elements',
       );
     });
@@ -316,14 +347,13 @@ describe('Controllers (Integration)', () => {
         ],
       };
 
-      const response = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer() as App)
         .post('/reservations')
         .send(dto)
         .expect(400);
 
-      expect(response.body.message).toContain(
-        'restaurantId must be an integer number',
-      );
+      const error = response.body as ErrorResponse;
+      expect(error.message).toContain('restaurantId must be an integer number');
     });
   });
 });
