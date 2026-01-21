@@ -6,20 +6,20 @@ describe('GetTablesUseCase', () => {
   it('should return tables for a given restaurant', async () => {
     // Arrange
     const table1: Table = {
-      id: 'table-1',
-      restaurantId: 'restaurant-1',
+      id: 1,
+      restaurantId: 1,
       title: 'Table 1',
       capacity: 4,
     };
     const table2: Table = {
-      id: 'table-2',
-      restaurantId: 'restaurant-1',
+      id: 2,
+      restaurantId: 1,
       title: 'Table 2',
       capacity: 2,
     };
     const tableOtherRestaurant: Table = {
-      id: 'table-3',
-      restaurantId: 'restaurant-2',
+      id: 3,
+      restaurantId: 2,
       title: 'Table 3',
       capacity: 6,
     };
@@ -31,7 +31,7 @@ describe('GetTablesUseCase', () => {
     const useCase = new GetTablesUseCase(repository);
 
     // Act
-    const result = await useCase.execute('restaurant-1');
+    const result = await useCase.execute(1);
 
     // Assert
     expect(result).toHaveLength(2);
@@ -41,8 +41,8 @@ describe('GetTablesUseCase', () => {
   it('should return empty array when restaurant has no tables', async () => {
     // Arrange
     const table: Table = {
-      id: 'table-1',
-      restaurantId: 'restaurant-1',
+      id: 1,
+      restaurantId: 1,
       title: 'Table 1',
       capacity: 4,
     };
@@ -50,7 +50,7 @@ describe('GetTablesUseCase', () => {
     const useCase = new GetTablesUseCase(repository);
 
     // Act
-    const result = await useCase.execute('restaurant-without-tables');
+    const result = await useCase.execute(999);
 
     // Assert
     expect(result).toEqual([]);

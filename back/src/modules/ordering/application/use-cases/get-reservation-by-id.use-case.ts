@@ -10,7 +10,7 @@ export class GetReservationByIdUseCase {
     private readonly reservationRepository: IReservationRepository,
   ) {}
 
-  async execute(id: string): Promise<Reservation | null> {
+  async execute(id: number): Promise<Reservation | null> {
     return this.reservationRepository.findById(id);
   }
 }

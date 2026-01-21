@@ -9,15 +9,15 @@ export interface CreateReservationGuestInput {
   lastName: string;
   age: number;
   isOrganizer: boolean;
-  entryId?: string;
-  mainCourseId?: string;
-  dessertId?: string;
-  drinkId?: string;
+  entryId?: number;
+  mainCourseId?: number;
+  dessertId?: number;
+  drinkId?: number;
 }
 
 export interface CreateReservationInput {
-  restaurantId: string;
-  tableId: string;
+  restaurantId: number;
+  tableId: number;
   guests: CreateReservationGuestInput[];
 }
 

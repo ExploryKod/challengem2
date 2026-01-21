@@ -6,16 +6,16 @@ describe('GetReservationsUseCase', () => {
   it('should return all reservations', async () => {
     const reservations: Reservation[] = [
       {
-        id: 'res-1',
-        restaurantId: 'restaurant-1',
-        tableId: 'table-1',
+        id: 1,
+        restaurantId: 1,
+        tableId: 1,
         guests: [],
         createdAt: new Date('2024-01-15'),
       },
       {
-        id: 'res-2',
-        restaurantId: 'restaurant-1',
-        tableId: 'table-2',
+        id: 2,
+        restaurantId: 1,
+        tableId: 2,
         guests: [],
         createdAt: new Date('2024-01-16'),
       },

@@ -5,8 +5,8 @@ import { MealType } from '../../domain/enums/meal-type.enum';
 
 describe('GetMealsUseCase', () => {
   const createMeal = (overrides: Partial<Meal>): Meal => ({
-    id: 'meal-1',
-    restaurantId: 'restaurant-1',
+    id: 1,
+    restaurantId: 1,
     title: 'Default Meal',
     type: MealType.ENTRY,
     price: 10,
@@ -18,17 +18,17 @@ describe('GetMealsUseCase', () => {
   it('should return all meals for a restaurant', async () => {
     // Arrange
     const entry = createMeal({
-      id: 'meal-1',
+      id: 1,
       title: 'Salad',
       type: MealType.ENTRY,
     });
     const mainCourse = createMeal({
-      id: 'meal-2',
+      id: 2,
       title: 'Steak',
       type: MealType.MAIN_COURSE,
     });
     const dessert = createMeal({
-      id: 'meal-3',
+      id: 3,
       title: 'Cake',
       type: MealType.DESSERT,
     });
@@ -36,7 +36,7 @@ describe('GetMealsUseCase', () => {
     const useCase = new GetMealsUseCase(repository);
 
     // Act
-    const result = await useCase.execute({ restaurantId: 'restaurant-1' });
+    const result = await useCase.execute({ restaurantId: 1 });
 
     // Assert
     expect(result).toHaveLength(3);
@@ -46,17 +46,17 @@ describe('GetMealsUseCase', () => {
   it('should filter meals by type', async () => {
     // Arrange
     const entry1 = createMeal({
-      id: 'meal-1',
+      id: 1,
       title: 'Salad',
       type: MealType.ENTRY,
     });
     const entry2 = createMeal({
-      id: 'meal-2',
+      id: 2,
       title: 'Soup',
       type: MealType.ENTRY,
     });
     const mainCourse = createMeal({
-      id: 'meal-3',
+      id: 3,
       title: 'Steak',
       type: MealType.MAIN_COURSE,
     });
@@ -65,7 +65,7 @@ describe('GetMealsUseCase', () => {
 
     // Act
     const result = await useCase.execute({
-      restaurantId: 'restaurant-1',
+      restaurantId: 1,
       type: MealType.ENTRY,
     });
 
@@ -78,7 +78,7 @@ describe('GetMealsUseCase', () => {
   it('should return empty array when no meals match filters', async () => {
     // Arrange
     const mainCourse = createMeal({
-      id: 'meal-1',
+      id: 1,
       title: 'Steak',
       type: MealType.MAIN_COURSE,
     });
@@ -87,7 +87,7 @@ describe('GetMealsUseCase', () => {
 
     // Act
     const result = await useCase.execute({
-      restaurantId: 'restaurant-1',
+      restaurantId: 1,
       type: MealType.DESSERT,
     });
 

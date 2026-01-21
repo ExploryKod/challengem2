@@ -5,21 +5,23 @@ import { Reservation } from '../../domain/entities/reservation.entity';
 describe('GetReservationByIdUseCase', () => {
   it('should return reservation when found', async () => {
     const reservation: Reservation = {
-      id: 'res-1',
-      restaurantId: 'restaurant-1',
-      tableId: 'table-1',
+      id: 1,
+      restaurantId: 1,
+      tableId: 1,
       guests: [
         {
-          id: 'guest-1',
-          reservationId: 'res-1',
+          id: 1,
+          reservationId: 1,
           firstName: 'John',
           lastName: 'Doe',
           age: 30,
           isOrganizer: true,
-          entryId: null,
-          mainCourseId: null,
-          dessertId: null,
-          drinkId: null,
+          meals: {
+            entry: null,
+            mainCourse: null,
+            dessert: null,
+            drink: null,
+          },
         },
       ],
       createdAt: new Date('2024-01-15'),
@@ -28,7 +30,7 @@ describe('GetReservationByIdUseCase', () => {
     const repository = new InMemoryReservationRepository([reservation]);
     const useCase = new GetReservationByIdUseCase(repository);
 
-    const result = await useCase.execute('res-1');
+    const result = await useCase.execute(1);
 
     expect(result).toEqual(reservation);
   });
@@ -37,7 +39,7 @@ describe('GetReservationByIdUseCase', () => {
     const repository = new InMemoryReservationRepository([]);
     const useCase = new GetReservationByIdUseCase(repository);
 
-    const result = await useCase.execute('non-existent-id');
+    const result = await useCase.execute(999);
 
     expect(result).toBeNull();
   });

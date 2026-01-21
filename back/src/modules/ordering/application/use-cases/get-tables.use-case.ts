@@ -10,7 +10,7 @@ export class GetTablesUseCase {
     private readonly tableRepository: ITableRepository,
   ) {}
 
-  async execute(restaurantId: string): Promise<Table[]> {
+  async execute(restaurantId: number): Promise<Table[]> {
     return this.tableRepository.findByRestaurantId(restaurantId);
   }
 }

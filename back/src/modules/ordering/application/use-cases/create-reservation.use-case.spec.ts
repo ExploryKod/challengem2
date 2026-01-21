@@ -10,26 +10,26 @@ describe('CreateReservationUseCase', () => {
     const repository = new InMemoryReservationRepository();
     const useCase = new CreateReservationUseCase(repository);
     const input: CreateReservationInput = {
-      restaurantId: 'restaurant-1',
-      tableId: 'table-1',
+      restaurantId: 1,
+      tableId: 1,
       guests: [
         {
           firstName: 'John',
           lastName: 'Doe',
           age: 30,
           isOrganizer: true,
-          entryId: 'meal-entry-1',
-          mainCourseId: 'meal-main-1',
-          dessertId: 'meal-dessert-1',
-          drinkId: 'meal-drink-1',
+          entryId: 1,
+          mainCourseId: 2,
+          dessertId: 3,
+          drinkId: 4,
         },
         {
           firstName: 'Jane',
           lastName: 'Doe',
           age: 28,
           isOrganizer: false,
-          entryId: 'meal-entry-2',
-          mainCourseId: 'meal-main-2',
+          entryId: 5,
+          mainCourseId: 6,
         },
       ],
     };
@@ -39,8 +39,8 @@ describe('CreateReservationUseCase', () => {
 
     // Assert
     expect(result.id).toBeDefined();
-    expect(result.restaurantId).toBe('restaurant-1');
-    expect(result.tableId).toBe('table-1');
+    expect(result.restaurantId).toBe(1);
+    expect(result.tableId).toBe(1);
     expect(result.guests).toHaveLength(2);
     expect(result.createdAt).toBeInstanceOf(Date);
     expect((await repository.findAll()).length).toBe(1);
@@ -51,18 +51,18 @@ describe('CreateReservationUseCase', () => {
     const repository = new InMemoryReservationRepository();
     const useCase = new CreateReservationUseCase(repository);
     const input: CreateReservationInput = {
-      restaurantId: 'restaurant-1',
-      tableId: 'table-1',
+      restaurantId: 1,
+      tableId: 1,
       guests: [
         {
           firstName: 'John',
           lastName: 'Doe',
           age: 30,
           isOrganizer: true,
-          entryId: 'entry-1',
-          mainCourseId: 'main-1',
-          dessertId: 'dessert-1',
-          drinkId: 'drink-1',
+          entryId: 1,
+          mainCourseId: 2,
+          dessertId: 3,
+          drinkId: 4,
         },
         {
           firstName: 'Jane',
@@ -83,10 +83,10 @@ describe('CreateReservationUseCase', () => {
 
     expect(organizer).toBeDefined();
     expect(organizer!.meals).toEqual({
-      entry: 'entry-1',
-      mainCourse: 'main-1',
-      dessert: 'dessert-1',
-      drink: 'drink-1',
+      entry: 1,
+      mainCourse: 2,
+      dessert: 3,
+      drink: 4,
     });
 
     expect(guest).toBeDefined();

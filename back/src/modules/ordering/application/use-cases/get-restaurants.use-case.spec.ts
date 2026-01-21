@@ -6,13 +6,13 @@ describe('GetRestaurantsUseCase', () => {
   it('should return all restaurants when repository has data', async () => {
     // Arrange
     const restaurant1: Restaurant = {
-      id: 'restaurant-1',
+      id: 1,
       name: 'Le Petit Bistro',
       type: 'French',
       stars: 3,
     };
     const restaurant2: Restaurant = {
-      id: 'restaurant-2',
+      id: 2,
       name: 'Sushi Master',
       type: 'Japanese',
       stars: 4,
