@@ -5,7 +5,7 @@ import type { IMealRepository } from '../ports/meal.repository.port';
 import { MEAL_REPOSITORY } from '../ports/meal.repository.port';
 
 export interface GetMealsInput {
-  restaurantId: string;
+  restaurantId: number;
   type?: MealType;
 }
 

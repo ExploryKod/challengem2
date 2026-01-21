@@ -44,7 +44,7 @@ export class ReservationMapper {
     return ormEntity;
   }
 
-  static guestToOrm(domain: Guest, reservationId?: string): GuestOrmEntity {
+  static guestToOrm(domain: Guest, reservationId?: number): GuestOrmEntity {
     const ormEntity = new GuestOrmEntity();
     if (domain.id) {
       ormEntity.id = domain.id;
