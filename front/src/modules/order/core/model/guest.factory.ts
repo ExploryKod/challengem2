@@ -7,14 +7,14 @@ export class GuestFactory {
             firstName: '',
             lastName: '',
             age: 24,
-            restaurantId: null,
-            isOrganizer: false,
             meals: {
                 entry: null,
                 mainCourse: null,
                 dessert: null,
-                drink: null
+                drink : null
             },
+            restaurantId: null,
+            isOrganizer: false,
             ...data
         }
     }

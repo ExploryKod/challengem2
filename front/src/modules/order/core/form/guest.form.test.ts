@@ -4,6 +4,11 @@ import { IIDProvider } from '../../../core/id-provider';
 import { GuestFactory } from '@taotask/modules/order/core/model/guest.factory';
 import { StubIdProvider } from '@taotask/modules/core/stub.id-provider';
 
+
+// On hoiste nos states (intéressant pour refactor ensuite)
+// Cela n'est possible que si on reste stateless 
+// La class GuestForm est donc stateless sauf pour son paramètre IIDProvider qui est stateful mais on ne le changera pas (auto-discipline)
+// d'où on peux se permettre de hoister cet objet
 const idProvider = new StubIdProvider();
 const initialEmptyState: OrderingDomainModel.Form = {    
     guests: [],
@@ -35,7 +40,7 @@ const stateWithOneUser: OrderingDomainModel.Form = {
 const stateWithTwoUsers: OrderingDomainModel.Form = {
     guests: [ JohnDoe, BrigitteMonin ],
     organizerId: null,
-    tableId: null,
+    tableId: null
 };
 
 const form = new GuestForm(idProvider);
@@ -163,7 +168,45 @@ describe('Set Is Submittable', () => {
         const isSubmitable = form.isSubmitable(withOrganizerState)
         expect(isSubmitable).toEqual(false)
     })
+//  ---------- Version avec 3 tests séparés : ancienne version, il est mieux d'utiliser it.each (ci-dessus) ----------
+//     it("When age is below 0 or 0, it can't be submittable", () =>{
+//         const withOrganizerState = {
+//             ...stateWithOneUser,
+//             organizerId: "1",
+//             guests: [{
+//                 ...JohnDoe,
+//                 age: -1
+//             }]
+//         }
+//         const isSubmitable = form.isSubmitable(withOrganizerState)
+//         expect(isSubmitable).toEqual(false)
+//     })
 
+//     it("When firstname is empty, it can't be submittable", () =>{
+//         const withOrganizerState = {
+//             ...stateWithOneUser,
+//             organizerId: "1",
+//             guests: [{
+//                 ...JohnDoe,
+//                 firstName: ""
+//             }]
+//         }
+//         const isSubmitable = form.isSubmitable(withOrganizerState)
+//         expect(isSubmitable).toEqual(false)
+//     })
+
+//     it("When lastname is empty, it can't be submittable", () =>{
+//         const withOrganizerState = {
+//             ...stateWithOneUser,
+//             organizerId: "1",
+//             guests: [{
+//                 ...JohnDoe,
+//                 lastName: ""
+//             }]
+//         }
+//         const isSubmitable = form.isSubmitable(withOrganizerState)
+//         expect(isSubmitable).toEqual(false)
+//     })
 });
 
 describe('Update a guest', () => {

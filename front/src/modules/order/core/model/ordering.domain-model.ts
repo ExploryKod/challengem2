@@ -6,9 +6,13 @@ export namespace OrderingDomainModel {
         tableId: string | null
     }
   
-    export type RestaurantId = string | number | null;
-    export type MealId = string;
+    // -- Meals - etapeI/1. On commence par ajouter meals dans les types --
+    // -- Meals - etapeII/1. On va ensuite aller dans MealsSection et créer son presenter (au plus proche de l'UI)--
 
+    // Alias pour rendre compréhensible nos string dans dessert: string | null (string est en fait un id)
+    export type MealId = string;
+    export type RestaurantId = string | number | null;
+    // Enumération de tous les plats possible
     export enum MealType {
         ENTRY = "ENTRY",
         MAIN_COURSE = "MAIN_COURSE",
@@ -31,14 +35,14 @@ export namespace OrderingDomainModel {
         firstName: string,
         lastName: string,
         age: number,
-        restaurantId: RestaurantId,
-        isOrganizer: boolean,
         meals: {
             entry: MealId | null,
             mainCourse: MealId | null,
             dessert: MealId | null,
-            drink: MealId | null
+            drink : MealId | null
         }
+        restaurantId: RestaurantId,
+        isOrganizer: boolean
     }
 
     export type RestaurantList = {
@@ -56,7 +60,9 @@ export namespace OrderingDomainModel {
     export enum OrderingStep {
         GUESTS = 0,
         TABLE = 1,
-        MEALS = 2
+        MEALS = 2,
+        SUMMARY = 3,
+        RESERVED = 4
     }
 
     export type Table = {

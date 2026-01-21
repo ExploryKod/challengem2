@@ -22,4 +22,12 @@ export const registerOrderingStepListener = (listener: ListenerMiddlewareInstanc
           api.dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.MEALS));
         }
       });
+
+    listener.startListening({
+        // Dés que l'on choisis un repas on passe à l'étape suivante (sommaire) (voir ordering.slice.ts)
+        actionCreator: orderingSlice.actions.chooseMeal,
+        effect: (_, api) => {
+            api.dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.SUMMARY));
+        }
+    });
 }

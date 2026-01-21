@@ -7,11 +7,12 @@ export class GuestForm {
     ) { }
 
     addGuest(state:OrderingDomainModel.Form) {
+        // On ajoute ici temporairement le state pour mimer un paradigme fonctionnel
+        // Création de Form pour éviter de spécifier via des commentaires qu'il faut un unique organisateur
         
-        
-        
+        // Voir le cours sur immer et le paradigme fonctionnel vs impératif, pourquoi ici j'utilise dans produce le p imp.
         return produce(state, (draft: any) => {
-            
+            // je peux travailler sur draft comme si c'était un state, de façon immutable dans p. imp.
             draft.guests.push({
                 id: this.idProvider.generate(),
                 firstName: 'John',
@@ -19,14 +20,23 @@ export class GuestForm {
                 age: 24,
                 restaurantId: null,
                 isOrganizer: false,
-                meals: {
-                    entry: null,
-                    mainCourse: null,
-                    dessert: null,
-                    drink: null
-                }
+                meals: {entry: null, mainCourse: null, dessert: null, drink: null}
             })
         })
+
+        // ANCIENNE VERSION POUR COMPARARER AVEC LE REFACTO AVEC IMMER
+        // return {
+        //     ...state,
+        //     guests: [
+        //         ...state.guests,
+        //         {
+        //             id:this.idProvider.generate(),
+        //             firstName: 'John',
+        //             lastName: 'Doe',
+        //             age: 0
+        //         }
+        //     ]
+        // };
     }
 
     removeGuest(state:OrderingDomainModel.Form, id:string) {
@@ -41,6 +51,11 @@ export class GuestForm {
                 draft.organizerId = null
             }
         })
+        
+        // return {
+        //     ...state,
+        //     guests: state.guests.filter(guest => guest.id !== id)
+        // }
     }
 
     changeOrganizer(state: OrderingDomainModel.Form, id:string) {
@@ -53,7 +68,14 @@ export class GuestForm {
             }
             draft.organizerId = id;
         });
-
+    
+       
+        // La méthode some() teste si au moins un élément du tableau passe le test implémenté par la fonction fournie. 
+        // Elle renvoie un booléen indiquant le résultat du test
+        // return {
+        //     ...state,
+        //     organizerId: state.guests.some((guest) => guest.id ===  id) ? id : null
+        // }
     }
 
     isSubmitable(state: OrderingDomainModel.Form) {
@@ -73,11 +95,27 @@ export class GuestForm {
 
         return produce(state, (draft: any) => {
             const guest = draft.guests.find((guest: any) => guest.id === id)
-            
+            // on commence par une négation (mieux) que de vérifier si guest est true et mettre guest[key] dans la condition
             if (!guest) {
                 return
             }
             guest[key] = value
         })
+
+        // return {
+        //     ...state,
+        //     guests: state.guests.map((guest) => {
+        //         if (guest.id === id) {
+        //             console.log('update guest ', key, value)
+        //             return {
+        //                 ...guest,
+        //                 [key]: value
+        //             }
+        //         } else {
+        //             return guest;
+        //         }
+               
+        //     })
+        // }
     }
 }
