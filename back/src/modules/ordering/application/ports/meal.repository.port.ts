@@ -4,7 +4,7 @@ import { MealType } from '../../domain/enums/meal-type.enum';
 export const MEAL_REPOSITORY = Symbol('MEAL_REPOSITORY');
 
 export interface MealFilters {
-  restaurantId: string;
+  restaurantId: number;
   type?: MealType;
 }
 

@@ -4,5 +4,5 @@ export const RESTAURANT_REPOSITORY = Symbol('RESTAURANT_REPOSITORY');
 
 export interface IRestaurantRepository {
   findAll(): Promise<Restaurant[]>;
-  findById(id: string): Promise<Restaurant | null>;
+  findById(id: number): Promise<Restaurant | null>;
 }

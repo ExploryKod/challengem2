@@ -5,5 +5,5 @@ export const RESERVATION_REPOSITORY = Symbol('RESERVATION_REPOSITORY');
 export interface IReservationRepository {
   save(reservation: Reservation): Promise<Reservation>;
   findAll(): Promise<Reservation[]>;
-  findById(id: string): Promise<Reservation | null>;
+  findById(id: number): Promise<Reservation | null>;
 }
