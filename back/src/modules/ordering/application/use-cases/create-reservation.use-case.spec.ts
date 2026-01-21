@@ -43,7 +43,7 @@ describe('CreateReservationUseCase', () => {
     expect(result.tableId).toBe('table-1');
     expect(result.guests).toHaveLength(2);
     expect(result.createdAt).toBeInstanceOf(Date);
-    expect(repository.count()).toBe(1);
+    expect((await repository.findAll()).length).toBe(1);
   });
 
   it('should assign guest meal selections correctly', async () => {
