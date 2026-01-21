@@ -20,16 +20,12 @@ export class InMemoryReservationRepository implements IReservationRepository {
     return Promise.resolve(saved);
   }
 
+  findAll(): Promise<Reservation[]> {
+    return Promise.resolve([...this.reservations]);
+  }
+
   findById(id: string): Promise<Reservation | null> {
     const found = this.reservations.find((r) => r.id === id) ?? null;
     return Promise.resolve(found);
-  }
-
-  getAll(): Reservation[] {
-    return [...this.reservations];
-  }
-
-  count(): number {
-    return this.reservations.length;
   }
 }

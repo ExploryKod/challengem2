@@ -19,6 +19,14 @@ export class ReservationRepository implements IReservationRepository {
     return ReservationMapper.toDomain(saved);
   }
 
+  async findAll(): Promise<Reservation[]> {
+    const entities = await this.repository.find({
+      relations: ['guests'],
+      order: { createdAt: 'DESC' },
+    });
+    return entities.map((entity) => ReservationMapper.toDomain(entity));
+  }
+
   async findById(id: string): Promise<Reservation | null> {
     const entity = await this.repository.findOne({
       where: { id },
