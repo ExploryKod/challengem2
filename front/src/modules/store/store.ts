@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { combineReducers, configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
 import { orderingReducer } from "@taotask/modules/order/core/store/ordering.slice";
 import { Dependencies } from "@taotask/modules/store/dependencies";
+import { registerOrderingStepListener } from "@taotask/modules/order/core/store/ordering.step.listener";
 
 // Pour nos tests de départ 
 const dummyReducer = (state = {}) => state;
@@ -26,6 +27,8 @@ export const createStore = (config: {
     devTools: true,
     middleware: (getDefaultMiddleware) => {
       const listener = createListenerMiddleware();
+
+      registerOrderingStepListener(listener);
 
       return getDefaultMiddleware({
         thunk: {

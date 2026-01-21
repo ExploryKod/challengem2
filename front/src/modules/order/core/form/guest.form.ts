@@ -18,7 +18,13 @@ export class GuestForm {
                 lastName: 'Doe',
                 age: 24,
                 restaurantId: null,
-                isOrganizer: false
+                isOrganizer: false,
+                meals: {
+                    entry: null,
+                    mainCourse: null,
+                    dessert: null,
+                    drink: null
+                }
             })
         })
     }

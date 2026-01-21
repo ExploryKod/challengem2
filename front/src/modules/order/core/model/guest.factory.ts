@@ -9,6 +9,12 @@ export class GuestFactory {
             age: 24,
             restaurantId: null,
             isOrganizer: false,
+            meals: {
+                entry: null,
+                mainCourse: null,
+                dessert: null,
+                drink: null
+            },
             ...data
         }
     }

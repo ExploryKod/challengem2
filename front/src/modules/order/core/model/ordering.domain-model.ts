@@ -7,14 +7,38 @@ export namespace OrderingDomainModel {
     }
   
     export type RestaurantId = string | number | null;
- 
+    export type MealId = string;
+
+    export enum MealType {
+        ENTRY = "ENTRY",
+        MAIN_COURSE = "MAIN_COURSE",
+        DESSERT = "DESSERT",
+        DRINK = "DRINK"
+    }
+
+    export type Meal = {
+        id: MealId,
+        restaurantId: RestaurantId,
+        title: string,
+        type: MealType,
+        price: number,
+        requiredAge: number | null,
+        imageUrl: string
+    }
+
     export type Guest = {
         id: string | number, 
         firstName: string,
         lastName: string,
         age: number,
         restaurantId: RestaurantId,
-        isOrganizer: boolean
+        isOrganizer: boolean,
+        meals: {
+            entry: MealId | null,
+            mainCourse: MealId | null,
+            dessert: MealId | null,
+            drink: MealId | null
+        }
     }
 
     export type RestaurantList = {
@@ -31,7 +55,8 @@ export namespace OrderingDomainModel {
 
     export enum OrderingStep {
         GUESTS = 0,
-        TABLE = 1
+        TABLE = 1,
+        MEALS = 2
     }
 
     export type Table = {
