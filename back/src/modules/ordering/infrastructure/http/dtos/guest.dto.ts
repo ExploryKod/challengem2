@@ -3,9 +3,10 @@ import {
   IsNumber,
   IsBoolean,
   IsOptional,
-  IsUUID,
+  IsInt,
   Min,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class GuestDto {
   @IsString()
@@ -22,18 +23,22 @@ export class GuestDto {
   isOrganizer: boolean;
 
   @IsOptional()
-  @IsUUID()
-  entryId?: string;
+  @IsInt()
+  @Type(() => Number)
+  entryId?: number;
 
   @IsOptional()
-  @IsUUID()
-  mainCourseId?: string;
+  @IsInt()
+  @Type(() => Number)
+  mainCourseId?: number;
 
   @IsOptional()
-  @IsUUID()
-  dessertId?: string;
+  @IsInt()
+  @Type(() => Number)
+  dessertId?: number;
 
   @IsOptional()
-  @IsUUID()
-  drinkId?: string;
+  @IsInt()
+  @Type(() => Number)
+  drinkId?: number;
 }

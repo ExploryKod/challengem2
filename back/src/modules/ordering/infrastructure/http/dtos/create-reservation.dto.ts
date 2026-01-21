@@ -1,13 +1,15 @@
-import { IsUUID, IsArray, ValidateNested, ArrayMinSize } from 'class-validator';
+import { IsInt, IsArray, ValidateNested, ArrayMinSize } from 'class-validator';
 import { Type } from 'class-transformer';
 import { GuestDto } from './guest.dto';
 
 export class CreateReservationDto {
-  @IsUUID()
-  restaurantId: string;
+  @IsInt()
+  @Type(() => Number)
+  restaurantId: number;
 
-  @IsUUID()
-  tableId: string;
+  @IsInt()
+  @Type(() => Number)
+  tableId: number;
 
   @IsArray()
   @ArrayMinSize(1)
