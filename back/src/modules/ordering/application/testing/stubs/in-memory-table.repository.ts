@@ -8,12 +8,12 @@ export class InMemoryTableRepository implements ITableRepository {
     this.tables = [...initialData];
   }
 
-  findByRestaurantId(restaurantId: string): Promise<Table[]> {
+  findByRestaurantId(restaurantId: number): Promise<Table[]> {
     const results = this.tables.filter((t) => t.restaurantId === restaurantId);
     return Promise.resolve(results);
   }
 
-  findById(id: string): Promise<Table | null> {
+  findById(id: number): Promise<Table | null> {
     const found = this.tables.find((t) => t.id === id) ?? null;
     return Promise.resolve(found);
   }

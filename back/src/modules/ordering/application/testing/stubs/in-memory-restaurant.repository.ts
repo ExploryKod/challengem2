@@ -12,7 +12,7 @@ export class InMemoryRestaurantRepository implements IRestaurantRepository {
     return Promise.resolve([...this.restaurants]);
   }
 
-  findById(id: string): Promise<Restaurant | null> {
+  findById(id: number): Promise<Restaurant | null> {
     const found = this.restaurants.find((r) => r.id === id) ?? null;
     return Promise.resolve(found);
   }

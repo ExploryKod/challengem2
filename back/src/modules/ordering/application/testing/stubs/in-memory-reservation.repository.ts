@@ -8,10 +8,12 @@ export class InMemoryReservationRepository implements IReservationRepository {
     this.reservations = [...initialData];
   }
 
+  private nextId = 1;
+
   save(reservation: Reservation): Promise<Reservation> {
     const saved = { ...reservation };
     if (!saved.id) {
-      saved.id = crypto.randomUUID();
+      saved.id = this.nextId++;
     }
     if (!saved.createdAt) {
       saved.createdAt = new Date();
@@ -24,7 +26,7 @@ export class InMemoryReservationRepository implements IReservationRepository {
     return Promise.resolve([...this.reservations]);
   }
 
-  findById(id: string): Promise<Reservation | null> {
+  findById(id: number): Promise<Reservation | null> {
     const found = this.reservations.find((r) => r.id === id) ?? null;
     return Promise.resolve(found);
   }
