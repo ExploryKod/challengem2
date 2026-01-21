@@ -9,11 +9,11 @@ import { RestaurantOrmEntity } from './restaurant.orm-entity';
 
 @Entity('tables')
 export class TableOrmEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ name: 'restaurant_id' })
-  restaurantId: string;
+  restaurantId: number;
 
   @Column()
   title: string;

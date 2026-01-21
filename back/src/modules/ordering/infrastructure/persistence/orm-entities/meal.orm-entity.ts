@@ -10,11 +10,11 @@ import { MealType } from '../../../domain/enums/meal-type.enum';
 
 @Entity('meals')
 export class MealOrmEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ name: 'restaurant_id' })
-  restaurantId: string;
+  restaurantId: number;
 
   @Column()
   title: string;

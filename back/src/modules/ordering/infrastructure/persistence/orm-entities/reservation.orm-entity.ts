@@ -13,14 +13,14 @@ import { GuestOrmEntity } from './guest.orm-entity';
 
 @Entity('reservations')
 export class ReservationOrmEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ name: 'restaurant_id' })
-  restaurantId: string;
+  restaurantId: number;
 
   @Column({ name: 'table_id' })
-  tableId: string;
+  tableId: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

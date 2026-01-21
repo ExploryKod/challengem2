@@ -4,8 +4,8 @@ import { MealOrmEntity } from './meal.orm-entity';
 
 @Entity('restaurants')
 export class RestaurantOrmEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   name: string;

@@ -9,11 +9,11 @@ import { ReservationOrmEntity } from './reservation.orm-entity';
 
 @Entity('guests')
 export class GuestOrmEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column({ name: 'reservation_id', type: 'uuid' })
-  reservationId: string;
+  @Column({ name: 'reservation_id' })
+  reservationId: number;
 
   @Column({ name: 'first_name' })
   firstName: string;
@@ -27,17 +27,17 @@ export class GuestOrmEntity {
   @Column({ name: 'is_organizer' })
   isOrganizer: boolean;
 
-  @Column({ name: 'entry_id', type: 'uuid', nullable: true })
-  entryId: string | null;
+  @Column({ name: 'entry_id', type: 'int', nullable: true })
+  entryId: number | null;
 
-  @Column({ name: 'main_course_id', type: 'uuid', nullable: true })
-  mainCourseId: string | null;
+  @Column({ name: 'main_course_id', type: 'int', nullable: true })
+  mainCourseId: number | null;
 
-  @Column({ name: 'dessert_id', type: 'uuid', nullable: true })
-  dessertId: string | null;
+  @Column({ name: 'dessert_id', type: 'int', nullable: true })
+  dessertId: number | null;
 
-  @Column({ name: 'drink_id', type: 'uuid', nullable: true })
-  drinkId: string | null;
+  @Column({ name: 'drink_id', type: 'int', nullable: true })
+  drinkId: number | null;
 
   @ManyToOne(() => ReservationOrmEntity, (reservation) => reservation.guests)
   @JoinColumn({ name: 'reservation_id' })
