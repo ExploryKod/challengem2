@@ -1,10 +1,13 @@
 import { ITableGateway } from "@taotask/modules/order/core/gateway/table.gateway";
 import { IMealGateway } from "@taotask/modules/order/core/gateway/meal.gateway";
 import { IReservationGateway } from "@taotask/modules/order/core/gateway/reservation.gateway";
+import { IRestaurantGateway } from "@taotask/modules/order/core/gateway/restaurant.gateway";
 import { InMemoryTableGateway } from "@taotask/modules/order/core/gateway-infra/in-memory.table-gateway";
 import { InMemoryMealGateway } from "@taotask/modules/order/core/gateway-infra/in-memory.meal-gateway";
+import { InMemoryRestaurantGateway } from "@taotask/modules/order/core/gateway-infra/in-memory.restaurant-gateway";
 import { HttpTableGateway } from "@taotask/modules/order/core/gateway/http.table-gateway";
 import { HttpMealGateway } from "@taotask/modules/order/core/gateway/http.meal-gateway";
+import { HttpRestaurantGateway } from "@taotask/modules/order/core/gateway/http.restaurant-gateway";
 import { HttpReservationGateway } from "@taotask/modules/order/core/gateway/http.reservation-gateway";
 import { API_CONFIG } from "@taotask/modules/app/config/api.config";
 import { AppState } from "@taotask/modules/store/store";
@@ -30,5 +33,12 @@ export class GatewayFactory {
             return new HttpReservationGateway(getState);
         }
         return new MockReservationGateway();
+    }
+
+    static createRestaurantGateway(): IRestaurantGateway {
+        if (API_CONFIG.isApiAvailable()) {
+            return new HttpRestaurantGateway();
+        }
+        return new InMemoryRestaurantGateway();
     }
 }

@@ -23,6 +23,7 @@ export class App {
       tableGateway: GatewayFactory.createTableGateway(getState),
       mealGateway: GatewayFactory.createMealGateway(getState),
       reservationGateway: GatewayFactory.createReservationGateway(getState),
+      restaurantGateway: GatewayFactory.createRestaurantGateway(),
     };
   }
 }
