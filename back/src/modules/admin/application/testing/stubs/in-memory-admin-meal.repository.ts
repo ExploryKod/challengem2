@@ -35,15 +35,13 @@ export class InMemoryAdminMealRepository implements IAdminMealRepository {
     return Promise.resolve(meal);
   }
 
-  update(
-    id: number,
-    data: Partial<Omit<Meal, 'id'>>,
-  ): Promise<Meal | null> {
+  update(id: number, data: Partial<Omit<Meal, 'id'>>): Promise<Meal | null> {
     const index = this.meals.findIndex((m) => m.id === id);
     if (index === -1) return Promise.resolve(null);
 
     const existing = this.meals[index];
-    if (data.restaurantId !== undefined) existing.restaurantId = data.restaurantId;
+    if (data.restaurantId !== undefined)
+      existing.restaurantId = data.restaurantId;
     if (data.title !== undefined) existing.title = data.title;
     if (data.type !== undefined) existing.type = data.type;
     if (data.price !== undefined) existing.price = data.price;

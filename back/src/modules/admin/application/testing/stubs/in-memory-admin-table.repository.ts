@@ -32,15 +32,13 @@ export class InMemoryAdminTableRepository implements IAdminTableRepository {
     return Promise.resolve(table);
   }
 
-  update(
-    id: number,
-    data: Partial<Omit<Table, 'id'>>,
-  ): Promise<Table | null> {
+  update(id: number, data: Partial<Omit<Table, 'id'>>): Promise<Table | null> {
     const index = this.tables.findIndex((t) => t.id === id);
     if (index === -1) return Promise.resolve(null);
 
     const existing = this.tables[index];
-    if (data.restaurantId !== undefined) existing.restaurantId = data.restaurantId;
+    if (data.restaurantId !== undefined)
+      existing.restaurantId = data.restaurantId;
     if (data.title !== undefined) existing.title = data.title;
     if (data.capacity !== undefined) existing.capacity = data.capacity;
 

@@ -11,7 +11,7 @@ describe('UpdateMealUseCase', () => {
       restaurantId: 1,
       title: 'Old Title',
       type: MealType.ENTRY,
-      price: 10.00,
+      price: 10.0,
       requiredAge: null,
       imageUrl: 'https://example.com/old.jpg',
     };
@@ -19,7 +19,10 @@ describe('UpdateMealUseCase', () => {
     const useCase = new UpdateMealUseCase(repository);
 
     // Act
-    const result = await useCase.execute(1, { title: 'New Title', price: 15.99 });
+    const result = await useCase.execute(1, {
+      title: 'New Title',
+      price: 15.99,
+    });
 
     // Assert
     expect(result).not.toBeNull();
@@ -46,7 +49,7 @@ describe('UpdateMealUseCase', () => {
       restaurantId: 1,
       title: 'Original Title',
       type: MealType.MAIN_COURSE,
-      price: 20.00,
+      price: 20.0,
       requiredAge: null,
       imageUrl: 'https://example.com/original.jpg',
     };
@@ -54,13 +57,13 @@ describe('UpdateMealUseCase', () => {
     const useCase = new UpdateMealUseCase(repository);
 
     // Act
-    const result = await useCase.execute(1, { price: 25.00 });
+    const result = await useCase.execute(1, { price: 25.0 });
 
     // Assert
     expect(result).not.toBeNull();
     expect(result!.title).toBe('Original Title');
     expect(result!.type).toBe(MealType.MAIN_COURSE);
-    expect(result!.price).toBe(25.00);
+    expect(result!.price).toBe(25.0);
     expect(result!.imageUrl).toBe('https://example.com/original.jpg');
   });
 });

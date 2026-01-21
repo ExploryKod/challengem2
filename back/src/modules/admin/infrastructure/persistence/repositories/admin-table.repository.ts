@@ -47,7 +47,8 @@ export class AdminTableRepository implements IAdminTableRepository {
     const existing = await this.tableRepository.findOne({ where: { id } });
     if (!existing) return null;
 
-    if (data.restaurantId !== undefined) existing.restaurantId = data.restaurantId;
+    if (data.restaurantId !== undefined)
+      existing.restaurantId = data.restaurantId;
     if (data.title !== undefined) existing.title = data.title;
     if (data.capacity !== undefined) existing.capacity = data.capacity;
 

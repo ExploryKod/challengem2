@@ -1,4 +1,11 @@
-import { IsString, IsInt, IsNumber, IsEnum, IsOptional, Min } from 'class-validator';
+import {
+  IsString,
+  IsInt,
+  IsNumber,
+  IsEnum,
+  IsOptional,
+  Min,
+} from 'class-validator';
 import { MealType } from '../../../../ordering/domain/enums/meal-type.enum';
 
 export class UpdateMealDto {

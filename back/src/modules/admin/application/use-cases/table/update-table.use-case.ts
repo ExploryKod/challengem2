@@ -16,10 +16,7 @@ export class UpdateTableUseCase {
     private readonly repository: IAdminTableRepository,
   ) {}
 
-  async execute(
-    id: number,
-    input: UpdateTableInput,
-  ): Promise<Table | null> {
+  async execute(id: number, input: UpdateTableInput): Promise<Table | null> {
     return this.repository.update(id, input);
   }
 }

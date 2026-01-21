@@ -23,7 +23,11 @@ describe('GetTablesUseCase', () => {
       title: 'Table 3',
       capacity: 2,
     };
-    const repository = new InMemoryAdminTableRepository([table1, table2, table3]);
+    const repository = new InMemoryAdminTableRepository([
+      table1,
+      table2,
+      table3,
+    ]);
     const useCase = new GetTablesUseCase(repository);
 
     // Act

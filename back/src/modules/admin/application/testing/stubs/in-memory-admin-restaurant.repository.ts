@@ -31,7 +31,10 @@ export class InMemoryAdminRestaurantRepository implements IAdminRestaurantReposi
     return Promise.resolve(restaurant);
   }
 
-  update(id: number, data: Partial<Omit<Restaurant, 'id'>>): Promise<Restaurant | null> {
+  update(
+    id: number,
+    data: Partial<Omit<Restaurant, 'id'>>,
+  ): Promise<Restaurant | null> {
     const index = this.restaurants.findIndex((r) => r.id === id);
     if (index === -1) return Promise.resolve(null);
 

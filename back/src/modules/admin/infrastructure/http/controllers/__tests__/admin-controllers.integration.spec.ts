@@ -191,8 +191,7 @@ describe('Admin Controllers (Integration)', () => {
       afterAll(async () => {
         // Clean up created restaurant
         if (createdRestaurantId) {
-          const restaurantRepo =
-            dataSource.getRepository(RestaurantOrmEntity);
+          const restaurantRepo = dataSource.getRepository(RestaurantOrmEntity);
           await restaurantRepo.delete({ id: createdRestaurantId });
         }
       });
@@ -445,7 +444,9 @@ describe('Admin Controllers (Integration)', () => {
           .expect(400);
 
         const error = response.body as ErrorResponse;
-        expect(error.message).toContain('restaurantId must be an integer number');
+        expect(error.message).toContain(
+          'restaurantId must be an integer number',
+        );
       });
 
       it('should return 400 for invalid capacity (less than 1)', async () => {
@@ -738,7 +739,9 @@ describe('Admin Controllers (Integration)', () => {
       });
 
       it('should return 400 when restaurantId is missing', async () => {
-        await request(app.getHttpServer() as App).get('/admin/meals').expect(400);
+        await request(app.getHttpServer() as App)
+          .get('/admin/meals')
+          .expect(400);
       });
     });
 
@@ -927,7 +930,9 @@ describe('Admin Controllers (Integration)', () => {
           .expect(400);
 
         const error = response.body as ErrorResponse;
-        expect(error.message).toContain('restaurantId must be an integer number');
+        expect(error.message).toContain(
+          'restaurantId must be an integer number',
+        );
       });
     });
 

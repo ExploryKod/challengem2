@@ -7,9 +7,7 @@ import type {
   CreateGuestData,
 } from '../../ports/admin-reservation.repository.port';
 
-export class InMemoryAdminReservationRepository
-  implements IAdminReservationRepository
-{
+export class InMemoryAdminReservationRepository implements IAdminReservationRepository {
   private reservations: Reservation[] = [];
   private nextId = 1;
   private nextGuestId = 1;
@@ -92,10 +90,7 @@ export class InMemoryAdminReservationRepository
     return Promise.resolve(this.cloneReservation(reservation));
   }
 
-  update(
-    id: number,
-    data: UpdateReservationData,
-  ): Promise<Reservation | null> {
+  update(id: number, data: UpdateReservationData): Promise<Reservation | null> {
     const index = this.reservations.findIndex((r) => r.id === id);
     if (index === -1) return Promise.resolve(null);
 

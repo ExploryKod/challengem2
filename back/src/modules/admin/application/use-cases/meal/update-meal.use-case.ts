@@ -20,10 +20,7 @@ export class UpdateMealUseCase {
     private readonly repository: IAdminMealRepository,
   ) {}
 
-  async execute(
-    id: number,
-    input: UpdateMealInput,
-  ): Promise<Meal | null> {
+  async execute(id: number, input: UpdateMealInput): Promise<Meal | null> {
     return this.repository.update(id, input);
   }
 }

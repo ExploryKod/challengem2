@@ -15,7 +15,10 @@ describe('UpdateTableUseCase', () => {
     const useCase = new UpdateTableUseCase(repository);
 
     // Act
-    const result = await useCase.execute(1, { title: 'New Title', capacity: 6 });
+    const result = await useCase.execute(1, {
+      title: 'New Title',
+      capacity: 6,
+    });
 
     // Assert
     expect(result).not.toBeNull();

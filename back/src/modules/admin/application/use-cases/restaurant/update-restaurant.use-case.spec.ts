@@ -5,7 +5,12 @@ import { Restaurant } from '../../../../ordering/domain/entities/restaurant.enti
 describe('UpdateRestaurantUseCase', () => {
   it('should update restaurant and return updated entity', async () => {
     // Arrange
-    const restaurant: Restaurant = { id: 1, name: 'Old Name', type: 'French', stars: 3 };
+    const restaurant: Restaurant = {
+      id: 1,
+      name: 'Old Name',
+      type: 'French',
+      stars: 3,
+    };
     const repository = new InMemoryAdminRestaurantRepository([restaurant]);
     const useCase = new UpdateRestaurantUseCase(repository);
 

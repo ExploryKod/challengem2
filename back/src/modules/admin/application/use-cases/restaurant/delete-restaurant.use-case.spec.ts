@@ -5,7 +5,12 @@ import { Restaurant } from '../../../../ordering/domain/entities/restaurant.enti
 describe('DeleteRestaurantUseCase', () => {
   it('should delete restaurant and return true', async () => {
     // Arrange
-    const restaurant: Restaurant = { id: 1, name: 'Bistro', type: 'French', stars: 3 };
+    const restaurant: Restaurant = {
+      id: 1,
+      name: 'Bistro',
+      type: 'French',
+      stars: 3,
+    };
     const repository = new InMemoryAdminRestaurantRepository([restaurant]);
     const useCase = new DeleteRestaurantUseCase(repository);
 

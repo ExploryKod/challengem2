@@ -1,5 +1,4 @@
 import { Reservation } from '../../../ordering/domain/entities/reservation.entity';
-import { Guest } from '../../../ordering/domain/entities/guest.entity';
 
 export const ADMIN_RESERVATION_REPOSITORY = Symbol(
   'ADMIN_RESERVATION_REPOSITORY',

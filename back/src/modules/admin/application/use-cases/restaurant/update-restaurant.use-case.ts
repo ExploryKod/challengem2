@@ -16,7 +16,10 @@ export class UpdateRestaurantUseCase {
     private readonly repository: IAdminRestaurantRepository,
   ) {}
 
-  async execute(id: number, input: UpdateRestaurantInput): Promise<Restaurant | null> {
+  async execute(
+    id: number,
+    input: UpdateRestaurantInput,
+  ): Promise<Restaurant | null> {
     return this.repository.update(id, input);
   }
 }

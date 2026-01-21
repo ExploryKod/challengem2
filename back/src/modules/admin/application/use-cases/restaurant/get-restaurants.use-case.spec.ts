@@ -5,9 +5,22 @@ import { Restaurant } from '../../../../ordering/domain/entities/restaurant.enti
 describe('GetRestaurantsUseCase', () => {
   it('should return all restaurants', async () => {
     // Arrange
-    const restaurant1: Restaurant = { id: 1, name: 'Bistro', type: 'French', stars: 3 };
-    const restaurant2: Restaurant = { id: 2, name: 'Sushi', type: 'Japanese', stars: 4 };
-    const repository = new InMemoryAdminRestaurantRepository([restaurant1, restaurant2]);
+    const restaurant1: Restaurant = {
+      id: 1,
+      name: 'Bistro',
+      type: 'French',
+      stars: 3,
+    };
+    const restaurant2: Restaurant = {
+      id: 2,
+      name: 'Sushi',
+      type: 'Japanese',
+      stars: 4,
+    };
+    const repository = new InMemoryAdminRestaurantRepository([
+      restaurant1,
+      restaurant2,
+    ]);
     const useCase = new GetRestaurantsUseCase(repository);
 
     // Act

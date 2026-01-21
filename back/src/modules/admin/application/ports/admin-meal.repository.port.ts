@@ -6,9 +6,6 @@ export interface IAdminMealRepository {
   findByRestaurantId(restaurantId: number): Promise<Meal[]>;
   findById(id: number): Promise<Meal | null>;
   create(meal: Omit<Meal, 'id'>): Promise<Meal>;
-  update(
-    id: number,
-    meal: Partial<Omit<Meal, 'id'>>,
-  ): Promise<Meal | null>;
+  update(id: number, meal: Partial<Omit<Meal, 'id'>>): Promise<Meal | null>;
   delete(id: number): Promise<boolean>;
 }

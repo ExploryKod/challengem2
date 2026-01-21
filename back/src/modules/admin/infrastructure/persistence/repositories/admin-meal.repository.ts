@@ -44,7 +44,8 @@ export class AdminMealRepository implements IAdminMealRepository {
     const existing = await this.mealRepository.findOne({ where: { id } });
     if (!existing) return null;
 
-    if (data.restaurantId !== undefined) existing.restaurantId = data.restaurantId;
+    if (data.restaurantId !== undefined)
+      existing.restaurantId = data.restaurantId;
     if (data.title !== undefined) existing.title = data.title;
     if (data.type !== undefined) existing.type = data.type;
     if (data.price !== undefined) existing.price = data.price;
