@@ -4,6 +4,7 @@ import { StubTableGateway } from "@taotask/modules/order/core/testing/stub.table
 import { StubMealGateway } from "@taotask/modules/order/core/testing/stub.meal-gateway";
 import { StubIdProvider } from "@taotask/modules/core/stub.id-provider";
 import {MockReservationGateway} from "@taotask/modules/order/core/testing/mock.reservationGateway";
+import { StubRestaurantGateway } from "@taotask/modules/backoffice/core/testing/stub.restaurant-gateway";
 
 /**
  * Create testing dependencies with provided defaults
@@ -17,13 +18,14 @@ const createDependencies = (
   tableGateway: new StubTableGateway(),
   mealGateway: new StubMealGateway(),
   reservationGateway: new MockReservationGateway(),
+  restaurantGateway: new StubRestaurantGateway(),
   ...dependencies,
 });
 
 /**
  * Creates store initialized with a partial state
  * @param config
- * @returns
+ * @returns,
  */
 export const createTestStore = (config?: {
   initialState?: Partial<AppState>;
