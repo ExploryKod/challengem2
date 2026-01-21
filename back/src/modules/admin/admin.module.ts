@@ -11,10 +11,12 @@ import { GuestOrmEntity } from '../ordering/infrastructure/persistence/orm-entit
 // Ports
 import { ADMIN_RESTAURANT_REPOSITORY } from './application/ports/admin-restaurant.repository.port';
 import { ADMIN_TABLE_REPOSITORY } from './application/ports/admin-table.repository.port';
+import { ADMIN_MEAL_REPOSITORY } from './application/ports/admin-meal.repository.port';
 
 // Repositories
 import { AdminRestaurantRepository } from './infrastructure/persistence/repositories/admin-restaurant.repository';
 import { AdminTableRepository } from './infrastructure/persistence/repositories/admin-table.repository';
+import { AdminMealRepository } from './infrastructure/persistence/repositories/admin-meal.repository';
 
 // Use Cases - Restaurant
 import { GetRestaurantsUseCase } from './application/use-cases/restaurant/get-restaurants.use-case';
@@ -30,9 +32,17 @@ import { CreateTableUseCase } from './application/use-cases/table/create-table.u
 import { UpdateTableUseCase } from './application/use-cases/table/update-table.use-case';
 import { DeleteTableUseCase } from './application/use-cases/table/delete-table.use-case';
 
+// Use Cases - Meal
+import { GetMealsUseCase } from './application/use-cases/meal/get-meals.use-case';
+import { GetMealUseCase } from './application/use-cases/meal/get-meal.use-case';
+import { CreateMealUseCase } from './application/use-cases/meal/create-meal.use-case';
+import { UpdateMealUseCase } from './application/use-cases/meal/update-meal.use-case';
+import { DeleteMealUseCase } from './application/use-cases/meal/delete-meal.use-case';
+
 // Controllers
 import { AdminRestaurantController } from './infrastructure/http/controllers/admin-restaurant.controller';
 import { AdminTableController } from './infrastructure/http/controllers/admin-table.controller';
+import { AdminMealController } from './infrastructure/http/controllers/admin-meal.controller';
 
 @Module({
   imports: [
@@ -44,7 +54,7 @@ import { AdminTableController } from './infrastructure/http/controllers/admin-ta
       GuestOrmEntity,
     ]),
   ],
-  controllers: [AdminRestaurantController, AdminTableController],
+  controllers: [AdminRestaurantController, AdminTableController, AdminMealController],
   providers: [
     // Repositories
     {
@@ -54,6 +64,10 @@ import { AdminTableController } from './infrastructure/http/controllers/admin-ta
     {
       provide: ADMIN_TABLE_REPOSITORY,
       useClass: AdminTableRepository,
+    },
+    {
+      provide: ADMIN_MEAL_REPOSITORY,
+      useClass: AdminMealRepository,
     },
     // Use Cases - Restaurant
     GetRestaurantsUseCase,
@@ -67,6 +81,12 @@ import { AdminTableController } from './infrastructure/http/controllers/admin-ta
     CreateTableUseCase,
     UpdateTableUseCase,
     DeleteTableUseCase,
+    // Use Cases - Meal
+    GetMealsUseCase,
+    GetMealUseCase,
+    CreateMealUseCase,
+    UpdateMealUseCase,
+    DeleteMealUseCase,
   ],
 })
 export class AdminModule {}
