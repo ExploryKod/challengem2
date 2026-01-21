@@ -4,7 +4,7 @@ import { useHeroSection } from '@taotask/modules/welcome/react/sections/hero/use
 export const HeroSection: React.FC<{showParcoursSection: any}> = ({showParcoursSection}) => {
     const presenter:any = useHeroSection();
     const fontFamily = presenter.font;
-    const city='de Provence';
+    const city='sur Autoroute';
 
     return (
     <section className={`hero-section-minh relative overflow-hidden bg-cover bg-no-repeat custom-hero-bg bg-[#458236]`}>
@@ -13,7 +13,7 @@ export const HeroSection: React.FC<{showParcoursSection: any}> = ({showParcoursS
          <div className="flex h-full items-center justify-center">
                 <div className="px-4 sm:px-6 md:px-12 text-center text-white">
                     <h1 className={`${fontFamily} opacity-0 title mt-2 mb-8 sm:mb-12 md:mb-16 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-tight sm:leading-normal`}>
-                        Les plus belle tables {city}<br /><span className="text-[#485] square">La perfection du goût</span>
+                        Les plus belle tables {city}<br /><span className="text-[#485] square">Accessible sur nos aires de repos</span>
                     </h1>
                     <button type="button"
                         onClick={showParcoursSection}
@@ -23,7 +23,7 @@ export const HeroSection: React.FC<{showParcoursSection: any}> = ({showParcoursS
                         focus:border-gray-100 focus:text-gray-100 focus:outline-none focus:ring-0 
                         active:border-gray-200 active:text-gray-200"
                         data-te-ripple-init data-te-ripple-color="light">
-                        Réserver une table
+                        Découvrir
                     </button>
                 </div>
             </div>

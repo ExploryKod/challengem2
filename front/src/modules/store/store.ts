@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { combineReducers, configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
+import { orderingReducer } from "@taotask/modules/order/core/store/ordering.slice";
 import { Dependencies } from "@taotask/modules/store/dependencies";
 
 // Pour nos tests de départ 
@@ -7,6 +8,7 @@ const dummyReducer = (state = {}) => state;
 
 const reducers = combineReducers({
   app: dummyReducer,
+  ordering: orderingReducer,
 });
 
 export type AppStore = ReturnType<typeof createStore>;

@@ -9,30 +9,30 @@ export class InMemoryParcoursGateway implements IParcoursGateway {
             parcours: [
                 {
                     id: "1",
-                    text: "Réservez votre table",
-                    link: "/parcours/reservations",
+                    text: "Réservez une table",
+                    link: "/order",
                     image: {
-                        url: "/images/parcours-reservations.jpg",
-                        alt: "Parcours réservations",
-                        title: "Parcours Réservations"
+                        url: "/booking/parcours-order.jpg",
+                        alt: "Parcours order",
+                        title: "Réserver une table"
                     }
                 },
                 {
                     id: "2",
-                    text: "Découvrir nos restaurants",
-                    link: "/parcours/restaurants",
+                    text: "Nos restaurants",
+                    link: "/restaurants",
                     image: {
-                        url: "/images/parcours-restaurants.jpg",
+                        url: "/booking/parcours-restaurants.jpg",
                         alt: "Parcours restaurants",
                         title: "Parcours Restaurants"
                     }
                 },
                 {
                     id: "3",
-                    text: "Consultez les réservations",
-                    link: "/parcours/consultations",
+                    text: "Réservations",
+                    link: "/consultations",
                     image: {
-                        url: "/images/parcours-consultations.jpg",
+                        url: "/booking/parcours-consultations.jpg",
                         alt: "Parcours consultations",
                         title: "Parcours Consultations"
                     }

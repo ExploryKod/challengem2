@@ -1,0 +1,6 @@
+
+- chaque section est une section du site avec un ou plusieurs composants
+- la logique sera mise dans un "presenter" rattaché à chaque section qui fait le lien entre notre monde et le monde interne de React
+- Ce presenter c'est une interface > ma section  ne sait pas ce qu'il y a derrière comme par exemple elle ne sait pas si je pioche dans Redux ou non.
+==> les actions lui sont présenté à travers cette interface dite "presenter".
+==> C'est une série de fonctions qui déclenche des actions (ex: traiter la donnée d'un formulaire)

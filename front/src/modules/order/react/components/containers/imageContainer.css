@@ -1,0 +1,17 @@
+
+.image-contain img {
+    object-fit: contain;   
+    aspect-ratio: 1;
+}
+
+.image-container.image-cover img {
+    object-fit: cover;   
+    aspect-ratio: 1;
+}
+
+
+.image-container.image-fill img {
+    object-fit: fill;   
+    aspect-ratio: 1;
+}
+
