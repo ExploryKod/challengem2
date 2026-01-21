@@ -15,8 +15,7 @@ export const HomePage: React.FC = () => {
         <>
           <div className="pt-5 pb-2 px-4 sm:px-6 lg:px-8 w-full content-section-minh bg-gradient-to-r from-amber-200 to-yellow-500 flex flex-col gap-6 sm:gap-8 lg:gap-10">
             <ParcoursSection 
-              parcoursList={presenter.parcoursList} 
-              selectParcours={presenter.selectParcours} 
+              parcoursList={presenter.parcoursList}
             />
           </div>
           <div ref={presenter.bottomRef}></div>

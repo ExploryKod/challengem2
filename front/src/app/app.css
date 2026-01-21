@@ -19,6 +19,18 @@
     height: 300px;
 }
 
+.custom-parcours-bg {
+    background-position: 50%;
+    background-size: cover;
+    background-image: url('/booking/parcours-bg.jpg');
+    /* Mobile-first: height plus petite sur mobile */
+    height: 300px;
+}
+
+.button {
+    max-width: 300px;
+}
+
 /* Tablette et plus */
 @media (min-width: 640px) {
     .custom-hero-bg {

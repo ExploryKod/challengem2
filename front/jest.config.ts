@@ -20,7 +20,6 @@ export default {
         "ts-jest",
         {
           diagnostics: false,
-          isolatedModules: true,
           jsx: "react",
           target: "es2017",
           allowJs: true,
