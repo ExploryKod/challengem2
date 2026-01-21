@@ -9,22 +9,24 @@ export class App {
   public store: AppStore;
 
   constructor() {
-    const tempDependencies = {
+    // Créer une référence mutable pour les dependencies
+    const dependenciesRef: Dependencies = {
       idProvider: new SystemIdProvider(),
       parcoursGateway: new InMemoryParcoursGateway(),
     };
     
-    this.store = createStore({ dependencies: tempDependencies });
+    // Créer le store avec la référence mutable
+    this.store = createStore({ dependencies: dependenciesRef });
     
     const getState = (): AppState => this.store.getState();
     
-    this.dependencies = {
-      ...tempDependencies,
-      tableGateway: GatewayFactory.createTableGateway(getState),
-      mealGateway: GatewayFactory.createMealGateway(getState),
-      reservationGateway: GatewayFactory.createReservationGateway(getState),
-      restaurantGateway: GatewayFactory.createRestaurantGateway(),
-    };
+    // Mettre à jour la référence avec les vrais gateways
+    dependenciesRef.tableGateway = GatewayFactory.createTableGateway(getState);
+    dependenciesRef.mealGateway = GatewayFactory.createMealGateway(getState);
+    dependenciesRef.reservationGateway = GatewayFactory.createReservationGateway(getState);
+    dependenciesRef.restaurantGateway = GatewayFactory.createRestaurantGateway();
+    
+    this.dependencies = dependenciesRef;
   }
 }
 
