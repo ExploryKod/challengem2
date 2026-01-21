@@ -145,7 +145,7 @@ describe('Controllers (Integration)', () => {
     });
 
     it('should return empty array for unknown restaurant', async () => {
-      const fakeId = '00000000-0000-0000-0000-000000000000';
+      const fakeId = 999999;
       const response = await request(app.getHttpServer())
         .get(`/tables?restaurantId=${fakeId}`)
         .expect(200);
@@ -176,7 +176,7 @@ describe('Controllers (Integration)', () => {
   });
 
   describe('GET /reservations', () => {
-    let createdReservationId: string;
+    let createdReservationId: number;
 
     beforeAll(async () => {
       // Create a reservation for testing GET endpoints
@@ -209,7 +209,7 @@ describe('Controllers (Integration)', () => {
       expect(response.body.length).toBeGreaterThanOrEqual(1);
 
       const found = response.body.find(
-        (r: { id: string }) => r.id === createdReservationId,
+        (r: { id: number }) => r.id === createdReservationId,
       );
       expect(found).toBeDefined();
       expect(found.restaurantId).toBe(testRestaurant.id);
@@ -227,7 +227,7 @@ describe('Controllers (Integration)', () => {
     });
 
     it('should return 404 for non-existent reservation', async () => {
-      const fakeId = '00000000-0000-0000-0000-000000000000';
+      const fakeId = 999999;
       const response = await request(app.getHttpServer())
         .get(`/reservations/${fakeId}`)
         .expect(404);
@@ -235,9 +235,9 @@ describe('Controllers (Integration)', () => {
       expect(response.body.message).toContain('not found');
     });
 
-    it('should return 400 for invalid UUID', async () => {
+    it('should return 400 for invalid id format', async () => {
       await request(app.getHttpServer())
-        .get('/reservations/invalid-uuid')
+        .get('/reservations/not-a-number')
         .expect(400);
     });
   });
@@ -302,9 +302,9 @@ describe('Controllers (Integration)', () => {
       );
     });
 
-    it('should reject invalid reservation (invalid UUID)', async () => {
+    it('should reject invalid reservation (invalid restaurantId)', async () => {
       const dto = {
-        restaurantId: 'not-a-uuid',
+        restaurantId: 'not-a-number',
         tableId: testTables[0].id,
         guests: [
           {
@@ -321,7 +321,9 @@ describe('Controllers (Integration)', () => {
         .send(dto)
         .expect(400);
 
-      expect(response.body.message).toContain('restaurantId must be a UUID');
+      expect(response.body.message).toContain(
+        'restaurantId must be an integer number',
+      );
     });
   });
 });
