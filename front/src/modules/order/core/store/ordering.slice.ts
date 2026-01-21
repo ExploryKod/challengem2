@@ -3,7 +3,12 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type OrderingState = {
     step: OrderingDomainModel.OrderingStep,
-    form: OrderingDomainModel.Form
+    form: OrderingDomainModel.Form,
+    availableTables: {
+        data: OrderingDomainModel.Table[];
+        status: 'idle' | 'loading' | 'success' | 'error';
+        error: string | null;
+    };
 }
 
 export const initialState: OrderingState = {
@@ -12,6 +17,11 @@ export const initialState: OrderingState = {
         guests: [],
         organizerId: null,
         tableId: null
+    },
+    availableTables: {
+        status: 'idle',
+        error: null,
+        data: []
     },
 }
 
@@ -29,6 +39,21 @@ export const orderingSlice = createSlice({
 
         chooseTable: (state, action:PayloadAction<string>) => {
             state.form.tableId = action.payload;
+        },
+
+        handleTablesLoading: (state) => {
+            state.availableTables.status = 'loading';
+            state.availableTables.error = null;
+        },
+
+        handleTablesError: (state, action: PayloadAction<string>) => {
+            state.availableTables.status = 'error';
+            state.availableTables.error = action.payload;
+        },
+
+        storeTables(state, action:PayloadAction<OrderingDomainModel.Table[]>){
+            state.availableTables.data = action.payload;
+            state.availableTables.status = 'success';
         }
     }
 });
