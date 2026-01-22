@@ -1,5 +1,5 @@
 import { auth } from "../src/modules/auth/core/gateway-infra/better-auth.adapter";
-import { getBetterAuthDatabaseUrl } from "../src/modules/auth/core/config/better-auth.config";
+import { getBetterAuthDatabaseUrl } from "../src/modules/auth/core/model/config/better-auth.config";
 import { Pool } from "pg";
 
 const DEMO_ADMIN_NAME = "Demo Admin";

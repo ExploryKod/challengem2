@@ -3,7 +3,7 @@ import { Pool } from "pg";
 import {
   getBetterAuthDatabaseUrl,
   getBetterAuthSecret,
-} from "../config/better-auth.config";
+} from "../model/config/better-auth.config";
 
 export const auth = betterAuth({
   database: new Pool({

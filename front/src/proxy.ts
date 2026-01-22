@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { ADMIN_AUTH_COOKIE } from "@taotask/modules/auth/core/config/admin-auth.config";
+import { ADMIN_AUTH_COOKIE } from "@taotask/modules/auth/core/model/config/admin-auth.config";
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

@@ -3,7 +3,7 @@ import type { ResponseCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import {
   ADMIN_AUTH_COOKIE,
   ADMIN_SESSION_MAX_AGE_SECONDS,
-} from "../config/admin-auth.config";
+} from "../model/config/admin-auth.config";
 import { IAdminSessionGateway } from "../gateway/admin-session.gateway";
 
 export class CookieAdminSessionGateway implements IAdminSessionGateway {

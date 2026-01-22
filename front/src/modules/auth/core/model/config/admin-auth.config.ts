@@ -5,4 +5,4 @@ export const getAdminEmail = () =>
   process.env.ADMIN_EMAIL ?? "demo@admin.local";
 
 export const getAdminPassword = () =>
-  process.env.ADMIN_PASSWORD ?? "demo1234";
+  process.env.ADMIN_PASSWORD ?? "S3cur3!T0rch!91Aq";
