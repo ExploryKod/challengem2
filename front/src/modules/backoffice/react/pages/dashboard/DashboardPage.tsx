@@ -1,12 +1,7 @@
-"use client"
+'use client';
 import React from 'react';
-import { OrientationSection } from '../../sections/orientation/OrientationSection';
+import { RestaurantsSection } from '../../sections/restaurants/RestaurantsSection';
 
 export const DashboardPage: React.FC = () => {
-    return (
-        <main className="flex flex-col">
-
-            <OrientationSection />
-        </main>
-    );
+    return <RestaurantsSection />;
 };
