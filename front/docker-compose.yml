@@ -1,0 +1,22 @@
+services:
+  database:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: taotask
+      POSTGRES_PASSWORD: taotask
+      POSTGRES_DB: taotask
+    ports:
+      - "5430:5432"
+    volumes:
+      - database_data:/var/lib/postgresql/data
+      - ./better-auth_migrations:/migrations:ro
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8086:8080"
+    depends_on:
+      - database
+
+volumes:
+  database_data:

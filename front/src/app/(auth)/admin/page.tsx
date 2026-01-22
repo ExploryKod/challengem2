@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { DashboardPage } from "@taotask/modules/backoffice/react/pages/dashboard/DashboardPage";
 
-
 export const metadata: Metadata = {
   title: "Administration",
   description: "Administration du site",
@@ -14,9 +13,7 @@ export const metadata: Metadata = {
 export default function Admin() {
   return (
     <>
-    <DashboardPage />;
-
-    </>);
+      <DashboardPage />
+    </>
+  );
 }
-
-

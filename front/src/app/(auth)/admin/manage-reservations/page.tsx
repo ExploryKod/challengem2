@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { ReservationPage } from "@taotask/modules/backoffice/react/pages/reservation/ReservationPage";
 
-
 export const metadata: Metadata = {
   title: "Gestion des réservations",
   description: "Gestion des réservations",
@@ -14,9 +13,7 @@ export const metadata: Metadata = {
 export default function ManageReservations() {
   return (
     <>
-    <ReservationPage />
-
-    </>);
+      <ReservationPage />
+    </>
+  );
 }
-
-
