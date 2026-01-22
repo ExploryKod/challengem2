@@ -9,6 +9,10 @@ export class HttpRestaurantManagementGateway implements IRestaurantManagementGat
         return this.httpClient.get<BackofficeDomainModel.Restaurant[]>('/admin/restaurants');
     }
 
+    async getRestaurant(id: number): Promise<BackofficeDomainModel.Restaurant> {
+        return this.httpClient.get<BackofficeDomainModel.Restaurant>(`/admin/restaurants/${id}`);
+    }
+
     async createRestaurant(dto: BackofficeDomainModel.CreateRestaurantDTO): Promise<BackofficeDomainModel.Restaurant> {
         return this.httpClient.post<BackofficeDomainModel.Restaurant>('/admin/restaurants', dto);
     }
