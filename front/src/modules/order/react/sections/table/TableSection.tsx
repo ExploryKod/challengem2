@@ -1,61 +1,48 @@
 import { useTable } from '@taotask/modules/order/react/sections/table/use-table.hook';
+import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
+import { LuminousButton } from '@taotask/modules/order/react/components/ui/LuminousButton';
 
 export const TableSection = () => {
     const presenter = useTable();
-    
-    return (<>    
-    <section className="
-    w-full py-8 sm:py-[50px] mx-auto max-w-[1200px] px-4 sm:px-6
-    bg-[rgba(236,253,245,0.4)] hover:bg-[rgba(236,253,245,0.6)] 
-    rounded animate-fade-in-down shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-        <div className="mx-auto mb-5 w-full flex flex-col">
-            <h3 className="mx-auto my-3 text-base sm:text-lg font-bold text-[#854854] text-center">Choix de votre table:</h3>  
+
+    return (
+    <LuminousCard className="mx-auto py-8 sm:py-12 w-full max-w-[1200px] animate-fade-in-down">
+        <div className="mx-auto mb-8 w-full flex flex-col">
+            <h3 className="mx-auto my-3 text-xl sm:text-2xl font-display font-medium text-luminous-text-primary text-center">
+                Choix de votre table
+            </h3>
+            <div className="h-1 w-16 bg-luminous-gold mx-auto my-4" />
         </div>
-        <div className={`flex gap-3 justify-center items-center flex-wrap`}>
-       {presenter.availableTables.length > 0 
-       && presenter.availableTables.map((table: any) => 
-              (
-              <div key={table.id} className="w-full sm:w-auto">
-                <TableCard 
-                title={table.title} 
-                capacity={table.capacity}
-                isSelected={presenter.assignTableId === table.id} 
-                onSelect={() => presenter.assignTable(table.id)} 
-                />
-              </div>
-              ))}
+        <div className="flex gap-4 justify-center items-center flex-wrap">
+            {presenter.availableTables.length > 0
+            && presenter.availableTables.map((table: any) => (
+                <div key={table.id} className="w-full sm:w-auto">
+                    <TableCard
+                        title={table.title}
+                        capacity={table.capacity}
+                        isSelected={presenter.assignTableId === table.id}
+                        onSelect={() => presenter.assignTable(table.id)}
+                    />
+                </div>
+            ))}
         </div>
-       <div className="w-full mx-auto flex flex-col sm:flex-row justify-center gap-2">
-            <button
-            onClick={presenter.onPrevious}
-            type="submit"
-            className="inline-block rounded bg-[#458236] px-4 sm:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white 
-            shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
-            focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
-            focus:outline-none focus:ring-0 
-            active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
-            dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] 
-            dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-            Précèdent
-            </button>
-            <button
-            onClick={presenter.onNext}
-            disabled={presenter.isSubmittable === false}
-            type="button"
-            className="inline-block rounded bg-[#458236] px-4 sm:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white 
-            shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 
-            disabled:bg-gray-500 disabled:text-gray-50 disabled:border-gray-200 disabled:shadow-none
-            hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
-            focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
-            active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
-            dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] 
-            dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] 
-            dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-            Suivant
-            </button>
+        <div className="w-full mx-auto flex flex-col sm:flex-row justify-center gap-3 mt-8">
+            <LuminousButton
+                onClick={presenter.onPrevious}
+                variant="secondary"
+            >
+                Précédent
+            </LuminousButton>
+            <LuminousButton
+                onClick={presenter.onNext}
+                disabled={presenter.isSubmittable === false}
+                variant="success"
+            >
+                Suivant
+            </LuminousButton>
         </div>
-    </section>
-    </>)
+    </LuminousCard>
+    )
 }
 
 export const TableCard: React.FC<{
@@ -64,28 +51,47 @@ export const TableCard: React.FC<{
     isSelected: boolean,
     onSelect: () => void,
 }> = ({title, capacity, isSelected, onSelect}) => {
-    
+
     return (
-    <div onClick={onSelect} className={`w-full sm:w-auto my-3 sm:my-5 mx-auto flex gap-2`} >
-            <div className={`${isSelected ? "bg-red-700" : "bg-red-400"} cursor-pointer my-2 sm:my-5 mx-auto sm:mx-3 p-4 sm:p-5 w-full sm:min-w-[300px] rounded`}>
-                <div className="flex flex-col gap-2 sm:gap-3 items-center justify-center">
-                    <h3 className={`text-base sm:text-lg font-bold ${isSelected ? "text-orange-300" : "text-[#854854]"}`}>{title}</h3>
-                    <ul className="flex gap-1 sm:gap-2">
-                        {capacity ? [...Array(capacity)].map((seat, i) => <li key={i} className="text-base sm:text-lg font-bold text-[#854854]">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke={isSelected ? "#FFA500" : "#854854"} 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        className="lucide lucide-user-round sm:w-6 sm:h-6 w-5 h-5">
-                            <circle cx="12" cy="8" r="5"/>
-                            <path d="M20 21a8 8 0 0 0-16 0"/>
-                        </svg>
-                        </li>) : null}
-                    </ul>
-                </div>
+    <div onClick={onSelect} className="w-full sm:w-auto my-3 sm:my-4 mx-auto flex gap-2">
+        <div className={`
+            cursor-pointer mx-auto p-5 sm:p-6 w-full sm:min-w-[280px] rounded-xl
+            border-2 transition-all duration-300
+            ${isSelected
+                ? "bg-luminous-gold/10 border-luminous-gold shadow-[0_8px_30px_rgba(201,162,39,0.15)]"
+                : "bg-luminous-bg-card border-luminous-gold-border hover:border-luminous-gold hover:shadow-[0_4px_20px_rgba(201,162,39,0.1)]"
+            }
+        `}>
+            <div className="flex flex-col gap-3 items-center justify-center">
+                <h3 className={`text-lg sm:text-xl font-display font-medium ${isSelected ? "text-luminous-gold" : "text-luminous-text-primary"}`}>
+                    {title}
+                </h3>
+                <ul className="flex gap-2">
+                    {capacity ? [...Array(capacity)].map((_, i) => (
+                        <li key={i}>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke={isSelected ? "#C9A227" : "#2D2926"}
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="w-5 h-5 sm:w-6 sm:h-6"
+                            >
+                                <circle cx="12" cy="8" r="5"/>
+                                <path d="M20 21a8 8 0 0 0-16 0"/>
+                            </svg>
+                        </li>
+                    )) : null}
+                </ul>
+                <span className={`text-sm ${isSelected ? "text-luminous-gold" : "text-luminous-text-secondary"}`}>
+                    {capacity} {capacity > 1 ? 'places' : 'place'}
+                </span>
             </div>
+        </div>
     </div>
     )
 }

@@ -37,6 +37,42 @@ module.exports = {
             hover: '#9B4A5A',
           },
         },
+        luminous: {
+          bg: {
+            primary: '#FDFBF7',
+            secondary: '#F8F4ED',
+            card: '#FFFFFF',
+          },
+          gold: {
+            DEFAULT: '#C9A227',
+            muted: 'rgba(201, 162, 39, 0.7)',
+            border: 'rgba(201, 162, 39, 0.25)',
+            glow: 'rgba(201, 162, 39, 0.1)',
+          },
+          text: {
+            primary: '#2D2926',
+            secondary: 'rgba(45, 41, 38, 0.65)',
+            muted: 'rgba(45, 41, 38, 0.45)',
+          },
+          rose: {
+            DEFAULT: '#B4516A',
+            hover: '#9E4259',
+          },
+          sage: {
+            DEFAULT: '#6B8E6B',
+            hover: '#5A7A5A',
+          },
+          meal: {
+            entry: '#3B5998',
+            'entry-bg': '#EEF2F9',
+            main: '#5C5C5C',
+            'main-bg': '#F5F5F5',
+            dessert: '#B4516A',
+            'dessert-bg': '#FDF2F4',
+            drink: '#6B8E6B',
+            'drink-bg': '#F2F7F2',
+          },
+        },
       },
       fontFamily: {
         sans: ['var(--font-inter)'],

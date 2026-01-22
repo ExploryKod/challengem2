@@ -1,65 +1,109 @@
-import {OrderingDomainModel} from '@taotask/modules/order/core/model/ordering.domain-model';
 import {useSummary} from "@taotask/modules/order/react/sections/summary/use-summary.hook";
-import Image from "next/image"
+import Image from "next/image";
+import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
+import { LuminousButton } from '@taotask/modules/order/react/components/ui/LuminousButton';
+
 export const SummarySection = () => {
     const presenter = useSummary()
 
-    return (<>
-      <section className="bg-[rgba(236,253,245,0.4)] hover:bg-[rgba(236,253,245,0.6)] shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] mx-auto py-8 sm:py-[50px] rounded w-full max-w-[1200px] animate-fade-in-down px-4 sm:px-6">
+    return (
+    <LuminousCard className="mx-auto py-8 sm:py-12 w-full max-w-[1200px] animate-fade-in-down">
         <div className="flex flex-col mx-auto mb-5 w-full">
-            <h3 className="mx-auto my-3 sm:my-5 pb-3 sm:pb-5 font-bold text-[#854854] text-lg sm:text-xl uppercase text-center">Votre réservation</h3>
-                <p className='mb-2 font-bold text-center text-base sm:text-lg text-red-900'>Emplacement de la table</p>
-                <p className={`mb-2 text-sm sm:text-md italic text-center text-orange-900`}>{presenter.summary.table.title}</p>
+            <h3 className="mx-auto my-3 sm:my-5 pb-3 sm:pb-5 font-display font-medium text-luminous-text-primary text-xl sm:text-2xl uppercase text-center tracking-wide">
+                Votre réservation
+            </h3>
+            <div className="h-1 w-16 bg-luminous-gold mx-auto mb-6" />
+
+            <div className="bg-luminous-bg-secondary border border-luminous-gold-border rounded-xl p-4 mx-auto max-w-[400px]">
+                <p className='mb-2 font-display font-medium text-center text-base sm:text-lg text-luminous-text-primary'>
+                    Emplacement de la table
+                </p>
+                <p className="text-sm sm:text-base italic text-center text-luminous-gold">
+                    {presenter.summary.table.title}
+                </p>
+            </div>
         </div>
 
         <div className="flex flex-col mx-auto w-full max-w-75">
-            <p className={`mb-2 text-base sm:text-lg font-bold text-center text-red-900`}>Invités et leurs plats:</p>
+            <p className="mb-4 text-base sm:text-lg font-display font-medium text-center text-luminous-text-primary">
+                Invités et leurs plats
+            </p>
         </div>
-        <div className="flex flex-wrap justify-center gap-2 mx-auto my-3 w-full max-w-full sm:max-w-[75%]">
+
+        <div className="flex flex-wrap justify-center gap-4 mx-auto my-3 w-full max-w-full sm:max-w-[85%]">
             {presenter.summary.guests.map((guest: any) => (
-              <div key={guest.id} className={`
-                relative flex flex-col justify-center items-center border-[#458236] border-1 
-                mb-5 p-3 border rounded w-full sm:min-w-[300px] sm:basis-1/4`}>
-                    {guest.isOrganizer ? 
-                   <span className="block -top-2 left-2 absolute border-[#458236] border-1 bg-[#F9EC7E] px-2.5 py-0.5 border rounded font-medium text-green-900 text-sm">J&#39;organise</span>: null}
-                 
-                  <div className="mt-5 mb-3">
-                    <p className="text-orange-900">{guest.name}</p>
-                  </div>
-                  <div className={`flex flex-col justify-center items-center grow`}>
-                    <p className="my-3 text-center text-yellow-900 italic">{guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18 && guest.isOrganizer ? "Eviter l'alcool car vous organisez" : null}</p>
-                    <p className="text-center text-yellow-900">{guest.meals.entry ? guest.meals.entry.title : null}</p>
-                    <p className="text-center text-yellow-900">{guest.meals.mainCourse ? guest.meals.mainCourse.title : null}</p>
-                    <p className="text-center text-yellow-900">{guest.meals.dessert ? guest.meals.dessert.title : null}</p>
-                    <div className={`${guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18 ? "flex gap-3 items-center justify-center" : ""}`}>
-                    {guest.isOrganizer && (guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18) ? <Image src="/danger.svg" height={18} width={18} alt="" /> : null}
-                    <p className="text-center text-yellow-900">{guest.meals.drink ? 
-                        guest.meals.drink.title 
-                        : null}</p>
+                <div key={guest.id} className="
+                    relative flex flex-col justify-center items-center
+                    border-2 border-luminous-gold-border hover:border-luminous-gold
+                    bg-luminous-bg-card rounded-xl
+                    mb-5 p-4 w-full sm:min-w-[280px] sm:basis-1/4
+                    transition-all duration-200 shadow-[0_4px_20px_rgba(201,162,39,0.08)]
+                ">
+                    {guest.isOrganizer && (
+                        <span className="block -top-3 left-3 absolute bg-luminous-gold px-3 py-1 rounded-full font-medium text-white text-xs uppercase tracking-wider">
+                            Organisateur
+                        </span>
+                    )}
+
+                    <div className="mt-4 mb-3">
+                        <p className="font-display font-medium text-luminous-text-primary text-lg">{guest.name}</p>
                     </div>
-                    {!guest.meals.entry && !guest.meals.mainCourse && !guest.meals.dessert && !guest.meals.drink ? 
-                      (<p className="text-center text-yellow-900">Vous ne mangez rien ?</p>) : null}
-                  </div>
-              
-              </div>
-          ))}
+
+                    <div className="flex flex-col justify-center items-center grow gap-1">
+                        {guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18 && guest.isOrganizer && (
+                            <p className="my-2 text-center text-luminous-rose text-sm italic">
+                                Eviter l&#39;alcool car vous organisez
+                            </p>
+                        )}
+                        {guest.meals.entry && (
+                            <p className="text-center text-luminous-text-secondary text-sm">
+                                <span className="text-luminous-meal-entry font-medium">Entrée:</span> {guest.meals.entry.title}
+                            </p>
+                        )}
+                        {guest.meals.mainCourse && (
+                            <p className="text-center text-luminous-text-secondary text-sm">
+                                <span className="text-luminous-meal-main font-medium">Plat:</span> {guest.meals.mainCourse.title}
+                            </p>
+                        )}
+                        {guest.meals.dessert && (
+                            <p className="text-center text-luminous-text-secondary text-sm">
+                                <span className="text-luminous-meal-dessert font-medium">Dessert:</span> {guest.meals.dessert.title}
+                            </p>
+                        )}
+                        <div className={`${guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18 ? "flex gap-2 items-center justify-center" : ""}`}>
+                            {guest.isOrganizer && (guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18) && (
+                                <Image src="/danger.svg" height={18} width={18} alt="warning" />
+                            )}
+                            {guest.meals.drink && (
+                                <p className="text-center text-luminous-text-secondary text-sm">
+                                    <span className="text-luminous-meal-drink font-medium">Boisson:</span> {guest.meals.drink.title}
+                                </p>
+                            )}
+                        </div>
+                        {!guest.meals.entry && !guest.meals.mainCourse && !guest.meals.dessert && !guest.meals.drink && (
+                            <p className="text-center text-luminous-text-muted text-sm italic mt-2">
+                                Aucune commande
+                            </p>
+                        )}
+                    </div>
+                </div>
+            ))}
         </div>
-          
-       
-       <div className="flex flex-col sm:flex-row justify-center gap-2 mx-auto w-full">
-            <button
-            onClick={presenter.onPrevious}
-            type="submit"
-            className="inline-block bg-[#458236] hover:bg-primary-600 focus:bg-primary-600 active:bg-primary-700 shadow-[0_4px_9px_-4px_#3b71ca] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] px-4 sm:px-6 pt-2.5 pb-2 rounded focus:ring-0 font-medium text-white text-xs uppercase leading-normal transition duration-150 ease-in-out focus:outline-none">
-            Précèdent
-            </button>
-            <button
-            onClick={presenter.onNext}
-            type="button"
-            className="inline-block disabled:border-gray-200 bg-[#458236] hover:bg-primary-600 focus:bg-primary-600 active:bg-primary-700 disabled:bg-gray-500 shadow-[0_4px_9px_-4px_#3b71ca] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] disabled:shadow-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] px-4 sm:px-6 pt-2.5 pb-2 rounded focus:ring-0 font-medium text-white text-xs disabled:text-gray-50 uppercase leading-normal transition duration-150 ease-in-out focus:outline-none">
-            Réserver
-            </button>
+
+        <div className="flex flex-col sm:flex-row justify-center gap-3 mx-auto w-full mt-8">
+            <LuminousButton
+                onClick={presenter.onPrevious}
+                variant="secondary"
+            >
+                Précédent
+            </LuminousButton>
+            <LuminousButton
+                onClick={presenter.onNext}
+                variant="primary"
+            >
+                Réserver
+            </LuminousButton>
         </div>
-    </section>
-    </>)
+    </LuminousCard>
+    )
 }
