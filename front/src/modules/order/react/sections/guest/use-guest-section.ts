@@ -45,6 +45,12 @@ export const useGuestSection = () => {
     const [form, setForm] = useState<OrderingDomainModel.Form>(initialState);
     const checkBoxOrganizer = useRef<HTMLInputElement>(null)
 
+    const tableCapacity = useSelector((state: AppState) => {
+        const tableId = state.ordering.form.tableId;
+        const table = state.ordering.availableTables.data?.find(t => t.id === tableId);
+        return table?.capacity || 0;
+    });
+
     useEffect(() => {
         bottomGuestRef.current?.scrollIntoView({behavior: 'smooth'});
       }, [form.guests.length]);
@@ -58,6 +64,8 @@ export const useGuestSection = () => {
         isSubmitable: isSubmitable(),
         form,
         bottomGuestRef,
-        checkBoxOrganizer
+        checkBoxOrganizer,
+        tableCapacity,
+        isAddGuestDisabled: form.guests.length >= tableCapacity,
     }
 }
