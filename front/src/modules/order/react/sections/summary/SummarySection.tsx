@@ -90,6 +90,19 @@ export const SummarySection = () => {
             ))}
         </div>
 
+        {/* Price Total */}
+        <div className="bg-luminous-bg-secondary border-2 border-luminous-gold rounded-xl p-4 mx-auto max-w-[400px] mt-6">
+          <p className="text-center font-display font-medium text-lg text-luminous-text-primary">
+            Total estimé
+          </p>
+          <p className="text-center text-2xl font-bold text-luminous-gold mt-2">
+            {presenter.totalPrice} €
+          </p>
+          <p className="text-center text-xs text-luminous-text-muted mt-1 italic">
+            (hors pourboire)
+          </p>
+        </div>
+
         <div className="flex flex-col sm:flex-row justify-center gap-3 mx-auto w-full mt-8">
             <LuminousButton
                 onClick={presenter.onPrevious}
