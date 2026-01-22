@@ -17,7 +17,7 @@ describe("Choose a guest", () => {
 
         await store.dispatch(chooseGuests(form));
         expect(store.getState().ordering.form).toEqual(form)
-        expect(store.getState().ordering.step).toEqual(OrderingDomainModel.OrderingStep.TABLE)
+        expect(store.getState().ordering.step).toEqual(OrderingDomainModel.OrderingStep.MEALS)
     })
     
 })
