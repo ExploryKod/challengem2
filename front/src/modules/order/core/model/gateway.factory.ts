@@ -11,7 +11,7 @@ import { HttpRestaurantGateway } from "@taotask/modules/order/core/gateway/http.
 import { HttpReservationGateway } from "@taotask/modules/order/core/gateway/http.reservation-gateway";
 import { API_CONFIG } from "@taotask/modules/app/config/api.config";
 import { AppState } from "@taotask/modules/store/store";
-import { MockReservationGateway } from "@taotask/modules/order/core/testing/mock.reservationGateway";
+import { MockReservationGateway } from "@taotask/modules/order/core/testing/mock.reservation-gateway";
 import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
 
 export class GatewayFactory {

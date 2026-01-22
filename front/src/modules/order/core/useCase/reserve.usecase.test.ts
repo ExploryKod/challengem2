@@ -1,5 +1,5 @@
 // On va se faire un mock > dossier testing
-import {MockReservationGateway} from "@taotask/modules/order/core/testing/mock.reservationGateway";
+import {MockReservationGateway} from "@taotask/modules/order/core/testing/mock.reservation-gateway";
 import {createTestStore} from "@taotask/modules/testing/tests-environment";
 import { reserve } from "@taotask/modules/order/core/useCase/reserve.usecase";
 import {OrderingDomainModel} from "@taotask/modules/order/core/model/ordering.domain-model";

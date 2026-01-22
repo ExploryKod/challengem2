@@ -3,7 +3,7 @@ import { Dependencies } from "@taotask/modules/store/dependencies";
 import { StubTableGateway } from "@taotask/modules/order/core/testing/stub.table-gateway";
 import { StubMealGateway } from "@taotask/modules/order/core/testing/stub.meal-gateway";
 import { StubIdProvider } from "@taotask/modules/core/stub.id-provider";
-import {MockReservationGateway} from "@taotask/modules/order/core/testing/mock.reservationGateway";
+import {MockReservationGateway} from "@taotask/modules/order/core/testing/mock.reservation-gateway";
 import { StubRestaurantGateway } from "@taotask/modules/backoffice/core/testing/stub.restaurant-gateway";
 
 /**

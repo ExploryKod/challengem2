@@ -1,7 +1,7 @@
 import { createTestStore } from "@taotask/modules/testing/tests-environment";
 import { MealFactory } from "@taotask/modules/order/core/model/meal.factory";
 import { fetchMeals } from "@taotask/modules/order/core/useCase/fetch-meals.usecase";
-import { FailingMealGateway } from "@taotask/modules/order/core/testing/failing.mealGateway";
+import { FailingMealGateway } from "@taotask/modules/order/core/testing/failing.meal-gateway";
 import { StubMealGateway } from "@taotask/modules/order/core/testing/stub.meal-gateway";
 
 describe("Fetch meals", () => {

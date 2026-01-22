@@ -2,7 +2,7 @@ import { createTestStore } from "@taotask/modules/testing/tests-environment";
 import { TableFactory } from "@taotask/modules/order/core/model/table.factory";
 import { fetchTables } from "@taotask/modules/order/core/useCase/fetch-table.usecase";
 import { StubTableGateway } from "@taotask/modules/order/core/testing/stub.table-gateway";
-import { FailingTableGateway } from "@taotask/modules/order/core/testing/failing.tableGateway";
+import { FailingTableGateway } from "@taotask/modules/order/core/testing/failing.table-gateway";
 
 describe("Fetch table", () => {
     it("Should fetch a table", async () => {
