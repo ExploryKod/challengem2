@@ -19,7 +19,7 @@ export const useTable = () => {
     }
 
     function onPrevious(){
-        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.GUESTS))
+        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.MEALS_PREVIEW))
     }
 
     function isSubmittable(){

@@ -21,7 +21,7 @@ export type OrderingState = {
 export type ReservationStatus = { status: "idle" } | {status: "loading" } | {status: "success"} | {status: "error", error: string}
 
 export const initialState: OrderingState = {
-    step: OrderingDomainModel.OrderingStep.GUESTS,
+    step: OrderingDomainModel.OrderingStep.RESTAURANT,
     form: {
         guests: [],
         organizerId: null,

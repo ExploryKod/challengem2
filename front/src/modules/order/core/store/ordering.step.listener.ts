@@ -6,25 +6,31 @@ import { OrderingDomainModel } from "../model/ordering.domain-model";
 //On sépare donc cela des config pure de redux présente dans store.ts (on appel là bas que cette fonction créé ici)
 export const registerOrderingStepListener = (listener: ListenerMiddlewareInstance) => {
     listener.startListening({
-        // Dés que l'on choisis un guest on passe à l'étape de choix de table (voir ordering.slice.ts)
-        // On fait de l'évent driven archi simple >> effect est comme un useEffect, le listener écoute l'action chooseGuests et lance l'effet
-        // Je choisi donc ici un évènement de type actionCreator
-        actionCreator: orderingSlice.actions.chooseGuests,
+        // Dés que l'on sélectionne un restaurant on passe à l'aperçu des plats
+        actionCreator: orderingSlice.actions.setRestaurantId,
         effect: (_, api) => {
-          api.dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.TABLE));
+          api.dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.MEALS_PREVIEW));
         }
       });
 
-      listener.startListening({
-        // Dés que l'on choisis une table on passe à l'étape de choix de meal (voir ordering.slice.ts)
+    listener.startListening({
+        // Dés que l'on choisis une table on passe à l'étape de choix des invités
         actionCreator: orderingSlice.actions.chooseTable,
+        effect: (_, api) => {
+          api.dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.GUESTS));
+        }
+      });
+
+    listener.startListening({
+        // Dés que l'on choisis les invités on passe à l'étape de sélection des repas
+        actionCreator: orderingSlice.actions.chooseGuests,
         effect: (_, api) => {
           api.dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.MEALS));
         }
       });
 
     listener.startListening({
-        // Dés que l'on choisis un repas on passe à l'étape suivante (sommaire) (voir ordering.slice.ts)
+        // Dés que l'on choisis un repas on passe à l'étape suivante (sommaire)
         actionCreator: orderingSlice.actions.chooseMeal,
         effect: (_, api) => {
             api.dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.SUMMARY));
