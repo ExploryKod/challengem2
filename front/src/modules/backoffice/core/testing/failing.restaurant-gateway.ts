@@ -17,4 +17,8 @@ export class FailingRestaurantManagementGateway implements IRestaurantManagement
     async getRestaurants(): Promise<BackofficeDomainModel.Restaurant[]> {
         throw new Error("Failed to fetch restaurants");
     }
+
+    async getRestaurant(id: number): Promise<BackofficeDomainModel.Restaurant> {
+        throw new Error("Failed to fetch restaurant");
+    }
 }
