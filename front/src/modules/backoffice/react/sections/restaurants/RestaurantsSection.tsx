@@ -1,90 +1,136 @@
-"use client"
-import React from 'react';
-import { RestaurantForm } from '@taotask/modules/backoffice/react/components/forms/RestaurantForm';
-import { useRestaurants } from '@taotask/modules/backoffice/react/sections/restaurants/use-restaurants.hook';
+'use client';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LuxuryCard } from '../../components/ui/LuxuryCard';
+import { LuxuryButton } from '../../components/ui/LuxuryButton';
+import { LuxuryModal } from '../../components/ui/LuxuryModal';
+import { LuxuryInput } from '../../components/ui/LuxuryInput';
+import { useRestaurants } from './use-restaurants.hook';
 
 export const RestaurantsSection: React.FC = () => {
-    const { restaurants, isLoading, error, refetch } = useRestaurants();
+    const router = useRouter();
+    const { restaurants, isLoading, error, createRestaurant, refetch } = useRestaurants();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData, setFormData] = useState({ name: '', type: '', stars: 1 });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const target = e.target as HTMLInputElement;
+        const value = target.type === 'number' ? parseInt(target.value, 10) : target.value;
+        setFormData((prev) => ({ ...prev, [target.name]: value }));
+    };
+
+    const handleSubmit = async () => {
+        await createRestaurant(formData);
+        setFormData({ name: '', type: '', stars: 1 });
+        setIsModalOpen(false);
+    };
 
     return (
-        <section className="container mx-auto px-4 py-8">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                    Gestion des Restaurants
-                </h1>
-                <p className="text-gray-600">
-                    Créez et gérez vos restaurants depuis cette interface
-                </p>
-            </div>
-
-            <div className="mb-12">
-                <RestaurantForm />
-            </div>
-
-            <div className="border-t pt-8">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold text-gray-800">
-                        Restaurants existants ({restaurants.length})
-                    </h2>
-                    <button
-                        onClick={refetch}
-                        disabled={isLoading}
-                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
-                    >
-                        Actualiser
-                    </button>
+        <section className="min-h-screen bg-luxury-bg-primary">
+            <div className="container mx-auto px-6 py-12">
+                <div className="flex justify-between items-center mb-12">
+                    <div>
+                        <h1 className="text-4xl font-serif text-luxury-text-primary mb-2">
+                            Vos Etablissements
+                        </h1>
+                        <div className="h-1 w-24 bg-luxury-gold" />
+                    </div>
+                    <LuxuryButton onClick={() => setIsModalOpen(true)}>
+                        + Creer
+                    </LuxuryButton>
                 </div>
 
                 {isLoading && (
-                    <div className="text-center py-8">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto"></div>
-                        <p className="text-gray-600 mt-4">Chargement...</p>
+                    <div className="flex justify-center py-12">
+                        <div className="text-luxury-gold">Chargement...</div>
                     </div>
                 )}
 
                 {error && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <div className="bg-luxury-rose/20 border border-luxury-rose text-luxury-text-primary px-6 py-4 rounded-lg mb-8">
                         {error}
                     </div>
                 )}
 
                 {!isLoading && !error && restaurants.length === 0 && (
-                    <div className="text-center py-8 text-gray-500 italic">
-                        Aucun restaurant créé pour le moment.
+                    <div className="text-center py-16">
+                        <p className="text-luxury-text-secondary text-lg mb-6">
+                            Aucun etablissement cree pour le moment.
+                        </p>
+                        <LuxuryButton onClick={() => setIsModalOpen(true)}>
+                            Creer votre premier etablissement
+                        </LuxuryButton>
                     </div>
                 )}
 
                 {!isLoading && !error && restaurants.length > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {restaurants.map((restaurant) => (
-                            <div 
-                                key={restaurant.id} 
-                                className="bg-white rounded-lg shadow-md p-6 border hover:shadow-lg transition-shadow"
-                            >
-                                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                            <LuxuryCard key={restaurant.id} hoverable>
+                                <h3 className="text-xl font-serif text-luxury-text-primary mb-2">
                                     {restaurant.name}
                                 </h3>
-                                <div className="space-y-2">
-                                    <p className="text-gray-600">
-                                        <span className="font-semibold">Type :</span> {restaurant.type}
+                                <p className="text-luxury-gold-muted mb-1">{restaurant.type}</p>
+                                <p className="text-luxury-text-secondary text-sm mb-2">
+                                    {'*'.repeat(restaurant.stars)} ({restaurant.stars} etoiles)
+                                </p>
+                                {restaurant.tableCount !== undefined && (
+                                    <p className="text-luxury-gold-muted text-sm mb-4">
+                                        {restaurant.tableCount} {restaurant.tableCount > 1 ? 'tables' : 'table'}
                                     </p>
-                                    <p className="text-gray-600">
-                                        <span className="font-semibold">Étoiles :</span> {'⭐'.repeat(restaurant.stars)}
-                                    </p>
-                                </div>
-                                <div className="mt-4 flex gap-2">
-                                    <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
-                                        Modifier
-                                    </button>
-                                    <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm">
-                                        Supprimer
-                                    </button>
-                                </div>
-                            </div>
+                                )}
+                                <LuxuryButton
+                                    variant="secondary"
+                                    onClick={() => router.push(`/admin/restaurants/${restaurant.id}`)}
+                                >
+                                    Gerer
+                                </LuxuryButton>
+                            </LuxuryCard>
                         ))}
                     </div>
                 )}
             </div>
+
+            <LuxuryModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title="Nouvel etablissement"
+            >
+                <div className="space-y-4">
+                    <LuxuryInput
+                        label="Nom"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="Ex: Le Chateau"
+                        required
+                    />
+                    <LuxuryInput
+                        label="Type"
+                        name="type"
+                        value={formData.type}
+                        onChange={handleChange}
+                        placeholder="Ex: Gastronomique"
+                        required
+                    />
+                    <LuxuryInput
+                        label="Etoiles"
+                        name="stars"
+                        type="number"
+                        value={formData.stars}
+                        onChange={handleChange}
+                        min={1}
+                        max={5}
+                        required
+                    />
+                    <div className="flex gap-4 pt-4">
+                        <LuxuryButton onClick={handleSubmit}>Creer</LuxuryButton>
+                        <LuxuryButton variant="secondary" onClick={() => setIsModalOpen(false)}>
+                            Annuler
+                        </LuxuryButton>
+                    </div>
+                </div>
+            </LuxuryModal>
         </section>
     );
 };
