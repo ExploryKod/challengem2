@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 import { combineReducers, configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
 import { Dependencies } from "@taotask/modules/store/dependencies";
@@ -43,3 +43,4 @@ export const createStore = (config: {
 };
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;

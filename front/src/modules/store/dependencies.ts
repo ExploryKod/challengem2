@@ -5,6 +5,9 @@ import { IReservationGateway } from "@taotask/modules/order/core/gateway/reserva
 import { IRestaurantGateway } from "@taotask/modules/order/core/gateway/restaurant.gateway";
 import { IParcoursGateway } from "@taotask/modules/welcome/core/gateway/parcours.gateway";
 import { IRestaurantManagementGateway } from "@taotask/modules/backoffice/core/gateway/restaurant.gateway";
+import { ITableManagementGateway } from "@taotask/modules/backoffice/core/gateway/table-management.gateway";
+import { IMealManagementGateway } from "@taotask/modules/backoffice/core/gateway/meal-management.gateway";
+import { IReservationManagementGateway } from "@taotask/modules/backoffice/core/gateway/reservation-management.gateway";
 
 export type Dependencies = {
     idProvider?: IIDProvider;
@@ -14,5 +17,7 @@ export type Dependencies = {
     reservationGateway?: IReservationGateway;
     restaurantGateway?: IRestaurantGateway;
     restaurantManagementGateway?: IRestaurantManagementGateway;
+    tableManagementGateway?: ITableManagementGateway;
+    mealManagementGateway?: IMealManagementGateway;
+    reservationManagementGateway?: IReservationManagementGateway;
 };
-
