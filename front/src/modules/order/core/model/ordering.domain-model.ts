@@ -58,11 +58,13 @@ export namespace OrderingDomainModel {
     }
 
     export enum OrderingStep {
-        GUESTS = 0,
-        TABLE = 1,
-        MEALS = 2,
-        SUMMARY = 3,
-        RESERVED = 4
+        RESTAURANT = 0,
+        MEALS_PREVIEW = 1,
+        TABLE = 2,
+        GUESTS = 3,
+        MEALS = 4,
+        SUMMARY = 5,
+        RESERVED = 6
     }
 
     export type Table = {
