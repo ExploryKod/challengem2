@@ -15,6 +15,29 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        luxury: {
+          bg: {
+            primary: '#1E1E2E',
+            secondary: '#1A1A2E',
+            card: '#252538',
+          },
+          gold: {
+            DEFAULT: '#D4AF37',
+            muted: 'rgba(212, 175, 55, 0.7)',
+            border: 'rgba(212, 175, 55, 0.3)',
+            glow: 'rgba(212, 175, 55, 0.2)',
+          },
+          text: {
+            primary: '#FAF3E0',
+            secondary: 'rgba(250, 243, 224, 0.7)',
+          },
+          rose: {
+            DEFAULT: '#8B3A4A',
+            hover: '#9B4A5A',
+          },
+        },
+      },
       fontFamily: {
         sans: ['var(--font-inter)'],
         mono: ['var(--font-roboto-mono)'],
