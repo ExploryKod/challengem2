@@ -8,6 +8,7 @@ import { TablesSection } from '../../sections/tables/TablesSection';
 import { MealsSection } from '../../sections/meals/MealsSection';
 import { ReservationsSection } from '../../sections/reservations/ReservationsSection';
 import { RestaurantInfoSection } from '../../sections/restaurant-info/RestaurantInfoSection';
+import { TerminalSection } from '../../sections/terminal/TerminalSection';
 
 interface RestaurantDetailPageProps {
     restaurantId: number;
@@ -18,6 +19,7 @@ const TABS = [
     { id: 'tables', label: 'Tables' },
     { id: 'meals', label: 'Repas' },
     { id: 'reservations', label: 'Reservations' },
+    { id: 'terminal', label: 'Terminal' },
 ];
 
 export const RestaurantDetailPage: React.FC<RestaurantDetailPageProps> = ({ restaurantId }) => {
@@ -50,6 +52,8 @@ export const RestaurantDetailPage: React.FC<RestaurantDetailPageProps> = ({ rest
                 return <MealsSection restaurantId={restaurantId} />;
             case 'reservations':
                 return <ReservationsSection restaurantId={restaurantId} />;
+            case 'terminal':
+                return <TerminalSection restaurantId={restaurantId} />;
             default:
                 return null;
         }
