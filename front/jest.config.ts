@@ -1,8 +1,9 @@
 export default {
     collectCoverage: true,
     preset: "ts-jest",
-    testEnvironment: "node",
-    testRegex: "^((?!int|e2e).)*.test.ts$",
+    testEnvironment: "jsdom",
+    testRegex: "^((?!int|e2e).)*.test.tsx?$",
+    setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
     coverageDirectory: "../coverage",
     coverageProvider: "v8",
     moduleFileExtensions: ["js", "json", "ts", "tsx"],

@@ -5,6 +5,7 @@ import { StubMealGateway } from "@taotask/modules/order/core/testing/stub.meal-g
 import { StubIdProvider } from "@taotask/modules/core/stub.id-provider";
 import {MockReservationGateway} from "@taotask/modules/order/core/testing/mock.reservation-gateway";
 import { StubRestaurantGateway } from "@taotask/modules/backoffice/core/testing/stub.restaurant-gateway";
+import { StubRestaurantGateway as StubOrderRestaurantGateway } from "@taotask/modules/order/core/testing/stub.restaurant-gateway";
 import { StubTableManagementGateway } from "@taotask/modules/backoffice/core/testing/stub.table-management-gateway";
 import { StubMealManagementGateway } from "@taotask/modules/backoffice/core/testing/stub.meal-management-gateway";
 import { StubReservationManagementGateway } from "@taotask/modules/backoffice/core/testing/stub.reservation-management-gateway";
@@ -21,6 +22,7 @@ const createDependencies = (
   tableGateway: new StubTableGateway(),
   mealGateway: new StubMealGateway(),
   reservationGateway: new MockReservationGateway(),
+  restaurantGateway: new StubOrderRestaurantGateway(),
   restaurantManagementGateway: new StubRestaurantGateway(),
   tableManagementGateway: new StubTableManagementGateway(),
   mealManagementGateway: new StubMealManagementGateway(),
