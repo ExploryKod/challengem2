@@ -10,6 +10,8 @@ import { MealsSection } from "@taotask/modules/order/react/sections/meals/MealsS
 import { TableSection } from "@taotask/modules/order/react/sections/table/TableSection";
 import { SummarySection } from "@taotask/modules/order/react/sections/summary/SummarySection";
 import { ReservedSection } from "@taotask/modules/order/react/sections/reserved/ReservedSection";
+import { ProgressBar } from "@taotask/modules/order/react/components/progress/ProgressBar";
+import { MealsPreviewSection } from "@taotask/modules/order/react/sections/meals-preview/MealsPreviewSection";
 
 export interface OrderPageProps {
   restaurantId?: string;
@@ -19,9 +21,18 @@ export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId }) => {
   const presenter = useOrderPage({ restaurantId });
   const step = useSelector((state: AppState) => state.ordering.step);
 
+  const restaurantName = presenter.restaurantList.restaurants.find(
+    r => r.id === presenter.restaurantList.restaurantId
+  )?.restaurantName || '';
+
   return (
     <main className="flex flex-col" ref={presenter.animText}>
       <div className="pt-5 pb-2 px-4 sm:px-6 lg:px-8 w-full content-section-minh bg-gradient-to-b from-luminous-bg-primary to-luminous-bg-secondary flex flex-col gap-6 sm:gap-8 lg:gap-10">
+        {/* Progress Bar - show for all steps except RESERVED */}
+        {step !== OrderingDomainModel.OrderingStep.RESERVED && (
+          <ProgressBar step={step} />
+        )}
+
         {!presenter.isTerminalMode && (
           <RestaurantSection
             restaurantList={presenter.restaurantList}
@@ -30,18 +41,30 @@ export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId }) => {
         )}
 
         {presenter.restaurantList.restaurantId &&
+          step === OrderingDomainModel.OrderingStep.MEALS_PREVIEW && (
+            <MealsPreviewSection
+              meals={presenter.meals}
+              restaurantName={restaurantName}
+            />
+          )}
+
+        {presenter.restaurantList.restaurantId &&
+          step === OrderingDomainModel.OrderingStep.TABLE && <TableSection />}
+
+        {presenter.restaurantList.restaurantId &&
           step === OrderingDomainModel.OrderingStep.GUESTS && (
             <GuestSection
               restaurantList={presenter.restaurantList}
               meals={presenter.meals}
             />
           )}
-        {presenter.restaurantList.restaurantId &&
-          step === OrderingDomainModel.OrderingStep.TABLE && <TableSection />}
+
         {presenter.restaurantList.restaurantId &&
           step === OrderingDomainModel.OrderingStep.MEALS && <MealsSection />}
+
         {presenter.restaurantList.restaurantId &&
           step === OrderingDomainModel.OrderingStep.SUMMARY && <SummarySection />}
+
         {presenter.restaurantList.restaurantId &&
           step === OrderingDomainModel.OrderingStep.RESERVED && <ReservedSection />}
       </div>
