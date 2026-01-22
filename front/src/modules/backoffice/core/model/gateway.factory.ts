@@ -25,21 +25,21 @@ export class BackofficeGatewayFactory {
 
     static createMealManagementGateway(): IMealManagementGateway {
         if (API_CONFIG.isApiAvailable()) {
-            return new HttpMealManagementGateway();
+            return new HttpMealManagementGateway(this.httpClient);
         }
         return new InMemoryMealManagementGateway();
     }
 
     static createReservationManagementGateway(): IReservationManagementGateway {
         if (API_CONFIG.isApiAvailable()) {
-            return new HttpReservationManagementGateway();
+            return new HttpReservationManagementGateway(this.httpClient);
         }
         return new InMemoryReservationManagementGateway();
     }
 
     static createTableManagementGateway(): ITableManagementGateway {
         if (API_CONFIG.isApiAvailable()) {
-            return new HttpTableManagementGateway();
+            return new HttpTableManagementGateway(this.httpClient);
         }
         return new InMemoryTableManagementGateway();
     }
