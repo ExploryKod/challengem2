@@ -7,45 +7,46 @@ import { useSelector } from "react-redux";
 import { chooseMeal } from "@taotask/modules/order/core/useCase/choose-meal.usecase";
 
 export const useMeals = () => {
+    const [currentGuestIndex, setCurrentGuestIndex] = useState(0);
 
     function findGuestById(guestId: string) {
         return form.guests.find(guest => guest.id === guestId);
     }
 
-    function getSelectableEntries(guestId: string): OrderingDomainModel.Meal[] {
-        const guest = findGuestById(guestId);
-        if(!guest) {
+    function getSelectableEntries(guest: OrderingDomainModel.Guest | string): OrderingDomainModel.Meal[] {
+        const guestObj = typeof guest === 'string' ? findGuestById(guest) : guest;
+        if(!guestObj) {
             return [];
         }
 
-        return mealForm.current.getSelectableEntries(meals, guest);
+        return mealForm.current.getSelectableEntries(meals, guestObj);
     }
 
-    function getSelectableMainCourses(guestId: string): OrderingDomainModel.Meal[] {
-        const guest = findGuestById(guestId);
-        if(!guest) {
+    function getSelectableMainCourses(guest: OrderingDomainModel.Guest | string): OrderingDomainModel.Meal[] {
+        const guestObj = typeof guest === 'string' ? findGuestById(guest) : guest;
+        if(!guestObj) {
             return [];
         }
 
-        return mealForm.current.getSelectableMainCourse(meals, guest);
+        return mealForm.current.getSelectableMainCourse(meals, guestObj);
     }
 
-    function getSelectableDesserts(guestId: string): OrderingDomainModel.Meal[] {
-        const guest = findGuestById(guestId);
-        if(!guest) {
+    function getSelectableDesserts(guest: OrderingDomainModel.Guest | string): OrderingDomainModel.Meal[] {
+        const guestObj = typeof guest === 'string' ? findGuestById(guest) : guest;
+        if(!guestObj) {
             return [];
         }
 
-        return mealForm.current.getSelectableDessert(meals, guest);
+        return mealForm.current.getSelectableDessert(meals, guestObj);
     }
 
-    function getSelectableDrinks(guestId: string): OrderingDomainModel.Meal[] {
-        const guest = findGuestById(guestId);
-        if(!guest) {
+    function getSelectableDrinks(guest: OrderingDomainModel.Guest | string): OrderingDomainModel.Meal[] {
+        const guestObj = typeof guest === 'string' ? findGuestById(guest) : guest;
+        if(!guestObj) {
             return [];
         }
 
-        return mealForm.current.getSelectableDrink(meals, guest);
+        return mealForm.current.getSelectableDrink(meals, guestObj);
     }
 
     function assignEntry(guestId: string, mealId: string) {
@@ -92,11 +93,23 @@ export const useMeals = () => {
     }
 
     function onPrevious() {
-        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.TABLE))
+        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.GUESTS))
     }
 
     function onSkip() {
         dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.SUMMARY))
+    }
+
+    function onNextGuest() {
+        if (!isLastGuest) {
+            setCurrentGuestIndex(currentGuestIndex + 1);
+        }
+    }
+
+    function onPreviousGuest() {
+        if (!isFirstGuest) {
+            setCurrentGuestIndex(currentGuestIndex - 1);
+        }
     }
 
     function isSubmittable() { return false; }
@@ -105,6 +118,10 @@ export const useMeals = () => {
     const initialState = useSelector((state: AppState) => state.ordering.form);
     const [form, setForm] = useState<OrderingDomainModel.Form>(initialState);
     const mealForm = useRef(new MealForm())
+
+    const currentGuest = form.guests[currentGuestIndex];
+    const isLastGuest = currentGuestIndex === form.guests.length - 1;
+    const isFirstGuest = currentGuestIndex === 0;
 
     return {
         getSelectableEntries,
@@ -119,8 +136,16 @@ export const useMeals = () => {
         onNext,
         onPrevious,
         onSkip,
+        onNextGuest,
+        onPreviousGuest,
         meals: meals || null,
         guests: form.guests,
-        isSubmittable: isSubmittable()
+        currentGuest,
+        currentGuestIndex,
+        totalGuests: form.guests.length,
+        isLastGuest,
+        isFirstGuest,
+        isSubmittable: isSubmittable(),
+        onMealSelected: assignMeals,
     }
 }
