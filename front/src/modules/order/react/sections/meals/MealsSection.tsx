@@ -65,6 +65,12 @@ export const MealsSection = () => {
             Précèdent
             </button>
             <button
+            onClick={presenter.onSkip}
+            type="button"
+            className="inline-block bg-orange-500 hover:bg-orange-600 focus:bg-orange-600 active:bg-orange-700 shadow-[0_4px_9px_-4px_#f97316] hover:shadow-[0_8px_9px_-4px_rgba(249,115,22,0.3),0_4px_18px_0_rgba(249,115,22,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(249,115,22,0.3),0_4px_18px_0_rgba(249,115,22,0.2)] active:shadow-[0_8px_9px_-4px_rgba(249,115,22,0.3),0_4px_18px_0_rgba(249,115,22,0.2)] px-4 sm:px-6 pt-2.5 pb-2 rounded focus:ring-0 font-medium text-white text-xs uppercase leading-normal transition duration-150 ease-in-out focus:outline-none">
+            Passer les commandes
+            </button>
+            <button
             onClick={presenter.onNext}
             type="button"
             className="inline-block disabled:border-gray-200 bg-[#458236] hover:bg-primary-600 focus:bg-primary-600 active:bg-primary-700 disabled:bg-gray-500 shadow-[0_4px_9px_-4px_#3b71ca] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] disabled:shadow-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] px-4 sm:px-6 pt-2.5 pb-2 rounded focus:ring-0 font-medium text-white text-xs disabled:text-gray-50 uppercase leading-normal transition duration-150 ease-in-out focus:outline-none">

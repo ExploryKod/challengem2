@@ -95,6 +95,10 @@ export const useMeals = () => {
         dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.TABLE))
     }
 
+    function onSkip() {
+        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.SUMMARY))
+    }
+
     function isSubmittable() { return false; }
     const dispatch = useAppDispatch();
     const meals: OrderingDomainModel.Meal[] = useSelector((state: AppState) => state.ordering.availableMeals.data);
@@ -114,6 +118,7 @@ export const useMeals = () => {
         assignDrink,
         onNext,
         onPrevious,
+        onSkip,
         meals: meals || null,
         guests: form.guests,
         isSubmittable: isSubmittable()
