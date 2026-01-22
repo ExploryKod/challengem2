@@ -1,97 +1,88 @@
-import { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { OrderingDomainModel } from '@taotask/modules/order/core/model/ordering.domain-model';
 import { useAppDispatch } from '@taotask/modules/store/store';
 import { orderingActions } from '@taotask/modules/order/core/store/ordering.slice';
 import { useDependencies } from '@taotask/modules/app/react/DependenciesProvider';
-import gsap from "gsap"; 
 
+export interface UseOrderPageOptions {
+    restaurantId?: string;
+}
 
-export const useOrderPage = () => {
+const EMPTY_RESTAURANT_LIST: OrderingDomainModel.RestaurantList = {
+    restaurants: [],
+    restaurantId: ""
+};
+
+export const useOrderPage = (options?: UseOrderPageOptions) => {
     const dispatch = useAppDispatch();
     const dependencies = useDependencies();
+    const isTerminalMode = !!options?.restaurantId;
 
-    /** Variables and Functions **/
+    const animText = useRef<HTMLDivElement>(null);
+    const bottomRef = useRef<HTMLDivElement>(null);
+    const [restaurantList, setRestaurantList] = useState<OrderingDomainModel.RestaurantList>(EMPTY_RESTAURANT_LIST);
+    const [meals, setMeals] = useState<OrderingDomainModel.Meal[]>([]);
 
-    const goToGuestSectionBottom = (toggle: boolean) => {
-        if(bottomRef.current && toggle) {
-            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    const fetchMealsForRestaurant = useCallback(async () => {
+        try {
+            const fetchedMeals = await dependencies.mealGateway?.getMeals() || [];
+            setMeals(fetchedMeals);
+        } catch (error) {
+            console.error('Failed to fetch meals:', error);
+            setMeals([]);
         }
-    };
+    }, [dependencies.mealGateway]);
 
-    const showGuestSection = () => {
-        setToggle(true);
-        goToGuestSectionBottom(toggle);
-    };
-
-    async function displayRestaurants() {
+    const displayRestaurants = useCallback(async () => {
         try {
             const restaurants = await dependencies.restaurantGateway?.getRestaurants() || [];
-            const newState = {
-                restaurants,
-                restaurantId: ""
-            } as OrderingDomainModel.RestaurantList;
-            setRestaurantList(newState);
+            setRestaurantList({ restaurants, restaurantId: "" });
         } catch (error) {
             console.error('Failed to fetch restaurants:', error);
-            const newState = {
-                restaurants: [],
-                restaurantId: ""
-            } as OrderingDomainModel.RestaurantList;
-            setRestaurantList(newState);
+            setRestaurantList(EMPTY_RESTAURANT_LIST);
         }
-    }
+    }, [dependencies.restaurantGateway]);
 
- 
-    function selectRestaurant(id:string) {
-        setRestaurantList({...restaurantList, restaurantId: id});
+    const selectRestaurant = useCallback((id: string) => {
+        setRestaurantList(prev => ({ ...prev, restaurantId: id }));
         dispatch(orderingActions.setRestaurantId(id));
-    }
+        fetchMealsForRestaurant();
+    }, [dispatch, fetchMealsForRestaurant]);
 
-    /** Manage states, ref & gsap **/
-    const animText = useRef<HTMLDivElement>(null);
-    const tl = useRef<GSAPTimeline | undefined>(undefined);
-    const [restaurantList, setRestaurantList] = useState<OrderingDomainModel.RestaurantList>({restaurants:[], restaurantId: ""});
-    const [toggle, setToggle] = useState<boolean>(false);
-    const bottomRef = useRef<HTMLDivElement>(null);
-
-   
-    /** UseEffects */
- 
-    useEffect (() => {
-        displayRestaurants();
-    }, []);
+    const initTerminalMode = useCallback(async (restaurantId: string) => {
+        try {
+            const restaurants = await dependencies.restaurantGateway?.getRestaurants() || [];
+            const restaurant = restaurants.find(r => r.id === restaurantId);
+            if (restaurant) {
+                setRestaurantList({ restaurants: [restaurant], restaurantId });
+                dispatch(orderingActions.setRestaurantId(restaurantId));
+                fetchMealsForRestaurant();
+            } else {
+                console.error('Restaurant not found:', restaurantId);
+            }
+        } catch (error) {
+            console.error('Failed to init terminal mode:', error);
+        }
+    }, [dependencies.restaurantGateway, dispatch, fetchMealsForRestaurant]);
 
     useEffect(() => {
-        goToGuestSectionBottom(toggle);
-    }, [toggle]);
+        if (!isTerminalMode) {
+            displayRestaurants();
+        }
+    }, [isTerminalMode, displayRestaurants]);
 
-    useLayoutEffect(() => {
-  
-        let ctx = gsap.context(() => {
-
-          tl.current = gsap.timeline()
-            .fromTo(".title", { y: -50, opacity: 0 },
-            {
-              y: 0,
-              duration: 1,
-              opacity: 1,
-            })
-            .to(".button", { duration: 0.5, opacity: 1 });
-    
-        }, animText);
-    
-        return () => ctx.revert()
-    
-      }, [])
-
-     
+    useEffect(() => {
+        if (isTerminalMode && options?.restaurantId) {
+            initTerminalMode(options.restaurantId);
+        }
+    }, [isTerminalMode, options?.restaurantId, initTerminalMode]);
 
     return {
-        isGuestSectionVisible: toggle,
-        showGuestSection,
+        isTerminalMode,
         bottomRef,
         selectRestaurant,
         restaurantList,
+        meals,
         animText
     };
-}
+};
