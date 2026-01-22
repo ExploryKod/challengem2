@@ -1,8 +1,7 @@
 import { IReservationGateway } from "@taotask/modules/order/core/gateway/reservation.gateway";
 import { ReserveDTO } from "@taotask/modules/order/core/gateway/reserve.dto";
-import { API_CONFIG } from "@taotask/modules/app/config/api.config";
 import { AppState } from "@taotask/modules/store/store";
-import { ApiError } from "@taotask/modules/shared/error.utils";
+import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
 
 type BackendGuestDto = {
     firstName: string;
@@ -40,6 +39,7 @@ const mapReserveDtoToBackend = (dto: ReserveDTO, restaurantId: string): BackendC
 
 export class HttpReservationGateway implements IReservationGateway {
     constructor(
+        private readonly httpClient: HttpClient,
         private readonly getState: () => AppState
     ) {}
 
@@ -52,23 +52,6 @@ export class HttpReservationGateway implements IReservationGateway {
         }
 
         const backendDto = mapReserveDtoToBackend(data, restaurantId.toString());
-        const url = `${API_CONFIG.baseUrl}/reservations`;
-        
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(backendDto)
-        });
-        
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => null);
-            throw new ApiError(
-                `Failed to create reservation: ${response.statusText}`,
-                response.status,
-                errorData
-            );
-        }
+        await this.httpClient.post<void>('/reservations', backendDto);
     }
 }

@@ -1,8 +1,7 @@
 import { ITableGateway } from "@taotask/modules/order/core/gateway/table.gateway";
 import { OrderingDomainModel } from "@taotask/modules/order/core/model/ordering.domain-model";
-import { API_CONFIG } from "@taotask/modules/app/config/api.config";
 import { AppState } from "@taotask/modules/store/store";
-import { ApiError } from "@taotask/modules/shared/error.utils";
+import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
 
 type BackendTable = {
     id: string;
@@ -21,6 +20,7 @@ const mapBackendTableToDomain = (backendTable: BackendTable): OrderingDomainMode
 
 export class HttpTableGateway implements ITableGateway {
     constructor(
+        private readonly httpClient: HttpClient,
         private readonly getState: () => AppState
     ) {}
 
@@ -32,14 +32,7 @@ export class HttpTableGateway implements ITableGateway {
             return [];
         }
 
-        const url = `${API_CONFIG.baseUrl}/tables?restaurantId=${restaurantId}`;
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new ApiError(`Failed to fetch tables: ${response.statusText}`, response.status);
-        }
-        
-        const backendTables: BackendTable[] = await response.json();
+        const backendTables = await this.httpClient.get<BackendTable[]>(`/tables?restaurantId=${restaurantId}`);
         return backendTables.map(mapBackendTableToDomain);
     }
 }

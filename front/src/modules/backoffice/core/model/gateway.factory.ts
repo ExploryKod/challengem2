@@ -11,11 +11,14 @@ import { InMemoryMealManagementGateway } from "../gateway-infra/in-memory.meal-m
 import { InMemoryReservationManagementGateway } from "../gateway-infra/in-memory.reservation-management-gateway";
 import { InMemoryTableManagementGateway } from "../gateway-infra/in-memory.table-management-gateway";
 import { API_CONFIG } from "@taotask/modules/app/config/api.config";
+import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
 
 export class BackofficeGatewayFactory {
+    private static httpClient = new HttpClient();
+
     static createRestaurantManagementGateway(): IRestaurantManagementGateway {
         if (API_CONFIG.isApiAvailable()) {
-            return new HttpRestaurantManagementGateway();
+            return new HttpRestaurantManagementGateway(this.httpClient);
         }
         return new InMemoryRestaurantManagementGateway();
     }

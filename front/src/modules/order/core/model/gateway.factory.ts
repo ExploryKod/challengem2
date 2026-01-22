@@ -12,32 +12,35 @@ import { HttpReservationGateway } from "@taotask/modules/order/core/gateway/http
 import { API_CONFIG } from "@taotask/modules/app/config/api.config";
 import { AppState } from "@taotask/modules/store/store";
 import { MockReservationGateway } from "@taotask/modules/order/core/testing/mock.reservationGateway";
+import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
 
 export class GatewayFactory {
+    private static httpClient = new HttpClient();
+
     static createTableGateway(getState: () => AppState): ITableGateway {
         if (API_CONFIG.isApiAvailable()) {
-            return new HttpTableGateway(getState);
+            return new HttpTableGateway(this.httpClient, getState);
         }
         return new InMemoryTableGateway();
     }
 
     static createMealGateway(getState: () => AppState): IMealGateway {
         if (API_CONFIG.isApiAvailable()) {
-            return new HttpMealGateway(getState);
+            return new HttpMealGateway(this.httpClient, getState);
         }
         return new InMemoryMealGateway();
     }
 
     static createReservationGateway(getState: () => AppState): IReservationGateway {
         if (API_CONFIG.isApiAvailable()) {
-            return new HttpReservationGateway(getState);
+            return new HttpReservationGateway(this.httpClient, getState);
         }
         return new MockReservationGateway();
     }
 
     static createRestaurantGateway(): IRestaurantGateway {
         if (API_CONFIG.isApiAvailable()) {
-            return new HttpRestaurantGateway();
+            return new HttpRestaurantGateway(this.httpClient);
         }
         return new InMemoryRestaurantGateway();
     }

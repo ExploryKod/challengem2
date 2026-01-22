@@ -1,8 +1,7 @@
 import { IMealGateway } from "@taotask/modules/order/core/gateway/meal.gateway";
 import { OrderingDomainModel } from "@taotask/modules/order/core/model/ordering.domain-model";
-import { API_CONFIG } from "@taotask/modules/app/config/api.config";
 import { AppState } from "@taotask/modules/store/store";
-import { ApiError } from "@taotask/modules/shared/error.utils";
+import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
 
 type BackendMeal = {
     id: string;
@@ -28,6 +27,7 @@ const mapBackendMealToDomain = (backendMeal: BackendMeal): OrderingDomainModel.M
 
 export class HttpMealGateway implements IMealGateway {
     constructor(
+        private readonly httpClient: HttpClient,
         private readonly getState: () => AppState
     ) {}
 
@@ -39,14 +39,7 @@ export class HttpMealGateway implements IMealGateway {
             return [];
         }
 
-        const url = `${API_CONFIG.baseUrl}/meals?restaurantId=${restaurantId}`;
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new ApiError(`Failed to fetch meals: ${response.statusText}`, response.status);
-        }
-        
-        const backendMeals: BackendMeal[] = await response.json();
+        const backendMeals = await this.httpClient.get<BackendMeal[]>(`/meals?restaurantId=${restaurantId}`);
         return backendMeals.map(mapBackendMealToDomain);
     }
 }

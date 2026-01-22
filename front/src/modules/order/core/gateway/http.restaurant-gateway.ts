@@ -1,7 +1,6 @@
 import { IRestaurantGateway } from "@taotask/modules/order/core/gateway/restaurant.gateway";
 import { OrderingDomainModel } from "@taotask/modules/order/core/model/ordering.domain-model";
-import { API_CONFIG } from "@taotask/modules/app/config/api.config";
-import { ApiError } from "@taotask/modules/shared/error.utils";
+import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
 
 type BackendRestaurant = {
     id: number;
@@ -20,15 +19,10 @@ const mapBackendRestaurantToDomain = (backendRestaurant: BackendRestaurant): Ord
 }
 
 export class HttpRestaurantGateway implements IRestaurantGateway {
+    constructor(private readonly httpClient: HttpClient) {}
+
     async getRestaurants(): Promise<OrderingDomainModel.Restaurant[]> {
-        const url = `${API_CONFIG.baseUrl}/restaurants`;
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new ApiError(`Failed to fetch restaurants: ${response.statusText}`, response.status);
-        }
-        
-        const backendRestaurants: BackendRestaurant[] = await response.json();
+        const backendRestaurants = await this.httpClient.get<BackendRestaurant[]>('/restaurants');
         return backendRestaurants.map(mapBackendRestaurantToDomain);
     }
 }

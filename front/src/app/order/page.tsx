@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import { OrderPage } from "@taotask/modules/order/react/pages/order/OrderPage";
 
 export const metadata: Metadata = {
-  title: "Mentions Légales - Papilles des Suds",
-  description: "Mentions légales du site Papilles des Suds",
+  title: "Réserver",
+  description: "Commander une table",
   robots: {
     index: false,
     follow: false,
