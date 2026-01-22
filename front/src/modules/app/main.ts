@@ -1,7 +1,6 @@
 import { SystemIdProvider } from "@taotask/modules/core/system.id-provider";
 import { Dependencies } from "@taotask/modules/store/dependencies";
 import { AppStore, createStore, AppState } from "@taotask/modules/store/store";
-import { InMemoryParcoursGateway } from "../welcome/core/gateway-infra/in-memory.parcours-gateway";
 import { GatewayFactory } from "@taotask/modules/order/core/model/gateway.factory";
 import { BackofficeGatewayFactory } from "@taotask/modules/backoffice/core/model/gateway.factory";
 export class App {
@@ -9,10 +8,9 @@ export class App {
   public store: AppStore;
 
   constructor() {
- 
+
     const dependenciesRef: Dependencies = {
       idProvider: new SystemIdProvider(),
-      parcoursGateway: new InMemoryParcoursGateway(),
     };
     
 
