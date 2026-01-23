@@ -1,3 +1,30 @@
+# Project-specific
 papilles-des-suds
+placeholder-menu.jpg
+
+# Worktrees
 .worktrees/
+
+# IDE
 .idea
+.vscode
+
+# Shell config (should not be in repo)
+.bash_profile
+.bashrc
+.zshrc
+.zprofile
+.profile
+
+# Git config (should not be in repo)
+.gitconfig
+.gitmodules
+
+# MCP config
+.mcp.json
+
+# Ripgrep config
+.ripgreprc
+
+# Claude
+.claude/
