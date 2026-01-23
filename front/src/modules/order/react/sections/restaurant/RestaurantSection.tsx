@@ -10,8 +10,8 @@ export const RestaurantSection: React.FC<{
 }> = ({restaurantList, selectRestaurant, step}) => {
 
     const isRestaurantStep = step === OrderingDomainModel.OrderingStep.RESTAURANT;
-    const showRestaurantList = isRestaurantStep || \!restaurantList.restaurantId;
-    const showWelcomeMessage = \!isRestaurantStep && restaurantList.restaurantId;
+    const showRestaurantList = isRestaurantStep || !restaurantList.restaurantId;
+    const showWelcomeMessage = !isRestaurantStep && restaurantList.restaurantId;
 
     const selectedRestaurant = restaurantList.restaurants.find(
         (r) => r.id === restaurantList.restaurantId
