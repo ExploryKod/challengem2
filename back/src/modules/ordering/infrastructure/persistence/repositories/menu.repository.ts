@@ -53,7 +53,10 @@ export class MenuRepository implements IMenuRepository {
       relations: ['items'],
       order: { createdAt: 'DESC' },
     });
-    return entities.map(MenuMapper.toDomain);
+    // Filter out menus with no items
+    return entities
+      .filter((entity) => entity.items && entity.items.length > 0)
+      .map(MenuMapper.toDomain);
   }
 
   async update(id: number, data: Partial<Menu>): Promise<Menu | null> {
