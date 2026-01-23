@@ -1,5 +1,7 @@
 'use client';
 import React, { useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
+import { Download, Printer, QrCode } from 'lucide-react';
 import { LuxuryCard } from '../../components/ui/LuxuryCard';
 import { LuxuryButton } from '../../components/ui/LuxuryButton';
 import { LuxuryModal } from '../../components/ui/LuxuryModal';
@@ -17,6 +19,7 @@ export const TablesSection: React.FC<TablesSectionProps> = ({ restaurantId }) =>
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingTable, setEditingTable] = useState<BackofficeDomainModel.Table | null>(null);
     const [formData, setFormData] = useState({ title: '', capacity: 2 });
+    const [qrModalTable, setQrModalTable] = useState<{ id: number; title: string } | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const target = e.target as HTMLInputElement;
@@ -63,6 +66,32 @@ export const TablesSection: React.FC<TablesSectionProps> = ({ restaurantId }) =>
         setFormData({ title: '', capacity: 2 });
     };
 
+    const getTableOrderUrl = (tableId: number) => {
+        const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+        return `${baseUrl}/terminal?table=${tableId}&restaurant=${restaurantId}`;
+    };
+
+    const downloadQR = () => {
+        if (!qrModalTable) return;
+        const svg = document.getElementById('qr-code-svg');
+        if (svg) {
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            img.onload = () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx?.drawImage(img, 0, 0);
+                const link = document.createElement('a');
+                link.download = `qr-table-${qrModalTable.title}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+            img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+        }
+    };
+
     if (isLoading) {
         return <div className="text-luxury-gold">Chargement des tables...</div>;
     }
@@ -91,6 +120,12 @@ export const TablesSection: React.FC<TablesSectionProps> = ({ restaurantId }) =>
                                 {table.capacity} {table.capacity > 1 ? 'couverts' : 'couvert'}
                             </p>
                             <div className="flex gap-2">
+                                <LuxuryButton
+                                    variant="secondary"
+                                    onClick={() => setQrModalTable({ id: table.id, title: table.title })}
+                                >
+                                    <QrCode className="w-4 h-4" />
+                                </LuxuryButton>
                                 <LuxuryButton
                                     variant="secondary"
                                     onClick={() => handleEdit(table)}
@@ -170,6 +205,37 @@ export const TablesSection: React.FC<TablesSectionProps> = ({ restaurantId }) =>
                         <LuxuryButton onClick={handleUpdate}>Enregistrer</LuxuryButton>
                         <LuxuryButton variant="secondary" onClick={closeEditModal}>
                             Annuler
+                        </LuxuryButton>
+                    </div>
+                </div>
+            </LuxuryModal>
+
+            {/* QR Code Modal */}
+            <LuxuryModal
+                isOpen={!!qrModalTable}
+                onClose={() => setQrModalTable(null)}
+                title={`QR Code - ${qrModalTable?.title}`}
+            >
+                <div className="flex flex-col items-center space-y-4">
+                    <div className="bg-white p-4 rounded-lg">
+                        <QRCodeSVG
+                            id="qr-code-svg"
+                            value={qrModalTable ? getTableOrderUrl(qrModalTable.id) : ''}
+                            size={200}
+                            level="H"
+                        />
+                    </div>
+                    <p className="text-xs text-luxury-text-secondary text-center break-all max-w-[300px]">
+                        {qrModalTable && getTableOrderUrl(qrModalTable.id)}
+                    </p>
+                    <div className="flex gap-4">
+                        <LuxuryButton onClick={downloadQR}>
+                            <Download className="w-4 h-4 mr-2" />
+                            Telecharger
+                        </LuxuryButton>
+                        <LuxuryButton variant="secondary" onClick={() => window.print()}>
+                            <Printer className="w-4 h-4 mr-2" />
+                            Imprimer
                         </LuxuryButton>
                     </div>
                 </div>
