@@ -110,14 +110,14 @@ export const useSummary = () => {
         let total = 0;
         summary.guests.forEach((guest: Guest) => {
             if (guest.menuId && guest.menuPrice) {
-                // Menu pricing
+                // Menu pricing - fixed price regardless of quantities
                 total += guest.menuPrice;
             } else {
-                // A la carte pricing
-                if (guest.meals.entry) total += guest.meals.entry.price;
-                if (guest.meals.mainCourse) total += guest.meals.mainCourse.price;
-                if (guest.meals.dessert) total += guest.meals.dessert.price;
-                if (guest.meals.drink) total += guest.meals.drink.price;
+                // A la carte pricing - multiply by quantity
+                if (guest.meals.entry) total += guest.meals.entry.price * guest.meals.entry.quantity;
+                if (guest.meals.mainCourse) total += guest.meals.mainCourse.price * guest.meals.mainCourse.quantity;
+                if (guest.meals.dessert) total += guest.meals.dessert.price * guest.meals.dessert.quantity;
+                if (guest.meals.drink) total += guest.meals.drink.price * guest.meals.drink.quantity;
             }
         });
         return total.toFixed(2);
@@ -136,10 +136,10 @@ export const useSummary = () => {
 
         let alaCarteTotal = 0;
         alaCarteGuests.forEach(guest => {
-            if (guest.meals.entry) alaCarteTotal += guest.meals.entry.price;
-            if (guest.meals.mainCourse) alaCarteTotal += guest.meals.mainCourse.price;
-            if (guest.meals.dessert) alaCarteTotal += guest.meals.dessert.price;
-            if (guest.meals.drink) alaCarteTotal += guest.meals.drink.price;
+            if (guest.meals.entry) alaCarteTotal += guest.meals.entry.price * guest.meals.entry.quantity;
+            if (guest.meals.mainCourse) alaCarteTotal += guest.meals.mainCourse.price * guest.meals.mainCourse.quantity;
+            if (guest.meals.dessert) alaCarteTotal += guest.meals.dessert.price * guest.meals.dessert.quantity;
+            if (guest.meals.drink) alaCarteTotal += guest.meals.drink.price * guest.meals.drink.quantity;
         });
 
         return { menusByType, alaCarteTotal, hasAlaCarte: alaCarteGuests.length > 0 };

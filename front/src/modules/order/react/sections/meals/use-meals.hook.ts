@@ -42,6 +42,24 @@ export const useMeals = () => {
         }
     }
 
+    function getMaxQuantityForType(guest: OrderingDomainModel.Guest, mealType: OrderingDomainModel.MealType): number {
+        const A_LA_CARTE_MAX = 10;
+
+        // A la carte mode - no menu restrictions
+        if (!guest.menuId) {
+            return A_LA_CARTE_MAX;
+        }
+
+        // Menu mode - find the menu and get the quantity limit for this meal type
+        const menu = getGuestMenu(guest);
+        if (!menu) {
+            return A_LA_CARTE_MAX; // Fallback if menu not found
+        }
+
+        const menuItem = menu.items.find(item => item.mealType === mealType);
+        return menuItem?.quantity ?? 0; // Return 0 if meal type not in menu
+    }
+
     function isGuestComplete(guest: OrderingDomainModel.Guest): boolean {
         const menu = getGuestMenu(guest);
         if (!menu) return true; // À la carte always valid
@@ -193,7 +211,8 @@ export const useMeals = () => {
         if (!guest) return;
 
         const currentQty = getMealQuantityForType(guest, mealType);
-        if (currentQty >= 10) return; // Max limit
+        const maxQty = getMaxQuantityForType(guest, mealType);
+        if (currentQty >= maxQty) return; // Respect menu constraints
 
         const nextState = mealForm.current.updateQuantity(form, guestId, mealType, currentQty + 1);
         setForm(nextState);
@@ -267,6 +286,7 @@ export const useMeals = () => {
         decrementQuantity,
         getMealIdForType,
         getMealQuantityForType,
+        getMaxQuantityForType,
         meals: meals || null,
         guests: form.guests,
         currentGuest,

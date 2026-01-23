@@ -226,31 +226,38 @@ export const MealsSection = () => {
                             </p>
                           )}
                           {/* Quantity controls - only show when selected */}
-                          {isSelected && (
-                            <div className="flex items-center justify-center gap-2 mt-2">
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  presenter.decrementQuantity(String(presenter.currentGuest.id), type);
-                                }}
-                                className="w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center hover:bg-luminous-gold/20 transition-colors"
-                              >
-                                <Minus className="w-4 h-4 text-luminous-gold" />
-                              </button>
-                              <span className="text-sm font-bold text-luminous-text-primary min-w-[24px] text-center">
-                                {selectedQuantity}
-                              </span>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  presenter.incrementQuantity(String(presenter.currentGuest.id), type);
-                                }}
-                                className="w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center hover:bg-luminous-gold/20 transition-colors"
-                              >
-                                <Plus className="w-4 h-4 text-luminous-gold" />
-                              </button>
-                            </div>
-                          )}
+                          {isSelected && (() => {
+                            const maxQty = presenter.getMaxQuantityForType(presenter.currentGuest, type);
+                            const isAtMin = selectedQuantity <= 1;
+                            const isAtMax = selectedQuantity >= maxQty;
+                            return (
+                              <div className="flex items-center justify-center gap-2 mt-2">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    presenter.decrementQuantity(String(presenter.currentGuest.id), type);
+                                  }}
+                                  disabled={isAtMin}
+                                  className={`w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center transition-colors ${isAtMin ? 'opacity-50 cursor-not-allowed' : 'hover:bg-luminous-gold/20'}`}
+                                >
+                                  <Minus className="w-4 h-4 text-luminous-gold" />
+                                </button>
+                                <span className="text-sm font-bold text-luminous-text-primary min-w-[24px] text-center">
+                                  {selectedQuantity}{maxQty > 1 ? `/${maxQty}` : ''}
+                                </span>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    presenter.incrementQuantity(String(presenter.currentGuest.id), type);
+                                  }}
+                                  disabled={isAtMax}
+                                  className={`w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center transition-colors ${isAtMax ? 'opacity-50 cursor-not-allowed' : 'hover:bg-luminous-gold/20'}`}
+                                >
+                                  <Plus className="w-4 h-4 text-luminous-gold" />
+                                </button>
+                              </div>
+                            );
+                          })()}
                         </div>
                       </div>
                     </button>

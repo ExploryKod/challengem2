@@ -75,17 +75,20 @@ export const SummarySection = () => {
                         )}
                         {guest.meals.entry && (
                             <p className="text-center text-luminous-text-secondary text-sm">
-                                <span className="text-luminous-meal-entry font-medium">Entrée:</span> {guest.meals.entry.title}
+                                <span className="text-luminous-meal-entry font-medium">Entrée:</span>{' '}
+                                {guest.meals.entry.quantity > 1 ? `${guest.meals.entry.quantity}x ` : ''}{guest.meals.entry.title}
                             </p>
                         )}
                         {guest.meals.mainCourse && (
                             <p className="text-center text-luminous-text-secondary text-sm">
-                                <span className="text-luminous-meal-main font-medium">Plat:</span> {guest.meals.mainCourse.title}
+                                <span className="text-luminous-meal-main font-medium">Plat:</span>{' '}
+                                {guest.meals.mainCourse.quantity > 1 ? `${guest.meals.mainCourse.quantity}x ` : ''}{guest.meals.mainCourse.title}
                             </p>
                         )}
                         {guest.meals.dessert && (
                             <p className="text-center text-luminous-text-secondary text-sm">
-                                <span className="text-luminous-meal-dessert font-medium">Dessert:</span> {guest.meals.dessert.title}
+                                <span className="text-luminous-meal-dessert font-medium">Dessert:</span>{' '}
+                                {guest.meals.dessert.quantity > 1 ? `${guest.meals.dessert.quantity}x ` : ''}{guest.meals.dessert.title}
                             </p>
                         )}
                         <div className={`${guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18 ? "flex gap-2 items-center justify-center" : ""}`}>
@@ -94,7 +97,8 @@ export const SummarySection = () => {
                             )}
                             {guest.meals.drink && (
                                 <p className="text-center text-luminous-text-secondary text-sm">
-                                    <span className="text-luminous-meal-drink font-medium">Boisson:</span> {guest.meals.drink.title}
+                                    <span className="text-luminous-meal-drink font-medium">Boisson:</span>{' '}
+                                    {guest.meals.drink.quantity > 1 ? `${guest.meals.drink.quantity}x ` : ''}{guest.meals.drink.title}
                                 </p>
                             )}
                         </div>
