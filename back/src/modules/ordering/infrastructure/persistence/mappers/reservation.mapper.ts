@@ -13,6 +13,12 @@ export class ReservationMapper {
     reservation.status = ormEntity.status;
     reservation.reservationCode = ormEntity.reservationCode;
     reservation.notes = ormEntity.notes;
+    reservation.coursesReady = ormEntity.coursesReady ?? {
+      entry: false,
+      mainCourse: false,
+      dessert: false,
+      drink: false,
+    };
     reservation.createdAt = ormEntity.createdAt;
     reservation.updatedAt = ormEntity.updatedAt;
     reservation.guests =
@@ -55,6 +61,12 @@ export class ReservationMapper {
     ormEntity.status = domain.status ?? ReservationStatus.PENDING;
     ormEntity.reservationCode = domain.reservationCode;
     ormEntity.notes = domain.notes ?? null;
+    ormEntity.coursesReady = domain.coursesReady ?? {
+      entry: false,
+      mainCourse: false,
+      dessert: false,
+      drink: false,
+    };
     ormEntity.guests =
       domain.guests?.map((g) => ReservationMapper.guestToOrm(g, domain.id)) ??
       [];

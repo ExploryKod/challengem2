@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import type { IReservationRepository } from '../../../application/ports/reservation.repository.port';
 import { Reservation } from '../../../domain/entities/reservation.entity';
 import { ReservationStatus } from '../../../domain/enums/reservation-status.enum';
@@ -68,6 +68,18 @@ export class ReservationRepository implements IReservationRepository {
     return entities.map(ReservationMapper.toDomain);
   }
 
+  async findByRestaurantIdAndStatuses(
+    restaurantId: number,
+    statuses: ReservationStatus[],
+  ): Promise<Reservation[]> {
+    const entities = await this.repository.find({
+      where: { restaurantId, status: In(statuses) },
+      relations: ['guests'],
+      order: { createdAt: 'ASC' },
+    });
+    return entities.map(ReservationMapper.toDomain);
+  }
+
   async update(
     id: number,
     data: Partial<Reservation>,
@@ -76,6 +88,7 @@ export class ReservationRepository implements IReservationRepository {
       ...(data.tableId && { tableId: data.tableId }),
       ...(data.status && { status: data.status }),
       ...(data.notes !== undefined && { notes: data.notes }),
+      ...(data.coursesReady && { coursesReady: data.coursesReady }),
     });
     return this.findById(id);
   }

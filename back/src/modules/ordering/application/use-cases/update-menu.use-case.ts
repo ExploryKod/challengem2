@@ -26,6 +26,8 @@ export class UpdateMenuUseCase {
   ) {}
 
   async execute(id: number, input: UpdateMenuInput): Promise<Menu | null> {
-    return this.menuRepository.update(id, input);
+    // Extract items separately as they need special handling by the repository
+    const { items, ...menuData } = input;
+    return this.menuRepository.update(id, menuData as Partial<Menu>);
   }
 }
