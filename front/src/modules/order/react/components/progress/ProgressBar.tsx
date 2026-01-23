@@ -24,7 +24,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ step }) => {
   return (
     <div className="w-full mb-6">
       <div
-        className="h-1 bg-luxury-bg-secondary rounded-full overflow-hidden"
+        className="h-1 bg-luminous-bg-secondary rounded-full overflow-hidden"
         role="progressbar"
         aria-valuenow={step}
         aria-valuemin={0}
@@ -32,11 +32,11 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ step }) => {
         aria-label={`Étape ${currentStep} sur ${totalSteps}`}
       >
         <div
-          className="h-full bg-gradient-to-r from-luxury-gold to-luxury-gold-muted transition-all duration-500 ease-out"
+          className="h-full bg-gradient-to-r from-luminous-gold to-luminous-gold-muted transition-all duration-500 ease-out"
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <p className="text-center text-sm text-luxury-text-secondary mt-2">
+      <p className="text-center text-sm text-luminous-text-secondary mt-2">
         Étape {currentStep}/{totalSteps} : {STEP_LABELS[step]}
       </p>
     </div>
