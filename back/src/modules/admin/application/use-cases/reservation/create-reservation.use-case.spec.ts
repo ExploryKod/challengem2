@@ -98,10 +98,10 @@ describe('CreateReservationUseCase', () => {
     // Assert
     expect(retrieved).not.toBeNull();
     expect(retrieved?.guests[0].meals).toEqual({
-      entry: 1,
-      mainCourse: 2,
-      dessert: 3,
-      drink: 4,
+      entry: { mealId: 1, quantity: 1 },
+      mainCourse: { mealId: 2, quantity: 1 },
+      dessert: { mealId: 3, quantity: 1 },
+      drink: { mealId: 4, quantity: 1 },
     });
   });
 });

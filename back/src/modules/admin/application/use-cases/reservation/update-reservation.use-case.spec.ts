@@ -109,8 +109,8 @@ describe('UpdateReservationUseCase', () => {
     expect(result?.guests).toHaveLength(2);
     expect(result?.guests[0].firstName).toBe('Alice');
     expect(result?.guests[1].firstName).toBe('Bob');
-    expect(result?.guests[0].meals.entry).toBe(1);
-    expect(result?.guests[1].meals.dessert).toBe(4);
+    expect(result?.guests[0].meals.entry).toEqual({ mealId: 1, quantity: 1 });
+    expect(result?.guests[1].meals.dessert).toEqual({ mealId: 4, quantity: 1 });
   });
 
   it('should return null when reservation does not exist', async () => {
