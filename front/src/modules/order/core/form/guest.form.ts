@@ -80,12 +80,46 @@ export class GuestForm {
     }
 
     isSubmitable(state: OrderingDomainModel.Form) {
+        // Note: lastName can be empty (optional), firstName is validated but empty ones get defaults
         return (
-            state.organizerId !== null 
-            && state.guests.every((guest) => guest.age > 0
-            && guest.firstName.length > 0
-            && guest.lastName.length > 0)
+            state.organizerId !== null
+            && state.guests.length > 0
+            && state.guests.every((guest) => guest.age > 0)
         )
+    }
+
+    initializeGuests(state: OrderingDomainModel.Form, tableCapacity: number, menuId: string | null = null): OrderingDomainModel.Form {
+        return produce(state, (draft: any) => {
+            for (let i = 0; i < tableCapacity; i++) {
+                draft.guests.push({
+                    id: this.idProvider.generate(),
+                    firstName: '',
+                    lastName: '',
+                    age: 24,
+                    restaurantId: null,
+                    isOrganizer: false,
+                    menuId: menuId,
+                    meals: { entry: null, mainCourse: null, dessert: null, drink: null }
+                });
+            }
+            // Set the first guest as organizer by default
+            if (draft.guests.length > 0) {
+                draft.organizerId = draft.guests[0].id;
+            }
+        });
+    }
+
+    applyPlaceholderDefaults(state: OrderingDomainModel.Form): OrderingDomainModel.Form {
+        return produce(state, (draft: any) => {
+            draft.guests.forEach((guest: any, index: number) => {
+                if (!guest.firstName || guest.firstName.trim() === '') {
+                    guest.firstName = `Invité ${index + 1}`;
+                }
+                if (!guest.lastName || guest.lastName.trim() === '') {
+                    guest.lastName = '';
+                }
+            });
+        });
     }
 
     updateGuest<T extends keyof OrderingDomainModel.Guest>(
