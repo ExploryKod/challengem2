@@ -9,6 +9,7 @@ import { StubRestaurantGateway as StubOrderRestaurantGateway } from "@taotask/mo
 import { StubTableManagementGateway } from "@taotask/modules/backoffice/core/testing/stub.table-management-gateway";
 import { StubMealManagementGateway } from "@taotask/modules/backoffice/core/testing/stub.meal-management-gateway";
 import { StubReservationManagementGateway } from "@taotask/modules/backoffice/core/testing/stub.reservation-management-gateway";
+import { StubTerminalReservationGateway } from "@taotask/modules/terminal/core/testing/stub.terminal-reservation-gateway";
 
 /**
  * Create testing dependencies with provided defaults
@@ -27,6 +28,7 @@ const createDependencies = (
   tableManagementGateway: new StubTableManagementGateway(),
   mealManagementGateway: new StubMealManagementGateway(),
   reservationManagementGateway: new StubReservationManagementGateway(),
+  terminalReservationGateway: new StubTerminalReservationGateway(),
   ...dependencies,
 });
 

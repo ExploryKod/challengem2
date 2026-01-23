@@ -49,8 +49,9 @@ const orderingState: OrderingState = {
     reservation: { status: "idle"}
 }
 describe("Reserve", () => {
-    it("Should reserve successfully", async () => {
+    it("Should reserve successfully and return reservation code", async () => {
         const reservationGateway = new MockReservationGateway();
+        reservationGateway.setNextCode('ABC123');
         const store = createTestStore({
             initialState: {
                 ordering: orderingState
@@ -63,7 +64,12 @@ describe("Reserve", () => {
         const promise = store.dispatch(reserve())
         expect(store.getState().ordering.reservation.status).toEqual("loading")
         await promise;
-        expect(store.getState().ordering.reservation.status).toEqual("success")
+
+        const reservation = store.getState().ordering.reservation;
+        expect(reservation.status).toEqual("success")
+        if (reservation.status === "success") {
+            expect(reservation.reservationCode).toEqual("ABC123")
+        }
 
         reservationGateway.expectReserveWasCallWith({
             tableId: "1",
@@ -86,4 +92,3 @@ describe("Reserve", () => {
         expect(store.getState().ordering.step).toEqual(OrderingDomainModel.OrderingStep.RESERVED)
     })
 })
-

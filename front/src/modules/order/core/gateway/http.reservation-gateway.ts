@@ -1,4 +1,4 @@
-import { IReservationGateway } from "@taotask/modules/order/core/gateway/reservation.gateway";
+import { IReservationGateway, ReserveResult } from "@taotask/modules/order/core/gateway/reservation.gateway";
 import { ReserveDTO } from "@taotask/modules/order/core/gateway/reserve.dto";
 import { AppState } from "@taotask/modules/store/store";
 import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
@@ -56,7 +56,7 @@ export class HttpReservationGateway implements IReservationGateway {
         private readonly getState: () => AppState
     ) {}
 
-    async reserve(data: ReserveDTO): Promise<void> {
+    async reserve(data: ReserveDTO): Promise<ReserveResult> {
         const state = this.getState();
         const restaurantId = state.ordering.restaurantId;
 
@@ -65,6 +65,7 @@ export class HttpReservationGateway implements IReservationGateway {
         }
 
         const backendDto = mapReserveDtoToBackend(data, restaurantId.toString());
-        await this.httpClient.post<void>('/reservations', backendDto);
+        const response = await this.httpClient.post<{ reservationCode: string }>('/reservations', backendDto);
+        return { code: response.reservationCode };
     }
 }

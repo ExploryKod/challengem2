@@ -8,6 +8,7 @@ import { IRestaurantManagementGateway } from "@taotask/modules/backoffice/core/g
 import { ITableManagementGateway } from "@taotask/modules/backoffice/core/gateway/table-management.gateway";
 import { IMealManagementGateway } from "@taotask/modules/backoffice/core/gateway/meal-management.gateway";
 import { IReservationManagementGateway } from "@taotask/modules/backoffice/core/gateway/reservation-management.gateway";
+import { ITerminalReservationGateway } from "@taotask/modules/terminal/core/gateway/terminal-reservation.gateway";
 
 export type Dependencies = {
     idProvider?: IIDProvider;
@@ -20,4 +21,5 @@ export type Dependencies = {
     tableManagementGateway?: ITableManagementGateway;
     mealManagementGateway?: IMealManagementGateway;
     reservationManagementGateway?: IReservationManagementGateway;
+    terminalReservationGateway?: ITerminalReservationGateway;
 };

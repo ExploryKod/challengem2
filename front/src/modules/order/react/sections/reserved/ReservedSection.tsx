@@ -1,7 +1,7 @@
 import { useReserved } from './use-reserved.hook';
 import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
 import { LuminousButton } from '@taotask/modules/order/react/components/ui/LuminousButton';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, QrCode } from 'lucide-react';
 
 export const ReservedSection = () => {
     const presenter = useReserved();
@@ -14,28 +14,48 @@ export const ReservedSection = () => {
             </div>
             <h3 className="mx-auto my-3 font-display font-medium text-luminous-text-primary text-xl sm:text-2xl text-center">
                 {presenter.isTerminalMode
-                    ? "Un membre de notre équipe va vous accueillir"
-                    : "Merci pour votre réservation"}
+                    ? "Un membre de notre equipe va vous accueillir"
+                    : "Merci pour votre reservation"}
             </h3>
             <div className="h-1 w-16 bg-luminous-gold mx-auto my-4" />
         </div>
 
+        {/* Reservation Code Display */}
+        {!presenter.isTerminalMode && presenter.reservationCode && (
+            <div className="flex flex-col mx-auto mb-8">
+                <div className="bg-luminous-bg-secondary border-2 border-luminous-gold mx-auto px-6 sm:px-10 py-6 sm:py-8 rounded-xl w-full max-w-[600px]">
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                        <QrCode className="w-6 h-6 text-luminous-gold" />
+                        <p className="text-luminous-text-secondary text-sm">
+                            Votre code de reservation
+                        </p>
+                    </div>
+                    <p className="text-4xl sm:text-5xl font-bold text-luminous-gold tracking-wider text-center mb-4">
+                        {presenter.reservationCode}
+                    </p>
+                    <p className="text-sm text-center text-luminous-text-muted">
+                        Conservez ce code pour le terminal a votre arrivee
+                    </p>
+                </div>
+            </div>
+        )}
+
         <div className="flex flex-col mx-auto mb-8">
-            <div className="bg-luminous-bg-secondary border-2 border-luminous-gold mx-auto px-6 sm:px-10 py-6 sm:py-8 rounded-xl w-full max-w-[600px]">
+            <div className="bg-luminous-bg-secondary border border-luminous-gold-border mx-auto px-6 sm:px-10 py-6 sm:py-8 rounded-xl w-full max-w-[600px]">
                 <p className="mb-3 text-sm sm:text-base text-center text-luminous-text-secondary">
                     {presenter.isTerminalMode
-                        ? "Veuillez patienter, un membre de notre équipe viendra vous placer à votre table."
-                        : "En réservant chez nous, vous pouvez vous attendre à un service de qualité et à un restaurant convivial."}
+                        ? "Veuillez patienter, un membre de notre equipe viendra vous placer a votre table."
+                        : "En reservant chez nous, vous pouvez vous attendre a un service de qualite et a un restaurant convivial."}
                 </p>
                 {!presenter.isTerminalMode && (
                     <p className="mb-3 text-sm sm:text-base text-center text-luminous-text-secondary">
-                        Notre équipe met tout en oeuvre pour vous offrir une expérience culinaire exceptionnelle.
+                        Notre equipe met tout en oeuvre pour vous offrir une experience culinaire exceptionnelle.
                     </p>
                 )}
                 <p className="text-sm sm:text-base text-center text-luminous-gold font-medium">
                     {presenter.isTerminalMode
                         ? "Merci de votre patience."
-                        : "Nous vous remercions de votre confiance et nous espérons vous revoir bientôt."}
+                        : "Nous vous remercions de votre confiance et nous esperons vous revoir bientot."}
                 </p>
             </div>
         </div>
@@ -45,7 +65,7 @@ export const ReservedSection = () => {
                 onClick={presenter.onNewTable}
                 variant="primary"
             >
-                Nouvelle réservation
+                Nouvelle reservation
             </LuminousButton>
             {!presenter.isTerminalMode && (
                 <a

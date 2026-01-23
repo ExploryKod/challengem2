@@ -3,18 +3,22 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, AppState } from '@taotask/modules/store/store';
 import { terminalActions } from '../../../core/store/terminal.slice';
+import { lookupReservation } from '../../../core/useCase/lookup-reservation.usecase';
 import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
 import { LuminousButton } from '@taotask/modules/order/react/components/ui/LuminousButton';
 import { LuminousInput } from '@taotask/modules/order/react/components/ui/LuminousInput';
-import { ArrowLeft, Users, QrCode } from 'lucide-react';
+import { ArrowLeft, Users, QrCode, Loader2 } from 'lucide-react';
 
 export const IdentifySection: React.FC = () => {
     const dispatch = useAppDispatch();
     const identifyMode = useSelector((state: AppState) => state.terminal.identifyMode);
     const error = useSelector((state: AppState) => state.terminal.error);
+    const lookupStatus = useSelector((state: AppState) => state.terminal.lookupStatus);
 
     const [reservationCode, setReservationCode] = useState('');
     const [guestCount, setGuestCount] = useState(2);
+
+    const isLoading = lookupStatus === 'loading';
 
     const handleBack = () => {
         dispatch(terminalActions.reset());
@@ -26,14 +30,7 @@ export const IdentifySection: React.FC = () => {
             return;
         }
 
-        // For now, simulate a successful lookup
-        // In production, this would call the API
-        dispatch(terminalActions.setReservation({
-            id: 1,
-            code: reservationCode.toUpperCase(),
-            status: 'CONFIRMED',
-            guestCount: 2,
-        }));
+        dispatch(lookupReservation(reservationCode.toUpperCase()));
     };
 
     const handleWalkInSubmit = () => {
@@ -91,8 +88,16 @@ export const IdentifySection: React.FC = () => {
                                 variant="primary"
                                 onClick={handleReservationSubmit}
                                 className="w-full py-4"
+                                disabled={isLoading}
                             >
-                                Valider
+                                {isLoading ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                        Recherche...
+                                    </span>
+                                ) : (
+                                    'Valider'
+                                )}
                             </LuminousButton>
                         </div>
                     </>

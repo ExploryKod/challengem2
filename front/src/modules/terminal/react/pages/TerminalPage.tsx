@@ -8,6 +8,8 @@ import { terminalActions } from '../../core/store/terminal.slice';
 import { WelcomeSection } from '../sections/welcome/WelcomeSection';
 import { IdentifySection } from '../sections/identify/IdentifySection';
 import { ConfirmationSection } from '../sections/confirmation/ConfirmationSection';
+import { TerminalMenuBrowseSection } from '../sections/menu-browse/TerminalMenuBrowseSection';
+import { TerminalPreOrderSection } from '../sections/pre-order/TerminalPreOrderSection';
 
 export const TerminalPage: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -29,10 +31,9 @@ export const TerminalPage: React.FC = () => {
             case TerminalDomainModel.TerminalStep.IDENTIFY:
                 return <IdentifySection />;
             case TerminalDomainModel.TerminalStep.MENU_BROWSE:
+                return <TerminalMenuBrowseSection />;
             case TerminalDomainModel.TerminalStep.PRE_ORDER:
-                // For now, skip to confirmation
-                // In future, reuse order module sections for menu browsing
-                return <ConfirmationSection />;
+                return <TerminalPreOrderSection />;
             case TerminalDomainModel.TerminalStep.CONFIRMATION:
                 return <ConfirmationSection />;
             default:

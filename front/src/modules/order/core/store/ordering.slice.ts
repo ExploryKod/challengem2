@@ -25,7 +25,11 @@ export type OrderingState = {
     reservation: ReservationStatus;
 }
 
-export type ReservationStatus = { status: "idle" } | {status: "loading" } | {status: "success"} | {status: "error", error: string}
+export type ReservationStatus =
+    | { status: "idle" }
+    | { status: "loading" }
+    | { status: "success"; reservationCode: string }
+    | { status: "error"; error: string }
 
 export const initialState: OrderingState = {
     step: OrderingDomainModel.OrderingStep.RESTAURANT,
@@ -123,9 +127,10 @@ export const orderingSlice = createSlice({
                 error: "Reservation failed"
             }
         },
-        handleReservationSuccess: (state) => {
+        handleReservationSuccess: (state, action: PayloadAction<string>) => {
             state.reservation = {
-                status: "success"
+                status: "success",
+                reservationCode: action.payload
             }
             state.step = OrderingDomainModel.OrderingStep.RESERVED;
         },
