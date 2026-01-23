@@ -16,7 +16,7 @@ export class ReservationMapper {
     reservation.createdAt = ormEntity.createdAt;
     reservation.updatedAt = ormEntity.updatedAt;
     reservation.guests =
-      ormEntity.guests?.map((g) => this.guestToDomain(g)) ?? [];
+      ormEntity.guests?.map((g) => ReservationMapper.guestToDomain(g)) ?? [];
     return reservation;
   }
 
@@ -48,7 +48,7 @@ export class ReservationMapper {
     ormEntity.reservationCode = domain.reservationCode;
     ormEntity.notes = domain.notes ?? null;
     ormEntity.guests =
-      domain.guests?.map((g) => this.guestToOrm(g, domain.id)) ?? [];
+      domain.guests?.map((g) => ReservationMapper.guestToOrm(g, domain.id)) ?? [];
     return ormEntity;
   }
 
