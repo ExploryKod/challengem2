@@ -26,17 +26,6 @@ export const ReservedSection = () => {
                 <p className="mb-3 text-sm sm:text-base text-center text-luminous-text-secondary">
                     Notre équipe met tout en oeuvre pour vous offrir une expérience culinaire exceptionnelle.
                 </p>
-                <p className="mb-3 text-sm sm:text-base text-center text-luminous-text-secondary">
-                    Mas des Alouettes, 18 route de Senanque, D177, près de Sorgues.
-                </p>
-                <a
-                    className="mb-3 block text-center text-sm sm:text-base text-luminous-gold underline underline-offset-4 hover:text-luminous-gold/80"
-                    href="https://www.google.com/maps?q=43.919815818174385,5.193920727116252"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    Ouvrir dans Google Maps
-                </a>
                 <p className="text-sm sm:text-base text-center text-luminous-gold font-medium">
                     Nous vous remercions de votre confiance et nous espérons vous revoir bientôt.
                 </p>

@@ -21,17 +21,6 @@ export const SummarySection = () => {
                 <p className="text-sm sm:text-base italic text-center text-luminous-gold">
                     {presenter.summary.table.title}
                 </p>
-                <p className="mt-3 text-center text-xs sm:text-sm text-luminous-text-secondary">
-                    Mas des Alouettes, 18 route de Senanque, D177, près de Sorgues
-                </p>
-                <a
-                    className="mt-2 block text-center text-xs sm:text-sm text-luminous-gold underline underline-offset-4 hover:text-luminous-gold/80"
-                    href="https://www.google.com/maps?q=43.919815818174385,5.193920727116252"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    Ouvrir dans Google Maps
-                </a>
             </div>
         </div>
 

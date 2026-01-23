@@ -21,9 +21,20 @@ export const HeroSection: React.FC = () => {
                         <h1 className={`${fontFamily} opacity-0 title mt-2 mb-4 sm:mb-6 md:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-tight sm:leading-normal`}>
                             Taste Federation
                         </h1>
-                        <p className="subtitle opacity-0 text-[14px] leading-relaxed text-luxury-text-primary bg-luxury-bg-secondary/70 border border-luxury-gold-border/60 backdrop-blur-sm max-w-3xl mx-auto mb-8 sm:mb-12 md:mb-16 px-4 py-3 rounded-lg">
-                            Taste Federation se donne pour but de rendre accessible en ligne la réservation auprés d&apos;un ensemble de restaurants de luxe parmis les meilleurs de France. Le Hub est basé dans le Mas des Alouettes en Provence au coeur d&apos;un écrin de verdure au <span className="font-semibold">18 route de Senanque sur la D177 prés de Sorgues</span>. Vous pouvez réserver sur place ou depuis chez vous.
-                        </p>
+                        <div className="subtitle opacity-0 bg-luxury-bg-secondary/70 border border-luxury-gold-border/60 backdrop-blur-sm max-w-3xl mx-auto mb-8 sm:mb-12 md:mb-16 px-4 py-3 rounded-lg">
+                            <p className="text-[14px] leading-relaxed text-luxury-text-primary">
+                                Taste Federation se donne pour but de rendre accessible en ligne la réservation auprés d&apos;un ensemble de restaurants de luxe parmis les meilleurs de France. Le Hub est basé dans le Mas des Alouettes en Provence au coeur d&apos;un écrin de verdure au{" "}
+                                <span className="font-semibold">18 route de Senanque sur la D177 prés de Sorgues</span>.
+                            </p>
+                            <a
+                                className="mt-2 block text-center text-xs sm:text-sm text-luxury-gold underline underline-offset-4 hover:text-luxury-gold/80"
+                                href="https://www.google.com/maps?q=43.919815818174385,5.193920727116252"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Ouvrir dans Google Maps
+                            </a>
+                        </div>
                         <button type="button"
                             onClick={handleDiscover}
                             className="button opacity-0 font-mono rounded border-2 border-luxury-gold px-6 sm:px-[46px] pt-3 sm:pt-[14px] pb-2.5 sm:pb-[12px]
