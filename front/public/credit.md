@@ -1,6 +1,6 @@
 # Crédits Photos
 
-Ce fichier liste les crédits et attributions pour toutes les images utilisées sur le site Papilles des Suds. Toutes les photos proviennent de [Pexels](https://www.pexels.com/), une plateforme de photos libres de droits.
+Ce fichier liste les crédits et attributions pour toutes les images utilisées sur le site Taste Federation. Toutes les photos proviennent de [Pexels](https://www.pexels.com/), une plateforme de photos libres de droits.
 
 ## Liste des photographes
 

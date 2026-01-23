@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Conditions Générales d'Utilisation - Papilles des Suds",
-  description: "Conditions générales d'utilisation du site Papilles des Suds",
+  title: "Conditions Générales d'Utilisation - Taste Federation",
+  description: "Conditions générales d'utilisation du site Taste Federation",
   robots: {
     index: false,
     follow: false,
@@ -34,11 +34,11 @@ export default function ConditionsGenerales() {
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">1. Objet</h2>
           <p className="text-gray-700 mb-4">
             Les présentes Conditions Générales d&apos;Utilisation (ci-après les « <strong>CGU</strong> ») ont pour objet 
-            de définir les conditions d&apos;accès et d&apos;utilisation du site web Papilles des Suds (le « <strong>Site</strong> »), 
-            accessible à l&apos;adresse <strong>https://papilles-du-sud.vercel.app</strong>.
+            de définir les conditions d&apos;accès et d&apos;utilisation du site web Taste Federation (le « <strong>Site</strong> »), 
+            accessible à l&apos;adresse <strong>https://taste-federation.vercel.app</strong>.
           </p>
           <p className="text-gray-700 mb-4">
-            <strong>Important : Papilles des Suds est un site de démonstration à des fins éducatives.</strong> Ce Site est destiné 
+            <strong>Important : Taste Federation est un site de démonstration à des fins éducatives.</strong> Ce Site est destiné 
             uniquement à des fins de démonstration et d&apos;apprentissage. Les utilisateurs ne doivent pas utiliser leurs 
             vraies données personnelles (notamment leur adresse email réelle) lors de l&apos;utilisation 
             du service.
@@ -58,7 +58,7 @@ export default function ConditionsGenerales() {
           </p>
           <p className="text-gray-700 mb-4">
             <strong>Avertissement :</strong> En utilisant le Site, l&apos;utilisateur reconnaît 
-            que Papilles des Suds est un site de démonstration et qu&apos;il ne doit pas utiliser ses 
+            que Taste Federation est un site de démonstration et qu&apos;il ne doit pas utiliser ses 
             vraies données personnelles. L&apos;utilisateur doit utiliser uniquement des données fictives.
           </p>
           <p className="text-gray-700">
@@ -91,7 +91,7 @@ export default function ConditionsGenerales() {
             par le système lors de la navigation sur le Site.
           </p>
           <p className="text-gray-700 mb-4">
-            Étant donné que Papilles des Suds est un site de démonstration, l&apos;utilisateur 
+            Étant donné que Taste Federation est un site de démonstration, l&apos;utilisateur 
             doit utiliser uniquement des données fictives.
           </p>
           <p className="text-gray-700 mb-4">
@@ -163,7 +163,7 @@ export default function ConditionsGenerales() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">5. Propriété Intellectuelle</h2>
           <p className="text-gray-700 mb-4">
-            L&apos;ensemble des contenus présents sur le site Papilles des Suds (textes, images, logos, graphismes, etc.) 
+            L&apos;ensemble des contenus présents sur le site Taste Federation (textes, images, logos, graphismes, etc.) 
             sont la propriété de l&apos;éditeur du site ou de ses partenaires et sont protégés par les lois françaises et 
             internationales relatives à la propriété intellectuelle.
           </p>
@@ -184,10 +184,10 @@ export default function ConditionsGenerales() {
           <p className="text-gray-700 mb-4">
             En conséquence, l&apos;utilisateur reconnaît utiliser ces informations sous sa responsabilité exclusive. Le site 
             peut contenir des liens hypertextes vers d&apos;autres sites présents sur le réseau Internet. Les liens vers ces 
-            autres ressources vous font quitter le site Papilles des Suds.
+            autres ressources vous font quitter le site Taste Federation.
           </p>
           <p className="text-gray-700">
-            <strong>Limitation de responsabilité :</strong> Étant donné que Papilles des Suds est un site de démonstration, 
+            <strong>Limitation de responsabilité :</strong> Étant donné que Taste Federation est un site de démonstration, 
             l&apos;éditeur ne peut être tenu responsable des dommages directs ou indirects résultant de l&apos;utilisation 
             du Site ou de l&apos;impossibilité de l&apos;utiliser. Les réservations effectuées sur ce site sont fictives et 
             ne donnent lieu à aucune obligation réelle de la part de l&apos;éditeur ou des restaurants mentionnés.
@@ -202,7 +202,7 @@ export default function ConditionsGenerales() {
             est invité à consulter.
           </p>
           <p className="text-gray-700">
-            <strong>Important :</strong> Étant donné que Papilles des Suds est un site de démonstration, l&apos;utilisateur est 
+            <strong>Important :</strong> Étant donné que Taste Federation est un site de démonstration, l&apos;utilisateur est 
             expressément invité à ne pas utiliser ses vraies données personnelles. En outre, compte tenu du caractère 
             démonstratif du Site, toutes les données associées peuvent être supprimées à tout moment 
             sans préavis. L&apos;utilisateur ne doit donc pas considérer le Site comme un service permanent pour le stockage 
@@ -221,7 +221,7 @@ export default function ConditionsGenerales() {
             <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>.
           </p>
           <p className="text-gray-700 mb-4">
-            <strong>Résiliation par l&apos;éditeur :</strong> Étant donné que Papilles des Suds est un site de démonstration à des fins 
+            <strong>Résiliation par l&apos;éditeur :</strong> Étant donné que Taste Federation est un site de démonstration à des fins 
             éducatives, l&apos;éditeur se réserve le droit de supprimer toutes les données utilisateur à tout moment, sans préavis et 
             sans notification préalable. Cette suppression peut intervenir notamment pour :
           </p>

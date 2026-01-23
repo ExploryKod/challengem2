@@ -98,7 +98,7 @@ export const TablesSection: React.FC<TablesSectionProps> = ({ restaurantId }) =>
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-6">
                 <h2 className="text-2xl font-serif text-luxury-text-primary">
                     Tables ({tables.length})
                 </h2>
@@ -110,7 +110,7 @@ export const TablesSection: React.FC<TablesSectionProps> = ({ restaurantId }) =>
                     Aucune table pour ce restaurant. Commencez par en creer une.
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {tables.map((table) => (
                         <LuxuryCard key={table.id} hoverable>
                             <h3 className="text-lg font-semibold text-luxury-text-primary mb-2">

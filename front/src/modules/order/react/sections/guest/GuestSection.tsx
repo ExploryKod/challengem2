@@ -95,15 +95,20 @@ const GuestRows: React.FC<{
     changeOrganizer: (id:string | number) => void
     checkboxRef: any
 }> = ({id, onChange, remove, changeOrganizer, isOrganizer, checkboxRef}) => {
+    const firstNameId = `guest-${id}-first-name`;
+    const lastNameId = `guest-${id}-last-name`;
+    const ageId = `guest-${id}-age`;
+    const organizerLabelId = `guest-${id}-organizer-label`;
+    const organizerMobileLabelId = `guest-${id}-organizer-label-mobile`;
 
     return (
     <div className="flex md:flex-row flex-col justify-center gap-3 mx-auto my-5 p-4 bg-luminous-bg-secondary rounded-lg border border-luminous-gold-border">
 
             <div className="relative flex flex-col justify-center items-center">
-                <label className="block">
+                <label className="block" htmlFor={firstNameId}>
                     <span className="block font-medium text-luminous-gold-muted text-xs uppercase tracking-wider mb-1">Prénom</span>
                         <input type="text"
-                        id="firstName"
+                        id={firstNameId}
                         placeholder="Andrew"
                         className="block border-luminous-gold-border focus:border-luminous-gold bg-luminous-bg-card mt-1 px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-luminous-gold/30 w-full text-sm text-luminous-text-primary placeholder-luminous-text-muted focus:outline-none transition-all duration-200"
                         onChange= {(e) => onChange(id, 'firstName', e.target.value)}
@@ -112,10 +117,10 @@ const GuestRows: React.FC<{
             </div>
 
             <div className="relative flex flex-col justify-center items-center">
-                <label className="block">
+                <label className="block" htmlFor={lastNameId}>
                     <span className="block font-medium text-luminous-gold-muted text-xs uppercase tracking-wider mb-1">Nom</span>
                         <input type="text"
-                        id="lastName"
+                        id={lastNameId}
                         placeholder="Collins"
                         className="block border-luminous-gold-border focus:border-luminous-gold bg-luminous-bg-card mt-1 px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-luminous-gold/30 w-full text-sm text-luminous-text-primary placeholder-luminous-text-muted focus:outline-none transition-all duration-200"
                         min="0"
@@ -125,10 +130,10 @@ const GuestRows: React.FC<{
             </div>
 
             <div className="relative flex flex-col justify-center items-center">
-                <label className="block">
+                <label className="block" htmlFor={ageId}>
                     <span className="block font-medium text-luminous-gold-muted text-xs uppercase tracking-wider mb-1">Âge</span>
                         <input type="number"
-                        id="age"
+                        id={ageId}
                         placeholder="25"
                         className="block border-luminous-gold-border focus:border-luminous-gold bg-luminous-bg-card mt-1 px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-luminous-gold/30 w-full md:max-w-[80px] text-sm text-luminous-text-primary placeholder-luminous-text-muted focus:outline-none transition-all duration-200"
                         min="0"
@@ -141,21 +146,23 @@ const GuestRows: React.FC<{
                 <button
                     className="flex items-center justify-center bg-luminous-bg-card border border-luminous-rose/30 hover:border-luminous-rose hover:bg-luminous-rose/10 mb-1 ml-5 p-2 rounded-lg transition-all duration-200 group"
                     onClick={() => remove(id)}
+                    aria-label="Supprimer l'invité"
                 >
-                    <Trash2 className="w-4 h-4 text-luminous-rose" />
+                    <Trash2 className="w-4 h-4 text-luminous-rose" aria-hidden="true" />
                 </button>
             </div>
             <div className="relative md:flex flex-col justify-end items-center hidden">
-                <span className="text-luminous-gold-muted text-xs uppercase tracking-wider mb-1">Organisateur</span>
+                <span id={organizerLabelId} className="text-luminous-gold-muted text-xs uppercase tracking-wider mb-1">Organisateur</span>
                 <div className="mt-1">
                     <Checkbox.Root
                         defaultChecked={isOrganizer}
                         onCheckedChange={() => changeOrganizer(id)}
                         ref={checkboxRef}
                         className="bg-luminous-bg-card border-2 border-luminous-gold-border rounded-lg w-7 h-7 flex items-center justify-center data-[state=checked]:bg-luminous-gold data-[state=checked]:border-luminous-gold hover:border-luminous-gold transition-all duration-200"
+                        aria-labelledby={organizerLabelId}
                     >
                         <Checkbox.Indicator>
-                            <Check className="w-4 h-4 text-white" />
+                            <Check className="w-4 h-4 text-white" aria-hidden="true" />
                         </Checkbox.Indicator>
                     </Checkbox.Root>
                 </div>
@@ -166,20 +173,22 @@ const GuestRows: React.FC<{
                     <button
                         className="flex items-center justify-center bg-luminous-bg-card border border-luminous-rose/30 hover:border-luminous-rose hover:bg-luminous-rose/10 p-2 rounded-lg transition-all duration-200"
                         onClick={() => remove(id)}
+                        aria-label="Supprimer l'invité"
                     >
-                        <Trash2 className="w-4 h-4 text-luminous-rose" />
+                        <Trash2 className="w-4 h-4 text-luminous-rose" aria-hidden="true" />
                     </button>
                 </div>
                 <div className="flex justify-end items-center gap-2">
-                    <span className="text-luminous-gold-muted text-xs uppercase tracking-wider">J&#39;organise</span>
+                    <span id={organizerMobileLabelId} className="text-luminous-gold-muted text-xs uppercase tracking-wider">J&#39;organise</span>
                     <Checkbox.Root
                         defaultChecked={isOrganizer}
                         onCheckedChange={() => changeOrganizer(id)}
                         ref={checkboxRef}
                         className="bg-luminous-bg-card border-2 border-luminous-gold-border rounded-lg w-7 h-7 flex items-center justify-center data-[state=checked]:bg-luminous-gold data-[state=checked]:border-luminous-gold hover:border-luminous-gold transition-all duration-200"
+                        aria-labelledby={organizerMobileLabelId}
                     >
                         <Checkbox.Indicator>
-                            <Check className="w-4 h-4 text-white" />
+                            <Check className="w-4 h-4 text-white" aria-hidden="true" />
                         </Checkbox.Indicator>
                     </Checkbox.Root>
                 </div>

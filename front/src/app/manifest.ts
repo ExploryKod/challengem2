@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Papilles des Suds',
-    short_name: 'Papilles',
+    name: 'Taste Federation',
+    short_name: 'Taste',
     description: 'Application de réservation de tables de restaurant',
     start_url: '/',
     display: 'standalone',

@@ -66,9 +66,9 @@ export const RestaurantDetailPage: React.FC<RestaurantDetailPageProps> = ({ rest
     return (
         <main className="min-h-screen bg-luxury-bg-primary">
             <div className="border-b border-luxury-gold-border">
-                <div className="container mx-auto px-6 py-6">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
+                <div className="container mx-auto px-4 sm:px-6 py-6">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                             <LuxuryButton
                                 variant="secondary"
                                 onClick={() => router.push('/admin')}
@@ -86,7 +86,7 @@ export const RestaurantDetailPage: React.FC<RestaurantDetailPageProps> = ({ rest
                 </div>
             </div>
 
-            <div className="container mx-auto px-6 py-6">
+            <div className="container mx-auto px-4 sm:px-6 py-6 overflow-x-auto">
                 <LuxuryTabs
                     tabs={TABS}
                     activeTab={activeTab}
@@ -94,7 +94,7 @@ export const RestaurantDetailPage: React.FC<RestaurantDetailPageProps> = ({ rest
                 />
             </div>
 
-            <div className="container mx-auto px-6 py-6">
+            <div className="container mx-auto px-4 sm:px-6 py-6">
                 {renderTabContent()}
             </div>
         </main>

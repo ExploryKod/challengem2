@@ -100,7 +100,7 @@ export const MealsSection: React.FC<MealsSectionProps> = ({ restaurantId }) => {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-6">
                 <h2 className="text-2xl font-serif text-luxury-text-primary">
                     Repas ({meals.length})
                 </h2>
@@ -119,7 +119,7 @@ export const MealsSection: React.FC<MealsSectionProps> = ({ restaurantId }) => {
                         return (
                             <div key={type}>
                                 <h3 className="text-lg font-medium text-luxury-gold mb-4">{label}s</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                                     {typeMeals.map((meal) => (
                                         <LuxuryCard key={meal.id} hoverable>
                                             {meal.imageUrl && (

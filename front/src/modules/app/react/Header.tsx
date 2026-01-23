@@ -42,6 +42,7 @@ export const Header: React.FC = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden="true"
             >
               {isMobileMenuOpen ? (
                 <path d="M18 6L6 18M6 6l12 12" />
@@ -50,7 +51,7 @@ export const Header: React.FC = () => {
               )}
             </svg>
           </button>
-          <a className="text-blue dark:text-blue-400" href="#!">
+          <a className="text-blue dark:text-blue-400" href="/">
             <span className="[&>svg]:ml-2 [&>svg]:mr-3 [&>svg]:h-6 [&>svg]:w-6 lg:[&>svg]:ml-0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -63,6 +64,7 @@ export const Header: React.FC = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="lucide lucide-hand-platter"
+                aria-hidden="true"
               >
                 <path d="M12 3V2"/>
                 <path d="M5 10a7.1 7.1 0 0 1 14 0"/>
@@ -81,7 +83,7 @@ export const Header: React.FC = () => {
             <li>
               <a
                 className="block lg:px-2 py-2 pr-2 text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 focus:text-neutral-600 dark:focus:text-neutral-300 [&.active]:text-black/80 dark:[&.active]:text-white/80 disabled:text-black/30 dark:disabled:text-white/30 dark:text-neutral-200 transition duration-150 ease-in-out"
-                href="#!"
+                href="/order"
               >
                 Nos restaurants
               </a>
@@ -89,7 +91,7 @@ export const Header: React.FC = () => {
             <li>
               <a
                 className="block lg:px-2 py-2 pr-2 text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 focus:text-neutral-600 dark:focus:text-neutral-300 [&.active]:text-black/80 dark:[&.active]:text-white/80 disabled:text-black/30 dark:disabled:text-white/30 dark:text-neutral-200 transition duration-150 ease-in-out"
-                href="#!"
+                href="/mentions-legales"
               >
                 A propos
               </a>
@@ -140,9 +142,8 @@ export const Header: React.FC = () => {
                   <li>
                     <a
                       className="block py-3 px-4 text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 focus:text-neutral-600 dark:focus:text-neutral-300 dark:text-neutral-200 transition duration-150 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                      href="#!"
+                      href="/order"
                       onClick={(e) => {
-                        e.preventDefault();
                         toggleMobileMenu();
                       }}
                     >
@@ -152,9 +153,8 @@ export const Header: React.FC = () => {
                   <li>
                     <a
                       className="block py-3 px-4 text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 focus:text-neutral-600 dark:focus:text-neutral-300 dark:text-neutral-200 transition duration-150 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                      href="#!"
+                      href="/mentions-legales"
                       onClick={(e) => {
-                        e.preventDefault();
                         toggleMobileMenu();
                       }}
                     >

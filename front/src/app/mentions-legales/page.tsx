@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mentions Légales - Papilles des Suds",
-  description: "Mentions légales du site Papilles des Suds",
+  title: "Mentions Légales - Taste Federation",
+  description: "Mentions légales du site Taste Federation",
   robots: {
     index: false,
     follow: false,
@@ -33,11 +33,11 @@ export default function MentionsLegales() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">1. Éditeur du Site</h2>
           <p className="text-gray-700 mb-4">
-            Le site Papilles des Suds est édité dans le cadre d&apos;un projet éducatif et de démonstration 
+            Le site Taste Federation est édité dans le cadre d&apos;un projet éducatif et de démonstration 
             par l&apos;équipe de développement du projet.
           </p>
           <p className="text-gray-700 mb-4">
-            <strong>Important : Papilles des Suds est un site de démonstration à des fins éducatives.</strong> Ce Site est destiné 
+            <strong>Important : Taste Federation est un site de démonstration à des fins éducatives.</strong> Ce Site est destiné 
             uniquement à des fins de démonstration et d&apos;apprentissage. Les utilisateurs ne doivent pas utiliser leurs 
             vraies données personnelles (notamment leur adresse email réelle) lors de l&apos;utilisation 
             du service.
@@ -50,7 +50,7 @@ export default function MentionsLegales() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">2. Directeur de la Publication</h2>
           <p className="text-gray-700 mb-4">
-            Le directeur de la publication est l&apos;équipe de développement du projet Papilles des Suds.
+            Le directeur de la publication est l&apos;équipe de développement du projet Taste Federation.
           </p>
           <p className="text-gray-700">
             <strong>Contact :</strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a>
@@ -76,7 +76,7 @@ export default function MentionsLegales() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">4. Contact</h2>
           <p className="text-gray-700 mb-4">
-            Pour toute question, réclamation ou signalement concernant le Site Papilles des Suds, vous pouvez nous contacter 
+            Pour toute question, réclamation ou signalement concernant le Site Taste Federation, vous pouvez nous contacter 
             à l&apos;adresse email suivante :
           </p>
           <p className="text-gray-700 mb-4">
@@ -90,7 +90,7 @@ export default function MentionsLegales() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">5. Propriété Intellectuelle</h2>
           <p className="text-gray-700">
-            L&apos;ensemble des contenus présents sur le site Papilles des Suds (textes, images, logos, graphismes, etc.) 
+            L&apos;ensemble des contenus présents sur le site Taste Federation (textes, images, logos, graphismes, etc.) 
             sont la propriété de l&apos;éditeur du site ou de ses partenaires et sont protégés par les lois françaises et 
             internationales relatives à la propriété intellectuelle. Toute reproduction, représentation, modification, publication, 
             adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite, 
@@ -109,7 +109,7 @@ export default function MentionsLegales() {
           <p className="text-gray-700">
             En conséquence, l&apos;utilisateur reconnaît utiliser ces informations sous sa responsabilité exclusive. Le site 
             peut contenir des liens hypertextes vers d&apos;autres sites présents sur le réseau Internet. Les liens vers ces 
-            autres ressources vous font quitter le site Papilles des Suds. Il est possible de créer un lien vers la page de 
+            autres ressources vous font quitter le site Taste Federation. Il est possible de créer un lien vers la page de 
             présentation de ce site sans autorisation expresse de l&apos;éditeur. Aucune autorisation ni demande d&apos;information 
             préalable ne peut être exigée par l&apos;éditeur à l&apos;égard d&apos;un site qui souhaite établir un lien vers le 
             site de l&apos;éditeur. Il convient toutefois d&apos;afficher ce site dans une nouvelle fenêtre du navigateur.
@@ -120,7 +120,7 @@ export default function MentionsLegales() {
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">7. Signalement de Contenus Illicites</h2>
           <p className="text-gray-700 mb-4">
             Conformément à la législation en vigueur, tout utilisateur peut signaler un contenu illicite ou portant 
-            atteinte aux droits des tiers présents sur le Site Papilles des Suds.
+            atteinte aux droits des tiers présents sur le Site Taste Federation.
           </p>
           <p className="text-gray-700 mb-4">
             Pour signaler un tel contenu, vous pouvez nous contacter à l&apos;adresse email suivante : 
@@ -143,7 +143,7 @@ export default function MentionsLegales() {
 
         <footer className="mt-8 pt-6 border-t border-gray-200">
           <p className="text-gray-600 text-sm">
-            Ces mentions légales sont fournies à titre informatif pour le site de démonstration Papilles des Suds. 
+            Ces mentions légales sont fournies à titre informatif pour le site de démonstration Taste Federation. 
             Pour toute question, veuillez nous contacter à l&apos;adresse 
             <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>.
           </p>

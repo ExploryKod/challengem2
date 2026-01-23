@@ -53,7 +53,12 @@ export const TableCard: React.FC<{
 }> = ({title, capacity, isSelected, onSelect}) => {
 
     return (
-    <div onClick={onSelect} className="w-full sm:w-auto my-3 sm:my-4 mx-auto flex gap-2">
+    <button
+        type="button"
+        onClick={onSelect}
+        aria-pressed={isSelected}
+        className="w-full sm:w-auto my-3 sm:my-4 mx-auto flex gap-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luminous-gold/60 rounded-xl"
+    >
         <div className={`
             cursor-pointer mx-auto p-5 sm:p-6 w-full sm:min-w-[280px] rounded-xl
             border-2 transition-all duration-300
@@ -80,6 +85,7 @@ export const TableCard: React.FC<{
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 className="w-5 h-5 sm:w-6 sm:h-6"
+                                aria-hidden="true"
                             >
                                 <circle cx="12" cy="8" r="5"/>
                                 <path d="M20 21a8 8 0 0 0-16 0"/>
@@ -92,6 +98,6 @@ export const TableCard: React.FC<{
                 </span>
             </div>
         </div>
-    </div>
+    </button>
     )
 }

@@ -27,8 +27,8 @@ export const RestaurantsSection: React.FC = () => {
 
     return (
         <section className="min-h-screen bg-luxury-bg-primary">
-            <div className="container mx-auto px-6 py-12">
-                <div className="flex justify-between items-center mb-12">
+            <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-8 sm:mb-12">
                     <div>
                         <h1 className="text-4xl font-serif text-luxury-text-primary mb-2">
                             Vos Etablissements
@@ -64,7 +64,7 @@ export const RestaurantsSection: React.FC = () => {
                 )}
 
                 {!isLoading && !error && restaurants.length > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
                         {restaurants.map((restaurant) => (
                             <LuxuryCard key={restaurant.id} hoverable>
                                 <h3 className="text-xl font-serif text-luxury-text-primary mb-2">

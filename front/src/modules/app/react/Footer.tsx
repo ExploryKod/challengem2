@@ -65,7 +65,7 @@ export const Footer: React.FC = () => {
           </Link>
         </div>
         <div className="mt-4 text-center text-xs text-neutral-400">
-          <p>© {new Date().getFullYear()} Papilles des Suds - Site de démonstration</p>
+          <p>© {new Date().getFullYear()} Taste Federation - Site de démonstration</p>
         </div>
       </div>
     </footer>

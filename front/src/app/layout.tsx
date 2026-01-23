@@ -30,8 +30,9 @@ const oswald = Oswald({
 })
 
 export const metadata = {
-  title: "Saveurs des suds -demo",
-  description: "Site de démonstration de réservation de tables de restaurant fait en clean architecture en utilisant le TDD comme méthodologie",
+  title: "Taste Federation - demo",
+  description:
+    "Site de démonstration Taste Federation pour la réservation en ligne de tables de restaurants de luxe.",
 };
 
 export default function RootLayout({
