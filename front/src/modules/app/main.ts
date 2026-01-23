@@ -24,6 +24,9 @@ export class App {
     dependenciesRef.reservationGateway = GatewayFactory.createReservationGateway(getState);
     dependenciesRef.restaurantGateway = GatewayFactory.createRestaurantGateway();
 
+    // Terminal gateway
+    dependenciesRef.terminalReservationGateway = GatewayFactory.createTerminalReservationGateway();
+
     // Backoffice gateways
     dependenciesRef.restaurantManagementGateway = BackofficeGatewayFactory.createRestaurantManagementGateway();
     dependenciesRef.tableManagementGateway = BackofficeGatewayFactory.createTableManagementGateway();

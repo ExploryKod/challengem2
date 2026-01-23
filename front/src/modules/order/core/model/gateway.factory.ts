@@ -3,6 +3,7 @@ import { IMealGateway } from "@taotask/modules/order/core/gateway/meal.gateway";
 import { IMenuGateway } from "@taotask/modules/order/core/gateway/menu.gateway";
 import { IReservationGateway } from "@taotask/modules/order/core/gateway/reservation.gateway";
 import { IRestaurantGateway } from "@taotask/modules/order/core/gateway/restaurant.gateway";
+import { ITerminalReservationGateway } from "@taotask/modules/terminal/core/gateway/terminal-reservation.gateway";
 import { InMemoryTableGateway } from "@taotask/modules/order/core/gateway-infra/in-memory.table-gateway";
 import { InMemoryMealGateway } from "@taotask/modules/order/core/gateway-infra/in-memory.meal-gateway";
 import { InMemoryRestaurantGateway } from "@taotask/modules/order/core/gateway-infra/in-memory.restaurant-gateway";
@@ -11,6 +12,7 @@ import { HttpMealGateway } from "@taotask/modules/order/core/gateway/http.meal-g
 import { HttpMenuGateway } from "@taotask/modules/order/core/gateway/http.menu-gateway";
 import { HttpRestaurantGateway } from "@taotask/modules/order/core/gateway/http.restaurant-gateway";
 import { HttpReservationGateway } from "@taotask/modules/order/core/gateway/http.reservation-gateway";
+import { HttpTerminalReservationGateway } from "@taotask/modules/terminal/core/gateway/http.terminal-reservation-gateway";
 import { API_CONFIG } from "@taotask/modules/app/config/api.config";
 import { AppState } from "@taotask/modules/store/store";
 import { MockReservationGateway } from "@taotask/modules/order/core/testing/mock.reservation-gateway";
@@ -49,5 +51,9 @@ export class GatewayFactory {
 
     static createMenuGateway(): IMenuGateway {
         return new HttpMenuGateway(this.httpClient);
+    }
+
+    static createTerminalReservationGateway(): ITerminalReservationGateway {
+        return new HttpTerminalReservationGateway(this.httpClient);
     }
 }

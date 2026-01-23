@@ -10,18 +10,26 @@ export const lookupReservation = (code: string) => async (
 ) => {
     dispatch(terminalActions.setLookupLoading());
 
-    const reservation = await terminalReservationGateway?.getByCode(code);
+    try {
+        const reservation = await terminalReservationGateway?.getByCode(code);
 
-    if (!reservation) {
-        dispatch(terminalActions.setLookupError('Reservation non trouvee'));
-        return;
-    }
+        if (!reservation) {
+            dispatch(terminalActions.setLookupError('Reservation non trouvee'));
+            return;
+        }
 
-    dispatch(terminalActions.setReservation(reservation));
+        dispatch(terminalActions.setReservation(reservation));
 
-    if (TerminalDomainModel.hasPreOrders(reservation)) {
-        dispatch(terminalActions.goToConfirmation());
-    } else {
-        dispatch(terminalActions.goToMenuBrowse());
+        // Set restaurantId from the reservation if not already set
+        dispatch(terminalActions.setRestaurantId(reservation.restaurantId.toString()));
+
+        if (TerminalDomainModel.hasPreOrders(reservation)) {
+            dispatch(terminalActions.goToConfirmation());
+        } else {
+            dispatch(terminalActions.goToMenuBrowse());
+        }
+    } catch (error) {
+        console.error('Error looking up reservation:', error);
+        dispatch(terminalActions.setLookupError('Erreur lors de la recherche de la reservation'));
     }
 };

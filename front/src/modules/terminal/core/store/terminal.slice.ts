@@ -67,17 +67,14 @@ export const terminalSlice = createSlice({
         goToConfirmation: (state) => {
             state.step = TerminalDomainModel.TerminalStep.CONFIRMATION;
         },
+        goToPreOrder: (state) => {
+            state.step = TerminalDomainModel.TerminalStep.PRE_ORDER;
+        },
         setError: (state, action: PayloadAction<string>) => {
             state.error = action.payload;
         },
         clearError: (state) => {
             state.error = null;
-        },
-        goToPreOrder: (state) => {
-            state.step = TerminalDomainModel.TerminalStep.PRE_ORDER;
-        },
-        skipToConfirmation: (state) => {
-            state.step = TerminalDomainModel.TerminalStep.CONFIRMATION;
         },
         reset: () => initialState,
     },
