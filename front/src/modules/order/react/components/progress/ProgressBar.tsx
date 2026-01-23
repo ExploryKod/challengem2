@@ -3,6 +3,7 @@ import { OrderingDomainModel } from '@taotask/modules/order/core/model/ordering.
 
 interface ProgressBarProps {
   step: OrderingDomainModel.OrderingStep;
+  isQrMode?: boolean;
 }
 
 const STEP_LABELS: Record<OrderingDomainModel.OrderingStep, string> = {
@@ -13,12 +14,28 @@ const STEP_LABELS: Record<OrderingDomainModel.OrderingStep, string> = {
   [OrderingDomainModel.OrderingStep.MEALS]: 'Commandes',
   [OrderingDomainModel.OrderingStep.SUMMARY]: 'Résumé',
   [OrderingDomainModel.OrderingStep.RESERVED]: 'Confirmé',
+  [OrderingDomainModel.OrderingStep.QR_GUESTS]: 'Nombre de convives',
 };
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({ step }) => {
-  // RESERVED step is excluded from progress (confirmation only)
-  const totalSteps = 6;
-  const currentStep = step >= OrderingDomainModel.OrderingStep.RESERVED ? totalSteps : step + 1;
+// QR mode has 3 steps: QR_GUESTS (1), MEALS (2), SUMMARY (3)
+const QR_STEP_MAP: Partial<Record<OrderingDomainModel.OrderingStep, number>> = {
+  [OrderingDomainModel.OrderingStep.QR_GUESTS]: 1,
+  [OrderingDomainModel.OrderingStep.MEALS]: 2,
+  [OrderingDomainModel.OrderingStep.SUMMARY]: 3,
+};
+
+export const ProgressBar: React.FC<ProgressBarProps> = ({ step, isQrMode = false }) => {
+  // QR mode: 3 steps (QR_GUESTS, MEALS, SUMMARY)
+  // Normal mode: 6 steps (RESTAURANT to SUMMARY, excluding RESERVED)
+  const totalSteps = isQrMode ? 3 : 6;
+
+  let currentStep: number;
+  if (isQrMode) {
+    currentStep = QR_STEP_MAP[step] || 1;
+  } else {
+    currentStep = step >= OrderingDomainModel.OrderingStep.RESERVED ? totalSteps : step + 1;
+  }
+
   const percentage = (currentStep / totalSteps) * 100;
 
   return (

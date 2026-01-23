@@ -3,9 +3,12 @@ import { OrderingDomainModel } from '@taotask/modules/order/core/model/ordering.
 import { useAppDispatch } from '@taotask/modules/store/store';
 import { orderingActions } from '@taotask/modules/order/core/store/ordering.slice';
 import { useDependencies } from '@taotask/modules/app/react/DependenciesProvider';
+import { initQrMode } from '@taotask/modules/order/core/useCase/init-qr-mode.usecase';
 
 export interface UseOrderPageOptions {
     restaurantId?: string;
+    tableId?: string;
+    qrRestaurantId?: string;
 }
 
 const EMPTY_RESTAURANT_LIST: OrderingDomainModel.RestaurantList = {
@@ -17,6 +20,7 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
     const dispatch = useAppDispatch();
     const dependencies = useDependencies();
     const isTerminalMode = !!options?.restaurantId;
+    const isQrMode = !!(options?.tableId && options?.qrRestaurantId);
 
     const animText = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
@@ -66,11 +70,25 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
         }
     }, [dependencies.restaurantGateway, dispatch, fetchMealsForRestaurant]);
 
+    const initQrModeFlow = useCallback(async (restaurantId: string, tableId: string) => {
+        try {
+            const restaurants = await dependencies.restaurantGateway?.getRestaurants() || [];
+            const restaurant = restaurants.find(r => r.id === restaurantId);
+            if (restaurant) {
+                setRestaurantList({ restaurants: [restaurant], restaurantId });
+                fetchMealsForRestaurant();
+            }
+            dispatch(initQrMode({ restaurantId, tableId }));
+        } catch (error) {
+            console.error('Failed to init QR mode:', error);
+        }
+    }, [dependencies.restaurantGateway, dispatch, fetchMealsForRestaurant]);
+
     useEffect(() => {
-        if (!isTerminalMode) {
+        if (!isTerminalMode && !isQrMode) {
             displayRestaurants();
         }
-    }, [isTerminalMode, displayRestaurants]);
+    }, [isTerminalMode, isQrMode, displayRestaurants]);
 
     useEffect(() => {
         if (isTerminalMode && options?.restaurantId) {
@@ -78,8 +96,15 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
         }
     }, [isTerminalMode, options?.restaurantId, initTerminalMode]);
 
+    useEffect(() => {
+        if (isQrMode && options?.qrRestaurantId && options?.tableId) {
+            initQrModeFlow(options.qrRestaurantId, options.tableId);
+        }
+    }, [isQrMode, options?.qrRestaurantId, options?.tableId, initQrModeFlow]);
+
     return {
         isTerminalMode,
+        isQrMode,
         bottomRef,
         selectRestaurant,
         restaurantList,

@@ -12,14 +12,18 @@ import { SummarySection } from "@taotask/modules/order/react/sections/summary/Su
 import { ReservedSection } from "@taotask/modules/order/react/sections/reserved/ReservedSection";
 import { ProgressBar } from "@taotask/modules/order/react/components/progress/ProgressBar";
 import { MealsPreviewSection } from "@taotask/modules/order/react/sections/meals-preview/MealsPreviewSection";
+import { QrGuestSection } from "@taotask/modules/order/react/sections/qr-guests/QrGuestSection";
 
 export interface OrderPageProps {
   restaurantId?: string;
+  tableId?: string;
+  qrRestaurantId?: string;
 }
 
-export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId }) => {
-  const presenter = useOrderPage({ restaurantId });
+export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId, tableId, qrRestaurantId }) => {
+  const presenter = useOrderPage({ restaurantId, tableId, qrRestaurantId });
   const step = useSelector((state: AppState) => state.ordering.step);
+  const qrError = useSelector((state: AppState) => state.ordering.qrError);
 
   const restaurantName = presenter.restaurantList.restaurants.find(
     r => r.id === presenter.restaurantList.restaurantId
@@ -31,10 +35,17 @@ export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId }) => {
       <div className="pt-5 pb-2 px-4 sm:px-6 lg:px-8 w-full content-section-minh bg-gradient-to-b from-luminous-bg-primary to-luminous-bg-secondary flex flex-col gap-6 sm:gap-8 lg:gap-10">
         {/* Progress Bar - show for all steps except RESERVED */}
         {step !== OrderingDomainModel.OrderingStep.RESERVED && (
-          <ProgressBar step={step} />
+          <ProgressBar step={step} isQrMode={presenter.isQrMode} />
         )}
 
-        {!presenter.isTerminalMode &&
+        {/* QR Error display */}
+        {qrError && (
+          <div className="mx-auto max-w-md p-4 bg-luminous-rose/10 border border-luminous-rose rounded-lg text-luminous-rose text-center">
+            {qrError}
+          </div>
+        )}
+
+        {!presenter.isTerminalMode && !presenter.isQrMode &&
           (step === OrderingDomainModel.OrderingStep.RESTAURANT ||
             step === OrderingDomainModel.OrderingStep.MEALS_PREVIEW) && (
             <RestaurantSection
@@ -54,6 +65,9 @@ export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId }) => {
 
         {presenter.restaurantList.restaurantId &&
           step === OrderingDomainModel.OrderingStep.TABLE && <TableSection />}
+
+        {/* QR Guest Section */}
+        {step === OrderingDomainModel.OrderingStep.QR_GUESTS && <QrGuestSection />}
 
         {presenter.restaurantList.restaurantId &&
           step === OrderingDomainModel.OrderingStep.GUESTS && (
