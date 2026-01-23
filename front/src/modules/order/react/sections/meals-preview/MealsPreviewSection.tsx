@@ -5,17 +5,32 @@ import Image from 'next/image';
 import { useMealsPreview } from './use-meals-preview.hook';
 import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
 import { LuminousButton } from '@taotask/modules/order/react/components/ui/LuminousButton';
+import { Check } from 'lucide-react';
 
 export interface MealsPreviewSectionProps {
   meals: OrderingDomainModel.Meal[];
   restaurantName: string;
 }
 
+const MEAL_TYPE_LABELS: Record<OrderingDomainModel.MealType, string> = {
+  ENTRY: 'E',
+  MAIN_COURSE: 'P',
+  DESSERT: 'D',
+  DRINK: 'B',
+};
+
+const formatMenuItems = (items: OrderingDomainModel.MenuItem[]): string => {
+  return items
+    .filter(item => item.quantity > 0)
+    .map(item => `${item.quantity}${MEAL_TYPE_LABELS[item.mealType]}`)
+    .join(' + ');
+};
+
 export const MealsPreviewSection: React.FC<MealsPreviewSectionProps> = ({ meals, restaurantName }) => {
   const presenter = useMealsPreview({ meals, restaurantName });
 
   const mealTypes: Record<OrderingDomainModel.MealType, string> = {
-    "ENTRY": "Entrée",
+    "ENTRY": "Entree",
     "MAIN_COURSE": "Plat",
     "DESSERT": "Dessert",
     "DRINK": "Boisson",
@@ -46,7 +61,7 @@ export const MealsPreviewSection: React.FC<MealsPreviewSectionProps> = ({ meals,
     <LuminousCard className="mx-auto py-8 sm:py-12 w-full max-w-[1200px] animate-fade-in-down">
       <div className="flex flex-col mx-auto mb-5 w-full">
         <h3 className="mx-auto my-3 font-display font-medium text-luminous-text-primary text-xl sm:text-2xl uppercase text-center tracking-wide">
-          Découvrez notre carte
+          Decouvrez notre carte
         </h3>
         {presenter.restaurantName && (
           <p className="text-center text-luminous-gold text-sm sm:text-base mb-2">
@@ -54,10 +69,75 @@ export const MealsPreviewSection: React.FC<MealsPreviewSectionProps> = ({ meals,
           </p>
         )}
         <div className="h-1 w-16 bg-luminous-gold mx-auto my-4" />
-        <p className="mx-auto text-luminous-text-secondary text-sm italic text-center mb-4 max-w-[600px]">
-          Parcourez les plats disponibles avant de réserver votre table
-        </p>
       </div>
+
+      {/* Menu Bundles Section */}
+      {presenter.menus.length > 0 && (
+        <div className="mb-10">
+          <h4 className="text-lg font-display font-medium text-luminous-text-primary mb-4 uppercase tracking-wide">
+            Nos Menus
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {presenter.menus.map((menu) => {
+              const isSelected = presenter.selectedMenuId === menu.id;
+              return (
+                <div
+                  key={menu.id}
+                  onClick={() => presenter.onSelectMenu(isSelected ? null : menu.id)}
+                  className="cursor-pointer"
+                >
+                  <div className={`relative rounded-xl overflow-hidden border-2 ${isSelected ? 'border-luminous-gold' : 'border-luminous-gold-border'} bg-luminous-bg-card shadow-[0_4px_20px_rgba(201,162,39,0.08)] hover:shadow-[0_8px_30px_rgba(201,162,39,0.12)] transition-all duration-300`}>
+                    {/* Selected checkmark */}
+                    {isSelected && (
+                      <div className="absolute top-3 right-3 z-10 w-7 h-7 bg-luminous-sage rounded-full flex items-center justify-center">
+                        <Check className="w-5 h-5 text-white" />
+                      </div>
+                    )}
+
+                    {/* Menu image */}
+                    {menu.imageUrl && (
+                      <Image
+                        width={400}
+                        height={200}
+                        src={menu.imageUrl}
+                        alt={menu.title}
+                        className="w-full h-[140px] object-cover"
+                      />
+                    )}
+
+                    {/* Menu info */}
+                    <div className="p-4">
+                      <h5 className="text-base font-semibold text-luminous-text-primary mb-1">
+                        {menu.title}
+                      </h5>
+                      <p className="text-sm text-luminous-text-secondary mb-2">
+                        {menu.description}
+                      </p>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-luminous-gold-muted">
+                          {formatMenuItems(menu.items)}
+                        </span>
+                        <span className="text-lg font-bold text-luminous-gold">
+                          {menu.price} EUR
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center my-8">
+            <div className="flex-1 h-px bg-luminous-gold-border"></div>
+            <span className="px-4 text-sm text-luminous-text-muted italic">
+              Ou composez a la carte
+            </span>
+            <div className="flex-1 h-px bg-luminous-gold-border"></div>
+          </div>
+        </div>
+      )}
 
       {/* Meals by category */}
       <div className="flex flex-col gap-8">
@@ -97,7 +177,7 @@ export const MealsPreviewSection: React.FC<MealsPreviewSectionProps> = ({ meals,
                           {meal.title}
                         </h5>
                         <p className="text-sm font-semibold text-luminous-gold text-center mt-1">
-                          {meal.price} €
+                          {meal.price} EUR
                         </p>
                         {meal.requiredAge && (
                           <p className="text-xs text-luminous-rose text-center mt-1">
@@ -114,13 +194,22 @@ export const MealsPreviewSection: React.FC<MealsPreviewSectionProps> = ({ meals,
         })}
       </div>
 
+      {/* Selected menu indicator */}
+      {presenter.selectedMenu && (
+        <div className="mt-6 p-4 bg-luminous-sage/10 border border-luminous-sage rounded-xl">
+          <p className="text-center text-luminous-sage font-medium">
+            Menu selectionne : {presenter.selectedMenu.title} ({presenter.selectedMenu.price} EUR/pers.)
+          </p>
+        </div>
+      )}
+
       {/* Navigation */}
       <div className="flex flex-col sm:flex-row justify-center gap-3 mx-auto w-full mt-8">
         <LuminousButton
           onClick={presenter.onPrevious}
           variant="secondary"
         >
-          Précédent
+          Precedent
         </LuminousButton>
         <LuminousButton
           onClick={presenter.onContinue}
