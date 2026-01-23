@@ -51,6 +51,15 @@ export const SummarySection = () => {
 
                     <div className="mt-4 mb-3">
                         <p className="font-display font-medium text-luminous-text-primary text-lg">{guest.name}</p>
+                        {guest.menuTitle ? (
+                            <span className="bg-luminous-gold/20 text-luminous-gold px-2 py-0.5 rounded text-xs">
+                                {guest.menuTitle}
+                            </span>
+                        ) : (
+                            <span className="bg-luminous-bg-secondary text-luminous-text-muted px-2 py-0.5 rounded text-xs">
+                                A la carte
+                            </span>
+                        )}
                     </div>
 
                     <div className="flex flex-col justify-center items-center grow gap-1">
@@ -96,12 +105,32 @@ export const SummarySection = () => {
 
         {/* Price Total */}
         <div className="bg-luminous-bg-secondary border-2 border-luminous-gold rounded-xl p-4 mx-auto max-w-[400px] mt-6">
-            <p className="text-center font-display font-medium text-lg text-luminous-text-primary">
-                Total estimé
+            <p className="text-center font-display font-medium text-lg text-luminous-text-primary mb-3">
+                Recapitulatif
             </p>
-            <p className="text-center text-2xl font-bold text-luminous-gold mt-2">
-                {presenter.totalPrice} €
-            </p>
+
+            {/* Menu breakdown */}
+            {Object.entries(presenter.priceBreakdown.menusByType).map(([menuName, data]) => (
+                <div key={menuName} className="flex justify-between text-sm text-luminous-text-secondary mb-1">
+                    <span>{data.count}x {menuName}</span>
+                    <span>{(data.count * data.price).toFixed(2)} €</span>
+                </div>
+            ))}
+
+            {/* A la carte */}
+            {presenter.priceBreakdown.hasAlaCarte && (
+                <div className="flex justify-between text-sm text-luminous-text-secondary mb-1">
+                    <span>A la carte</span>
+                    <span>{presenter.priceBreakdown.alaCarteTotal.toFixed(2)} €</span>
+                </div>
+            )}
+
+            <div className="border-t border-luminous-gold-border my-2"></div>
+
+            <div className="flex justify-between">
+                <span className="font-medium text-luminous-text-primary">Total estime</span>
+                <span className="text-xl font-bold text-luminous-gold">{presenter.totalPrice} €</span>
+            </div>
             <p className="text-center text-xs text-luminous-text-muted mt-1 italic">
                 (hors pourboire)
             </p>
