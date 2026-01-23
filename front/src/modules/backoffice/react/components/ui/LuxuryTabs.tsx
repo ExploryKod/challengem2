@@ -19,7 +19,7 @@ export const LuxuryTabs: React.FC<LuxuryTabsProps> = ({
 }) => {
   return (
     <div className="border-b border-luxury-gold-border">
-      <nav className="flex gap-8" aria-label="Tabs" role="tablist">
+      <nav className="flex gap-6 sm:gap-8 whitespace-nowrap" aria-label="Tabs" role="tablist">
         {tabs.map((tab) => {
           const isActive = tab.id === activeTab;
           return (
