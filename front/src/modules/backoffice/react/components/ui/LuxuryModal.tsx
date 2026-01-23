@@ -19,10 +19,13 @@ export const LuxuryModal: React.FC<LuxuryModalProps> = ({
   const previouslyFocusedElement = useRef<HTMLElement | null>(null);
   const titleId = 'luxury-modal-title';
 
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -57,7 +60,9 @@ export const LuxuryModal: React.FC<LuxuryModalProps> = ({
       document.body.style.overflow = 'unset';
       previouslyFocusedElement.current?.focus();
     };
-  }, [isOpen, onClose]);
+    // onClose intentionally excluded - using ref to avoid effect re-run on callback identity change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
