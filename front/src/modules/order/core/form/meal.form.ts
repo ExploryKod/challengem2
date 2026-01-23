@@ -73,7 +73,8 @@ export class MealForm {
             if(!guest) {
                 return;
             }
-           guest.meals.entry = mealId;
+            // Toggle: if same meal, set to null; otherwise set new meal
+            guest.meals.entry = guest.meals.entry === mealId ? null : mealId;
         });
     }
 
@@ -87,7 +88,8 @@ export class MealForm {
             if(!guest) {
                 return;
             }
-           guest.meals.mainCourse = mealId;
+            // Toggle: if same meal, set to null; otherwise set new meal
+            guest.meals.mainCourse = guest.meals.mainCourse === mealId ? null : mealId;
         });
     }
 
@@ -101,7 +103,8 @@ export class MealForm {
             if(!guest) {
                 return;
             }
-           guest.meals.dessert = mealId;
+            // Toggle: if same meal, set to null; otherwise set new meal
+            guest.meals.dessert = guest.meals.dessert === mealId ? null : mealId;
         });
     }
 
@@ -115,7 +118,8 @@ export class MealForm {
             if(!guest) {
                 return;
             }
-           guest.meals.drink = mealId;
+            // Toggle: if same meal, set to null; otherwise set new meal
+            guest.meals.drink = guest.meals.drink === mealId ? null : mealId;
         });
     }
 
