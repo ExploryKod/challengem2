@@ -81,7 +81,8 @@ export namespace OrderingDomainModel {
         GUESTS = 3,
         MEALS = 4,
         SUMMARY = 5,
-        RESERVED = 6
+        RESERVED = 6,
+        QR_GUESTS = 7
     }
 
     export type Table = {

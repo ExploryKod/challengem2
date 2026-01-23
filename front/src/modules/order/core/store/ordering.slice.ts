@@ -6,6 +6,9 @@ export type OrderingState = {
     form: OrderingDomainModel.Form,
     restaurantId: OrderingDomainModel.RestaurantId,
     isTerminalMode: boolean;
+    isQrMode: boolean;
+    qrTableCapacity: number | null;
+    qrError: string | null;
     selectedMenuId: string | null;
     availableTables: {
         data: OrderingDomainModel.Table[];
@@ -40,6 +43,9 @@ export const initialState: OrderingState = {
     },
     restaurantId: null,
     isTerminalMode: false,
+    isQrMode: false,
+    qrTableCapacity: null,
+    qrError: null,
     selectedMenuId: null,
     availableTables: {
         status: 'idle',
@@ -149,6 +155,28 @@ export const orderingSlice = createSlice({
         },
         selectMenu: (state, action: PayloadAction<string | null>) => {
             state.selectedMenuId = action.payload;
+        },
+        // QR Mode reducers
+        initQrMode: (state, action: PayloadAction<{ restaurantId: string; tableId: string }>) => {
+            state.isQrMode = true;
+            state.restaurantId = action.payload.restaurantId;
+            state.form.tableId = action.payload.tableId;
+            state.qrError = null;
+        },
+        setQrTableCapacity: (state, action: PayloadAction<number>) => {
+            state.qrTableCapacity = action.payload;
+        },
+        setQrError: (state, action: PayloadAction<string>) => {
+            state.qrError = action.payload;
+            state.isQrMode = false;
+        },
+        clearQrMode: (state) => {
+            state.isQrMode = false;
+            state.qrTableCapacity = null;
+            state.qrError = null;
+        },
+        chooseQrGuestCount: (state, action: PayloadAction<OrderingDomainModel.Form>) => {
+            state.form = action.payload;
         }
     }
 });
