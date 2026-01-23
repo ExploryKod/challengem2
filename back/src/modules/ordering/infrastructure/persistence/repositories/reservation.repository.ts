@@ -37,10 +37,11 @@ export class ReservationRepository implements IReservationRepository {
   }
 
   async findByCode(code: string): Promise<Reservation | null> {
-    const entity = await this.repository.findOne({
-      where: { reservationCode: code },
-      relations: ['guests'],
-    });
+    const entity = await this.repository
+      .createQueryBuilder('reservation')
+      .leftJoinAndSelect('reservation.guests', 'guest')
+      .where('UPPER(reservation.reservation_code) = :code', { code: code.toUpperCase() })
+      .getOne();
     return entity ? ReservationMapper.toDomain(entity) : null;
   }
 
