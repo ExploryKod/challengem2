@@ -6,9 +6,38 @@ import { AppState, useAppDispatch } from '@taotask/modules/store/store';
 import { chooseGuests } from '@taotask/modules/order/core/useCase/choose-guest.usecase';
 import { IIDProvider } from '@taotask/modules/core/id-provider';
 import { useSelector } from 'react-redux';
+import { orderingActions } from '@taotask/modules/order/core/store/ordering.slice';
 
 export const useGuestSection = () => {
     const selectedMenuId = useSelector((state: AppState) => state.ordering.selectedMenuId);
+    const dispatch = useAppDispatch();
+    const idProvider = useDependencies().idProvider;
+    const guestForm = useRef(new GuestForm(idProvider as IIDProvider));
+    const bottomGuestRef = useRef<HTMLDivElement>(null);
+    const checkBoxOrganizer = useRef<HTMLInputElement>(null);
+    const initialState = useSelector((state: AppState) => state.ordering.form);
+    const hasInitialized = useRef(false);
+
+    const tableCapacity = useSelector((state: AppState) => {
+        const tableId = state.ordering.form.tableId;
+        const table = state.ordering.availableTables.data?.find(t => t.id === tableId);
+        return table?.capacity || 0;
+    });
+
+    const [form, setForm] = useState<OrderingDomainModel.Form>(() => {
+        if (initialState.guests.length === 0 && tableCapacity > 0) {
+            return guestForm.current.initializeGuests(initialState, tableCapacity, selectedMenuId);
+        }
+        return initialState;
+    });
+
+    useEffect(() => {
+        if (!hasInitialized.current && form.guests.length === 0 && tableCapacity > 0) {
+            const newState = guestForm.current.initializeGuests(form, tableCapacity, selectedMenuId);
+            setForm(newState);
+            hasInitialized.current = true;
+        }
+    }, [tableCapacity, selectedMenuId, form]);
 
     function addGuest() {
         const newState = guestForm.current.addGuest(form, selectedMenuId);
@@ -25,32 +54,24 @@ export const useGuestSection = () => {
         const newState = guestForm.current.updateGuest(form, id, key, value);
         setForm(newState);
     }
-        
+
     function changeOrganizer(id:string) {
         const newState = guestForm.current.changeOrganizer(form, id);
         setForm(newState);
     }
 
     function onNext() {
-        dispatch(chooseGuests(form));
+        const formWithDefaults = guestForm.current.applyPlaceholderDefaults(form);
+        dispatch(chooseGuests(formWithDefaults));
+    }
+
+    function onPrevious() {
+        dispatch(orderingActions.setStep(OrderingDomainModel.OrderingStep.TABLE));
     }
 
     function isSubmitable() {
         return guestForm.current.isSubmitable(form)
     }
-    const initialState = useSelector((state: AppState) => state.ordering.form);
-    const dispatch = useAppDispatch();
-    const idProvider = useDependencies().idProvider;
-    const guestForm = useRef(new GuestForm(idProvider as IIDProvider));
-    const bottomGuestRef = useRef<HTMLDivElement>(null);
-    const [form, setForm] = useState<OrderingDomainModel.Form>(initialState);
-    const checkBoxOrganizer = useRef<HTMLInputElement>(null)
-
-    const tableCapacity = useSelector((state: AppState) => {
-        const tableId = state.ordering.form.tableId;
-        const table = state.ordering.availableTables.data?.find(t => t.id === tableId);
-        return table?.capacity || 0;
-    });
 
     useEffect(() => {
         bottomGuestRef.current?.scrollIntoView({behavior: 'smooth'});
@@ -61,6 +82,7 @@ export const useGuestSection = () => {
         removeGuest,
         updateGuest,
         onNext,
+        onPrevious,
         changeOrganizer,
         isSubmitable: isSubmitable(),
         form,
