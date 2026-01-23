@@ -22,7 +22,9 @@ describe('UpdateReservationUseCase', () => {
     reservation.guests = [];
     await repository.save(reservation);
 
-    const result = await useCase.execute(1, { status: ReservationStatus.CONFIRMED });
+    const result = await useCase.execute(1, {
+      status: ReservationStatus.CONFIRMED,
+    });
 
     expect(result).not.toBeNull();
     expect(result!.status).toBe(ReservationStatus.CONFIRMED);
@@ -46,7 +48,9 @@ describe('UpdateReservationUseCase', () => {
   });
 
   it('should return null if reservation not found', async () => {
-    const result = await useCase.execute(999, { status: ReservationStatus.CONFIRMED });
+    const result = await useCase.execute(999, {
+      status: ReservationStatus.CONFIRMED,
+    });
     expect(result).toBeNull();
   });
 });

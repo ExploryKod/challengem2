@@ -3,9 +3,12 @@ import {
   IsNumber,
   IsOptional,
   IsBoolean,
+  IsArray,
+  ValidateNested,
   Min,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { MenuItemDto } from './create-menu.dto';
 
 export class UpdateMenuDto {
   @IsOptional()
@@ -29,4 +32,10 @@ export class UpdateMenuDto {
   @IsOptional()
   @IsBoolean()
   isActive?: boolean;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => MenuItemDto)
+  items?: MenuItemDto[];
 }

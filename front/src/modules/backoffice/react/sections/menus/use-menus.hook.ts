@@ -1,84 +1,79 @@
 import { useState, useEffect, useCallback } from 'react';
+import { BackofficeDomainModel } from '../../../core/model/backoffice.domain-model';
+import { IMenuManagementGateway } from '../../../core/gateway/menu-management.gateway';
+import { HttpMenuManagementGateway } from '../../../core/gateway/http.menu-management-gateway';
+import { HttpClient } from '@taotask/modules/shared/infrastructure/http-client';
 
-export interface Menu {
-    id: number;
-    restaurantId: number;
-    title: string;
-    description: string;
-    price: number;
-    imageUrl: string;
-    isActive: boolean;
-    items: MenuItem[];
+// Create a default gateway instance
+const httpClient = new HttpClient();
+const defaultGateway = new HttpMenuManagementGateway(httpClient);
+
+export interface UseMenusOptions {
+    gateway?: IMenuManagementGateway;
 }
 
-export interface MenuItem {
-    id: number;
-    mealType: string;
-    quantity: number;
-}
+export const useMenus = (restaurantId: number, options: UseMenusOptions = {}) => {
+    const gateway = options.gateway ?? defaultGateway;
 
-export interface CreateMenuInput {
-    restaurantId: number;
-    title: string;
-    description: string;
-    price: number;
-    imageUrl: string;
-    items?: { mealType: string; quantity: number }[];
-}
-
-export const useMenus = (restaurantId: number) => {
-    const [menus, setMenus] = useState<Menu[]>([]);
+    const [menus, setMenus] = useState<BackofficeDomainModel.Menu[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const fetchMenus = useCallback(async () => {
         setIsLoading(true);
+        setError(null);
         try {
-            const response = await fetch(`/api/menus?restaurantId=${restaurantId}`);
-            const data = await response.json();
+            const data = await gateway.getMenus(restaurantId);
             setMenus(data);
-        } catch (error) {
-            console.error('Failed to fetch menus:', error);
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Failed to fetch menus';
+            setError(message);
+            console.error('Failed to fetch menus:', err);
         } finally {
             setIsLoading(false);
         }
-    }, [restaurantId]);
+    }, [restaurantId, gateway]);
 
     useEffect(() => {
         fetchMenus();
     }, [fetchMenus]);
 
-    const createMenu = async (input: CreateMenuInput) => {
+    const createMenu = async (input: BackofficeDomainModel.CreateMenuDTO) => {
+        setError(null);
         try {
-            await fetch('/api/menus', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(input),
-            });
+            await gateway.createMenu(input);
             await fetchMenus();
-        } catch (error) {
-            console.error('Failed to create menu:', error);
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Failed to create menu';
+            setError(message);
+            console.error('Failed to create menu:', err);
+            throw err;
         }
     };
 
-    const updateMenu = async (id: number, data: Partial<Menu>) => {
+    const updateMenu = async (id: number, data: BackofficeDomainModel.UpdateMenuDTO) => {
+        setError(null);
         try {
-            await fetch(`/api/menus/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
+            await gateway.updateMenu(id, data);
             await fetchMenus();
-        } catch (error) {
-            console.error('Failed to update menu:', error);
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Failed to update menu';
+            setError(message);
+            console.error('Failed to update menu:', err);
+            throw err;
         }
     };
 
     const deleteMenu = async (id: number) => {
+        setError(null);
         try {
-            await fetch(`/api/menus/${id}`, { method: 'DELETE' });
+            await gateway.deleteMenu(id);
             await fetchMenus();
-        } catch (error) {
-            console.error('Failed to delete menu:', error);
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Failed to delete menu';
+            setError(message);
+            console.error('Failed to delete menu:', err);
+            throw err;
         }
     };
 
@@ -89,9 +84,11 @@ export const useMenus = (restaurantId: number) => {
     return {
         menus,
         isLoading,
+        error,
         createMenu,
         updateMenu,
         deleteMenu,
         toggleActive,
+        refetch: fetchMenus,
     };
 };

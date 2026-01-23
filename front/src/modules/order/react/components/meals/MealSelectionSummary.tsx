@@ -13,10 +13,14 @@ export const MealSelectionSummary: React.FC<MealSelectionSummaryProps> = ({ gues
     return meals.find(m => m.id === id);
   };
 
-  const entry = getMealById(guest.meals.entry);
-  const mainCourse = getMealById(guest.meals.mainCourse);
-  const dessert = getMealById(guest.meals.dessert);
-  const drink = getMealById(guest.meals.drink);
+  const entry = getMealById(guest.meals.entry?.mealId ?? null);
+  const entryQty = guest.meals.entry?.quantity ?? 0;
+  const mainCourse = getMealById(guest.meals.mainCourse?.mealId ?? null);
+  const mainCourseQty = guest.meals.mainCourse?.quantity ?? 0;
+  const dessert = getMealById(guest.meals.dessert?.mealId ?? null);
+  const dessertQty = guest.meals.dessert?.quantity ?? 0;
+  const drink = getMealById(guest.meals.drink?.mealId ?? null);
+  const drinkQty = guest.meals.drink?.quantity ?? 0;
 
   return (
     <div className="sticky bottom-0 bg-luminous-bg-card border-t-2 border-luminous-gold-border p-4 rounded-t-xl shadow-lg">
@@ -29,7 +33,9 @@ export const MealSelectionSummary: React.FC<MealSelectionSummaryProps> = ({ gues
           {entry ? (
             <>
               <Check className="w-3 h-3 text-luminous-sage" />
-              <span className="text-luminous-text-secondary">{entry.title}</span>
+              <span className="text-luminous-text-secondary">
+                {entryQty > 1 ? `${entryQty}x ` : ''}{entry.title}
+              </span>
             </>
           ) : (
             <>
@@ -43,7 +49,9 @@ export const MealSelectionSummary: React.FC<MealSelectionSummaryProps> = ({ gues
           {mainCourse ? (
             <>
               <Check className="w-3 h-3 text-luminous-sage" />
-              <span className="text-luminous-text-secondary">{mainCourse.title}</span>
+              <span className="text-luminous-text-secondary">
+                {mainCourseQty > 1 ? `${mainCourseQty}x ` : ''}{mainCourse.title}
+              </span>
             </>
           ) : (
             <>
@@ -57,7 +65,9 @@ export const MealSelectionSummary: React.FC<MealSelectionSummaryProps> = ({ gues
           {dessert ? (
             <>
               <Check className="w-3 h-3 text-luminous-sage" />
-              <span className="text-luminous-text-secondary">{dessert.title}</span>
+              <span className="text-luminous-text-secondary">
+                {dessertQty > 1 ? `${dessertQty}x ` : ''}{dessert.title}
+              </span>
             </>
           ) : (
             <>
@@ -71,7 +81,9 @@ export const MealSelectionSummary: React.FC<MealSelectionSummaryProps> = ({ gues
           {drink ? (
             <>
               <Check className="w-3 h-3 text-luminous-sage" />
-              <span className="text-luminous-text-secondary">{drink.title}</span>
+              <span className="text-luminous-text-secondary">
+                {drinkQty > 1 ? `${drinkQty}x ` : ''}{drink.title}
+              </span>
             </>
           ) : (
             <>

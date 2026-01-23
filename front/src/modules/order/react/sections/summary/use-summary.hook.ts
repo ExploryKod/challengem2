@@ -9,7 +9,8 @@ import { useMemo } from 'react';
 type MealSummary = {
     id: string,
     title: string,
-    price: number
+    price: number,
+    quantity: number
 }
 
 type Guest = {
@@ -55,10 +56,15 @@ const selectSummary = (state: AppState, menus: OrderingDomainModel.Menu[]): Summ
 
     const organizerId = state.ordering.form.organizerId;
     const guests = state.ordering.form.guests.map((guest: OrderingDomainModel.Guest) =>  {
-        const entryMeal = guest.meals.entry ? findMealById(guest.meals.entry) : null;
-        const mainCourseMeal = findMealById(guest.meals.mainCourse!)!;
-        const dessertMeal = guest.meals.dessert ? findMealById(guest.meals.dessert) : null;
-        const drinkMeal = guest.meals.drink ? findMealById(guest.meals.drink) : null;
+        const entrySelection = guest.meals.entry;
+        const mainCourseSelection = guest.meals.mainCourse;
+        const dessertSelection = guest.meals.dessert;
+        const drinkSelection = guest.meals.drink;
+
+        const entryMeal = entrySelection ? findMealById(entrySelection.mealId) : null;
+        const mainCourseMeal = mainCourseSelection ? findMealById(mainCourseSelection.mealId) : null;
+        const dessertMeal = dessertSelection ? findMealById(dessertSelection.mealId) : null;
+        const drinkMeal = drinkSelection ? findMealById(drinkSelection.mealId) : null;
         const guestMenu = guest.menuId ? findMenuById(guest.menuId) : null;
 
         return {
@@ -69,10 +75,10 @@ const selectSummary = (state: AppState, menus: OrderingDomainModel.Menu[]): Summ
             menuTitle: guestMenu?.title || null,
             menuPrice: guestMenu?.price || null,
             meals: {
-                entry: entryMeal ? { id: entryMeal.id, title: entryMeal.title, price: entryMeal.price } : null,
-                mainCourse: mainCourseMeal ? { id: mainCourseMeal.id, title: mainCourseMeal.title, price: mainCourseMeal.price } : null,
-                dessert: dessertMeal ? { id: dessertMeal.id, title: dessertMeal.title, price: dessertMeal.price } : null,
-                drink: drinkMeal ? { id: drinkMeal.id, title: drinkMeal.title, price: drinkMeal.price } : null
+                entry: entryMeal ? { id: entryMeal.id, title: entryMeal.title, price: entryMeal.price, quantity: entrySelection?.quantity ?? 1 } : null,
+                mainCourse: mainCourseMeal ? { id: mainCourseMeal.id, title: mainCourseMeal.title, price: mainCourseMeal.price, quantity: mainCourseSelection?.quantity ?? 1 } : null,
+                dessert: dessertMeal ? { id: dessertMeal.id, title: dessertMeal.title, price: dessertMeal.price, quantity: dessertSelection?.quantity ?? 1 } : null,
+                drink: drinkMeal ? { id: drinkMeal.id, title: drinkMeal.title, price: drinkMeal.price, quantity: drinkSelection?.quantity ?? 1 } : null
             },
             restaurantId: guest.restaurantId ? findRestaurantById(guest.restaurantId.toString()): null
         };

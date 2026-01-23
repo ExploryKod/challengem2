@@ -29,10 +29,18 @@ export class ReservationMapper {
     guest.age = ormEntity.age;
     guest.isOrganizer = ormEntity.isOrganizer;
     guest.meals = {
-      entry: ormEntity.entryId,
-      mainCourse: ormEntity.mainCourseId,
-      dessert: ormEntity.dessertId,
-      drink: ormEntity.drinkId,
+      entry: ormEntity.entryId
+        ? { mealId: ormEntity.entryId, quantity: ormEntity.entryQuantity ?? 1 }
+        : null,
+      mainCourse: ormEntity.mainCourseId
+        ? { mealId: ormEntity.mainCourseId, quantity: ormEntity.mainCourseQuantity ?? 1 }
+        : null,
+      dessert: ormEntity.dessertId
+        ? { mealId: ormEntity.dessertId, quantity: ormEntity.dessertQuantity ?? 1 }
+        : null,
+      drink: ormEntity.drinkId
+        ? { mealId: ormEntity.drinkId, quantity: ormEntity.drinkQuantity ?? 1 }
+        : null,
     };
     return guest;
   }
@@ -48,7 +56,8 @@ export class ReservationMapper {
     ormEntity.reservationCode = domain.reservationCode;
     ormEntity.notes = domain.notes ?? null;
     ormEntity.guests =
-      domain.guests?.map((g) => ReservationMapper.guestToOrm(g, domain.id)) ?? [];
+      domain.guests?.map((g) => ReservationMapper.guestToOrm(g, domain.id)) ??
+      [];
     return ormEntity;
   }
 
@@ -64,10 +73,14 @@ export class ReservationMapper {
     ormEntity.lastName = domain.lastName;
     ormEntity.age = domain.age;
     ormEntity.isOrganizer = domain.isOrganizer;
-    ormEntity.entryId = domain.meals?.entry ?? null;
-    ormEntity.mainCourseId = domain.meals?.mainCourse ?? null;
-    ormEntity.dessertId = domain.meals?.dessert ?? null;
-    ormEntity.drinkId = domain.meals?.drink ?? null;
+    ormEntity.entryId = domain.meals?.entry?.mealId ?? null;
+    ormEntity.entryQuantity = domain.meals?.entry?.quantity ?? null;
+    ormEntity.mainCourseId = domain.meals?.mainCourse?.mealId ?? null;
+    ormEntity.mainCourseQuantity = domain.meals?.mainCourse?.quantity ?? null;
+    ormEntity.dessertId = domain.meals?.dessert?.mealId ?? null;
+    ormEntity.dessertQuantity = domain.meals?.dessert?.quantity ?? null;
+    ormEntity.drinkId = domain.meals?.drink?.mealId ?? null;
+    ormEntity.drinkQuantity = domain.meals?.drink?.quantity ?? null;
     return ormEntity;
   }
 }

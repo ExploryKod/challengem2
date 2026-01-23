@@ -89,6 +89,37 @@ export namespace BackofficeDomainModel {
 
     export type UpdateReservationDTO = Partial<Omit<CreateReservationDTO, 'restaurantId'>>;
 
+    // ============ MENU ============
+    export type MenuItem = {
+        id: number;
+        mealType: string;
+        quantity: number;
+    };
+
+    export type Menu = {
+        id: number;
+        restaurantId: number;
+        title: string;
+        description: string;
+        price: number;
+        imageUrl: string;
+        isActive: boolean;
+        items: MenuItem[];
+    };
+
+    export type CreateMenuDTO = {
+        restaurantId: number;
+        title: string;
+        description: string;
+        price: number;
+        imageUrl: string;
+        items?: { mealType: string; quantity: number }[];
+    };
+
+    export type UpdateMenuDTO = Partial<Omit<CreateMenuDTO, 'restaurantId'>> & {
+        isActive?: boolean;
+    };
+
     // ============ HELPERS ============
     export const MealTypeLabels: Record<MealType, string> = {
         ENTRY: 'Entree',

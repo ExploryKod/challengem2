@@ -9,8 +9,14 @@ export interface IReservationRepository {
   findById(id: number): Promise<Reservation | null>;
   findByCode(code: string): Promise<Reservation | null>;
   findByRestaurantId(restaurantId: number): Promise<Reservation[]>;
-  findByRestaurantIdAndStatus(restaurantId: number, status: ReservationStatus): Promise<Reservation[]>;
+  findByRestaurantIdAndStatus(
+    restaurantId: number,
+    status: ReservationStatus,
+  ): Promise<Reservation[]>;
   update(id: number, data: Partial<Reservation>): Promise<Reservation | null>;
-  updateStatus(id: number, status: ReservationStatus): Promise<Reservation | null>;
+  updateStatus(
+    id: number,
+    status: ReservationStatus,
+  ): Promise<Reservation | null>;
   delete(id: number): Promise<void>;
 }

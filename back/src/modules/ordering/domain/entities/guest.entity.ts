@@ -1,8 +1,13 @@
+export interface MealSelection {
+  mealId: number;
+  quantity: number;
+}
+
 export interface GuestMeals {
-  entry: number | null;
-  mainCourse: number | null;
-  dessert: number | null;
-  drink: number | null;
+  entry: MealSelection | null;
+  mainCourse: MealSelection | null;
+  dessert: MealSelection | null;
+  drink: MealSelection | null;
 }
 
 export class Guest {

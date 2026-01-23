@@ -17,7 +17,10 @@ export class UpdateReservationUseCase {
     private readonly reservationRepository: IReservationRepository,
   ) {}
 
-  async execute(id: number, input: UpdateReservationInput): Promise<Reservation | null> {
+  async execute(
+    id: number,
+    input: UpdateReservationInput,
+  ): Promise<Reservation | null> {
     const existing = await this.reservationRepository.findById(id);
     if (!existing) {
       return null;

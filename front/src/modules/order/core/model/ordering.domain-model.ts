@@ -12,6 +12,11 @@ export namespace OrderingDomainModel {
     // Alias pour rendre compréhensible nos string dans dessert: string | null (string est en fait un id)
     export type MealId = string;
     export type RestaurantId = string | number | null;
+
+    export type MealSelection = {
+        mealId: MealId;
+        quantity: number;
+    }
     // Enumération de tous les plats possible
     export enum MealType {
         ENTRY = "ENTRY",
@@ -51,10 +56,10 @@ export namespace OrderingDomainModel {
         lastName: string,
         age: number,
         meals: {
-            entry: MealId | null,
-            mainCourse: MealId | null,
-            dessert: MealId | null,
-            drink : MealId | null
+            entry: MealSelection | null,
+            mainCourse: MealSelection | null,
+            dessert: MealSelection | null,
+            drink : MealSelection | null
         }
         restaurantId: RestaurantId,
         isOrganizer: boolean,

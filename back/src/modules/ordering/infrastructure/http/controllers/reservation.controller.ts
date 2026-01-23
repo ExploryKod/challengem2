@@ -5,7 +5,6 @@ import {
   Put,
   Patch,
   Param,
-  Query,
   Body,
   NotFoundException,
   ParseIntPipe,
@@ -31,10 +30,7 @@ export class ReservationController {
   ) {}
 
   @Get()
-  async findAll(
-    @Query('restaurantId') restaurantId?: string,
-    @Query('status') status?: ReservationStatus,
-  ): Promise<Reservation[]> {
+  async findAll(): Promise<Reservation[]> {
     return this.getReservationsUseCase.execute();
   }
 
@@ -78,7 +74,9 @@ export class ReservationController {
     @Param('id', ParseIntPipe) id: number,
     @Body('status') status: ReservationStatus,
   ): Promise<Reservation> {
-    const reservation = await this.updateReservationUseCase.execute(id, { status });
+    const reservation = await this.updateReservationUseCase.execute(id, {
+      status,
+    });
     if (!reservation) {
       throw new NotFoundException(`Reservation with id ${id} not found`);
     }
