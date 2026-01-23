@@ -6,10 +6,10 @@ export class GuestForm {
         private idProvider:IIDProvider
     ) { }
 
-    addGuest(state:OrderingDomainModel.Form) {
+    addGuest(state:OrderingDomainModel.Form, menuId: string | null = null) {
         // On ajoute ici temporairement le state pour mimer un paradigme fonctionnel
         // Création de Form pour éviter de spécifier via des commentaires qu'il faut un unique organisateur
-        
+
         // Voir le cours sur immer et le paradigme fonctionnel vs impératif, pourquoi ici j'utilise dans produce le p imp.
         return produce(state, (draft: any) => {
             // je peux travailler sur draft comme si c'était un state, de façon immutable dans p. imp.
@@ -20,6 +20,7 @@ export class GuestForm {
                 age: 24,
                 restaurantId: null,
                 isOrganizer: false,
+                menuId: menuId,
                 meals: {entry: null, mainCourse: null, dessert: null, drink: null}
             })
         })
