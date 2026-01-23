@@ -6,6 +6,7 @@ import { LuxuryButton } from '../../components/ui/LuxuryButton';
 import { LuxuryModal } from '../../components/ui/LuxuryModal';
 import { LuxuryInput } from '../../components/ui/LuxuryInput';
 import { useMenus } from './use-menus.hook';
+import { BackofficeDomainModel } from '../../../core/model/backoffice.domain-model';
 
 interface MenusSectionProps {
     restaurantId: number;
@@ -23,12 +24,23 @@ const initialFormData = {
     description: '',
     price: 0,
     imageUrl: '',
+    items: [
+        { mealType: 'ENTRY', quantity: 0 },
+        { mealType: 'MAIN_COURSE', quantity: 0 },
+        { mealType: 'DESSERT', quantity: 0 },
+        { mealType: 'DRINK', quantity: 0 },
+    ],
 };
 
 export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
-    const { menus, isLoading, createMenu, deleteMenu, toggleActive } = useMenus(restaurantId);
+    const { menus, isLoading, error, createMenu, updateMenu, deleteMenu, toggleActive } = useMenus(restaurantId);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [formData, setFormData] = useState(initialFormData);
+
+    // Edit state
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editingMenu, setEditingMenu] = useState<BackofficeDomainModel.Menu | null>(null);
+    const [editFormData, setEditFormData] = useState(initialFormData);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const value = e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
@@ -42,9 +54,46 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
             description: formData.description,
             price: formData.price,
             imageUrl: formData.imageUrl || '/placeholder-menu.jpg',
+            items: formData.items.filter(item => item.quantity > 0),
         });
         setFormData(initialFormData);
         setIsCreateModalOpen(false);
+    };
+
+    const handleEdit = (menu: BackofficeDomainModel.Menu) => {
+        setEditingMenu(menu);
+        setEditFormData({
+            title: menu.title,
+            description: menu.description,
+            price: menu.price,
+            imageUrl: menu.imageUrl,
+            items: [
+                { mealType: 'ENTRY', quantity: menu.items.find(i => i.mealType === 'ENTRY')?.quantity || 0 },
+                { mealType: 'MAIN_COURSE', quantity: menu.items.find(i => i.mealType === 'MAIN_COURSE')?.quantity || 0 },
+                { mealType: 'DESSERT', quantity: menu.items.find(i => i.mealType === 'DESSERT')?.quantity || 0 },
+                { mealType: 'DRINK', quantity: menu.items.find(i => i.mealType === 'DRINK')?.quantity || 0 },
+            ],
+        });
+        setIsEditModalOpen(true);
+    };
+
+    const handleUpdate = async () => {
+        if (!editingMenu) return;
+        await updateMenu(editingMenu.id, {
+            title: editFormData.title,
+            description: editFormData.description,
+            price: editFormData.price,
+            imageUrl: editFormData.imageUrl,
+            items: editFormData.items.filter(item => item.quantity > 0),
+        });
+        setEditFormData(initialFormData);
+        setEditingMenu(null);
+        setIsEditModalOpen(false);
+    };
+
+    const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const value = e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
+        setEditFormData((prev) => ({ ...prev, [e.target.name]: value }));
     };
 
     const handleDelete = async (menuId: number) => {
@@ -55,6 +104,10 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
 
     if (isLoading) {
         return <div className="text-luxury-gold">Chargement des menus...</div>;
+    }
+
+    if (error) {
+        return <div className="text-red-400">{error}</div>;
     }
 
     return (
@@ -111,6 +164,12 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
                             <div className="flex gap-2 mt-4">
                                 <LuxuryButton
                                     variant="secondary"
+                                    onClick={() => handleEdit(menu)}
+                                >
+                                    Modifier
+                                </LuxuryButton>
+                                <LuxuryButton
+                                    variant="secondary"
                                     onClick={() => toggleActive(menu.id, !menu.isActive)}
                                 >
                                     {menu.isActive ? 'Desactiver' : 'Activer'}
@@ -165,9 +224,137 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
                         onChange={handleChange}
                         placeholder="https://example.com/image.jpg"
                     />
+                    {/* Menu Composition */}
+                    <div className="space-y-3">
+                        <label className="text-sm font-medium text-luxury-text-primary">
+                            Composition du menu
+                        </label>
+                        {formData.items.map((item, index) => (
+                            <div key={item.mealType} className="flex items-center justify-between">
+                                <span className="text-sm text-luxury-text-secondary">
+                                    {MEAL_TYPE_LABELS[item.mealType]}
+                                </span>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newItems = [...formData.items];
+                                            newItems[index].quantity = Math.max(0, item.quantity - 1);
+                                            setFormData(prev => ({ ...prev, items: newItems }));
+                                        }}
+                                        className="w-8 h-8 rounded bg-luxury-bg-secondary text-luxury-text-primary hover:bg-luxury-gold/20"
+                                    >
+                                        -
+                                    </button>
+                                    <span className="w-8 text-center text-luxury-text-primary">
+                                        {item.quantity}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newItems = [...formData.items];
+                                            newItems[index].quantity = item.quantity + 1;
+                                            setFormData(prev => ({ ...prev, items: newItems }));
+                                        }}
+                                        className="w-8 h-8 rounded bg-luxury-bg-secondary text-luxury-text-primary hover:bg-luxury-gold/20"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                     <div className="flex gap-4 pt-4">
                         <LuxuryButton onClick={handleCreate}>Creer</LuxuryButton>
                         <LuxuryButton variant="secondary" onClick={() => setIsCreateModalOpen(false)}>
+                            Annuler
+                        </LuxuryButton>
+                    </div>
+                </div>
+            </LuxuryModal>
+
+            {/* Edit Modal */}
+            <LuxuryModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                title="Modifier le menu"
+            >
+                <div className="space-y-4">
+                    <LuxuryInput
+                        label="Nom du menu"
+                        name="title"
+                        value={editFormData.title}
+                        onChange={handleEditChange}
+                        placeholder="Ex: Menu Decouverte"
+                        required
+                    />
+                    <LuxuryInput
+                        label="Description"
+                        name="description"
+                        value={editFormData.description}
+                        onChange={handleEditChange}
+                        placeholder="Ex: Entree + Plat + Dessert"
+                        required
+                    />
+                    <LuxuryInput
+                        label="Prix (EUR)"
+                        name="price"
+                        type="number"
+                        value={editFormData.price}
+                        onChange={handleEditChange}
+                        min={0}
+                        required
+                    />
+                    <LuxuryInput
+                        label="URL de l'image"
+                        name="imageUrl"
+                        value={editFormData.imageUrl}
+                        onChange={handleEditChange}
+                        placeholder="https://example.com/image.jpg"
+                    />
+                    {/* Menu Composition */}
+                    <div className="space-y-3">
+                        <label className="text-sm font-medium text-luxury-text-primary">
+                            Composition du menu
+                        </label>
+                        {editFormData.items.map((item, index) => (
+                            <div key={item.mealType} className="flex items-center justify-between">
+                                <span className="text-sm text-luxury-text-secondary">
+                                    {MEAL_TYPE_LABELS[item.mealType]}
+                                </span>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newItems = [...editFormData.items];
+                                            newItems[index].quantity = Math.max(0, item.quantity - 1);
+                                            setEditFormData(prev => ({ ...prev, items: newItems }));
+                                        }}
+                                        className="w-8 h-8 rounded bg-luxury-bg-secondary text-luxury-text-primary hover:bg-luxury-gold/20"
+                                    >
+                                        -
+                                    </button>
+                                    <span className="w-8 text-center text-luxury-text-primary">
+                                        {item.quantity}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newItems = [...editFormData.items];
+                                            newItems[index].quantity = item.quantity + 1;
+                                            setEditFormData(prev => ({ ...prev, items: newItems }));
+                                        }}
+                                        className="w-8 h-8 rounded bg-luxury-bg-secondary text-luxury-text-primary hover:bg-luxury-gold/20"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="flex gap-4 pt-4">
+                        <LuxuryButton onClick={handleUpdate}>Enregistrer</LuxuryButton>
+                        <LuxuryButton variant="secondary" onClick={() => setIsEditModalOpen(false)}>
                             Annuler
                         </LuxuryButton>
                     </div>
