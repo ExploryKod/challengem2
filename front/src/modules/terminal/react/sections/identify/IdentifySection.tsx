@@ -74,13 +74,13 @@ export const IdentifySection: React.FC = () => {
                         <div className="space-y-6">
                             <LuminousInput
                                 label="Code de reservation"
+                                name="reservationCode"
                                 value={reservationCode}
                                 onChange={(e) => {
                                     setReservationCode(e.target.value.toUpperCase());
                                     dispatch(terminalActions.clearError());
                                 }}
                                 placeholder="ABC123"
-                                className="text-center text-2xl tracking-widest uppercase"
                             />
 
                             {error && (
