@@ -14,10 +14,10 @@ describe('TerminalSection', () => {
 
         // jsdom provides http://localhost as origin by default
         // The URL appears in the main display and in kiosk commands, so use getAllByText
-        const urlElements = screen.getAllByText(/\/order\/42/);
+        const urlElements = screen.getAllByText(/\/terminal\?restaurantId=42/);
         expect(urlElements.length).toBeGreaterThan(0);
         // The main URL display should be present
-        expect(screen.getByText('http://localhost/order/42')).toBeInTheDocument();
+        expect(screen.getByText('http://localhost/terminal?restaurantId=42')).toBeInTheDocument();
     });
 
     it('should render the page title', () => {
@@ -41,7 +41,7 @@ describe('TerminalSection', () => {
         fireEvent.click(copyButton);
 
         expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-            expect.stringContaining('/order/42')
+            expect.stringContaining('/terminal?restaurantId=42')
         );
     });
 
@@ -66,7 +66,7 @@ describe('TerminalSection', () => {
         fireEvent.click(testButton);
 
         expect(mockOpen).toHaveBeenCalledWith(
-            expect.stringContaining('/order/42'),
+            expect.stringContaining('/terminal?restaurantId=42'),
             '_blank'
         );
     });
