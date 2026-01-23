@@ -40,7 +40,7 @@ export const IdentifySection: React.FC = () => {
         }
 
         dispatch(terminalActions.setGuestCount(guestCount));
-        dispatch(terminalActions.skipToConfirmation());
+        dispatch(terminalActions.goToConfirmation());
     };
 
     return (
