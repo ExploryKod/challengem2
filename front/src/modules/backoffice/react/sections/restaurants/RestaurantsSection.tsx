@@ -65,20 +65,40 @@ export const RestaurantsSection: React.FC = () => {
 
                 {!isLoading && !error && restaurants.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
-                        {restaurants.map((restaurant) => (
+                        {restaurants.map((restaurant) => {
+                            const isNotVisible = restaurant.tableCount === 0 || restaurant.mealCount === 0;
+                            const tooltipText = restaurant.tableCount === 0 && restaurant.mealCount === 0
+                                ? 'Ajoutez des tables et des repas pour rendre ce restaurant visible sur la page de commande'
+                                : restaurant.tableCount === 0
+                                ? 'Ajoutez des tables pour rendre ce restaurant visible sur la page de commande'
+                                : 'Ajoutez des repas pour rendre ce restaurant visible sur la page de commande';
+                            return (
                             <LuxuryCard key={restaurant.id} hoverable>
-                                <h3 className="text-xl font-serif text-luxury-text-primary mb-2">
-                                    {restaurant.name}
-                                </h3>
+                                <div className="flex items-start justify-between mb-2">
+                                    <h3 className="text-xl font-serif text-luxury-text-primary">
+                                        {restaurant.name}
+                                    </h3>
+                                    {isNotVisible && (
+                                        <div className="relative group">
+                                            <div className="flex items-center gap-1 bg-luxury-rose/30 text-luxury-rose px-2 py-1 rounded-full text-xs font-medium cursor-help">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                                                </svg>
+                                                <span>Masque</span>
+                                            </div>
+                                            <div className="absolute right-0 top-full mt-2 w-64 p-3 bg-luxury-bg-secondary border border-luxury-gold-border rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                                                <p className="text-luxury-text-primary text-xs">{tooltipText}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                                 <p className="text-luxury-gold-muted mb-1">{restaurant.type}</p>
                                 <p className="text-luxury-text-secondary text-sm mb-2">
                                     {'*'.repeat(restaurant.stars)} ({restaurant.stars} etoiles)
                                 </p>
-                                {restaurant.tableCount !== undefined && (
-                                    <p className="text-luxury-gold-muted text-sm mb-4">
-                                        {restaurant.tableCount} {restaurant.tableCount > 1 ? 'tables' : 'table'}
-                                    </p>
-                                )}
+                                <p className="text-luxury-gold-muted text-sm mb-4">
+                                    {restaurant.tableCount ?? 0} {(restaurant.tableCount ?? 0) > 1 ? 'tables' : 'table'} · {restaurant.mealCount ?? 0} {(restaurant.mealCount ?? 0) > 1 ? 'repas' : 'repas'}
+                                </p>
                                 <LuxuryButton
                                     variant="secondary"
                                     onClick={() => router.push(`/admin/restaurants/${restaurant.id}`)}
@@ -86,7 +106,7 @@ export const RestaurantsSection: React.FC = () => {
                                     Gerer
                                 </LuxuryButton>
                             </LuxuryCard>
-                        ))}
+                        )})}
                     </div>
                 )}
             </div>
