@@ -56,6 +56,7 @@ describe('Add a Guest', () => {
                 age: 24,
                 restaurantId: null,
                 isOrganizer: false,
+                menuId: null,
                 meals: {entry: null, mainCourse: null, dessert: null, drink: null}
             }]
         );
@@ -76,6 +77,7 @@ describe('Add a Guest', () => {
                 age: 24,
                 restaurantId: null,
                 isOrganizer: false,
+                menuId: null,
                 meals: {entry: null, mainCourse: null, dessert: null, drink: null}
             }]
         );
@@ -101,6 +103,7 @@ describe('Remove a Guest', () => {
                 age: 24,
                 restaurantId: null,
                 isOrganizer: false,
+                menuId: null,
                 meals: {entry: null, mainCourse: null, dessert: null, drink: null}
             }
         ]);
