@@ -27,6 +27,8 @@ import { GetMealsUseCase } from './application/use-cases/get-meals.use-case';
 import { GetReservationsUseCase } from './application/use-cases/get-reservations.use-case';
 import { GetReservationByIdUseCase } from './application/use-cases/get-reservation-by-id.use-case';
 import { CreateReservationUseCase } from './application/use-cases/create-reservation.use-case';
+import { UpdateReservationUseCase } from './application/use-cases/update-reservation.use-case';
+import { GetReservationByCodeUseCase } from './application/use-cases/get-reservation-by-code.use-case';
 
 // Controllers
 import { RestaurantController } from './infrastructure/http/controllers/restaurant.controller';
@@ -75,6 +77,8 @@ import { ReservationController } from './infrastructure/http/controllers/reserva
     GetReservationsUseCase,
     GetReservationByIdUseCase,
     CreateReservationUseCase,
+    UpdateReservationUseCase,
+    GetReservationByCodeUseCase,
   ],
   exports: [
     RESTAURANT_REPOSITORY,
