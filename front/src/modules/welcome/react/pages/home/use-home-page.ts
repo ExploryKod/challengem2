@@ -14,6 +14,7 @@ export const useHomePage = () => {
               duration: 1,
               opacity: 1,
             })
+            .to(".subtitle", { duration: 0.6, opacity: 1, y: 0 })
             .to(".button", { duration: 0.5, opacity: 1 });
         }, animText);
 

@@ -13,21 +13,24 @@ export const HeroSection: React.FC = () => {
     };
 
     return (
-        <section className={`hero-section-minh relative overflow-hidden bg-cover bg-no-repeat custom-hero-bg bg-[#458236]`}>
+        <section className="hero-section-minh relative overflow-hidden bg-cover bg-no-repeat custom-hero-bg bg-luxury-bg-primary">
             <div
-                className="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-[hsla(0,0%,0%,0.75)] bg-fixed">
+                className="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-[hsla(0,0%,0%,0.7)] bg-fixed">
                 <div className="flex h-full items-center justify-center">
-                    <div className="px-4 sm:px-6 md:px-12 text-center text-white">
-                        <h1 className={`${fontFamily} opacity-0 title mt-2 mb-8 sm:mb-12 md:mb-16 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-tight sm:leading-normal`}>
-                            Les plus belle tables {city}<br /><span className="text-[#485] square">Accessible sur nos aires de repos</span>
+                    <div className="px-4 sm:px-6 md:px-12 text-center text-luxury-text-primary">
+                        <h1 className={`${fontFamily} opacity-0 title mt-2 mb-4 sm:mb-6 md:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-tight sm:leading-normal`}>
+                            Taste Federation
                         </h1>
+                        <p className="subtitle opacity-0 text-[14px] leading-relaxed text-luxury-text-primary bg-luxury-bg-secondary/70 border border-luxury-gold-border/60 backdrop-blur-sm max-w-3xl mx-auto mb-8 sm:mb-12 md:mb-16 px-4 py-3 rounded-lg">
+                            Taste Federation se donne pour but de rendre accessible en ligne la réservation auprés d&apos;un ensemble de restaurants de luxe parmis les meilleurs de France. Le Hub est basé dans le Mas des Alouettes en Provence au coeur d&apos;un écrin de verdure au <span className="font-semibold">18 route de Senanque sur la D177 prés de Sorgues</span>. Vous pouvez réserver sur place ou depuis chez vous.
+                        </p>
                         <button type="button"
                             onClick={handleDiscover}
-                            className="button opacity-0 font-mono rounded border-2 border-gray-50 px-6 sm:px-[46px] pt-3 sm:pt-[14px] pb-2.5 sm:pb-[12px]
-                            text-xs sm:text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out
-                            hover:border-gray-100 hover:bg-gray-100 hover:bg-opacity-10 hover:text-gray-100
-                            focus:border-gray-100 focus:text-gray-100 focus:outline-none focus:ring-0
-                            active:border-gray-200 active:text-gray-200"
+                            className="button opacity-0 font-mono rounded border-2 border-luxury-gold px-6 sm:px-[46px] pt-3 sm:pt-[14px] pb-2.5 sm:pb-[12px]
+                            text-xs sm:text-sm font-medium uppercase leading-normal text-luxury-gold transition duration-150 ease-in-out
+                            hover:border-luxury-gold hover:bg-luxury-gold/10 hover:text-luxury-gold
+                            focus:border-luxury-gold focus:text-luxury-gold focus:outline-none focus:ring-0
+                            active:border-luxury-gold/80 active:text-luxury-gold"
                             data-te-ripple-init data-te-ripple-color="light">
                             Découvrir
                         </button>
