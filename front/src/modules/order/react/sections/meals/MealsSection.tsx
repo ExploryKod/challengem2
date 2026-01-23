@@ -14,6 +14,10 @@ export const MealsSection = () => {
     return null;
   }
 
+  const guestMenu = presenter.getGuestMenu(presenter.currentGuest);
+  const requiredTypes = presenter.getRequiredMealTypes(presenter.currentGuest);
+  const menuProgress = presenter.getMenuProgress(presenter.currentGuest);
+
   const mealTypes: Record<OrderingDomainModel.MealType, string> = {
     "ENTRY": "Entrée",
     "MAIN_COURSE": "Plat",
@@ -42,21 +46,38 @@ export const MealsSection = () => {
     [OrderingDomainModel.MealType.DRINK]: presenter.getSelectableDrinks(presenter.currentGuest),
   };
 
+  // Filter displayed meal types - only show required categories for menu guests
+  const displayedMealTypes = guestMenu
+    ? Object.values(OrderingDomainModel.MealType).filter(type => requiredTypes.includes(type))
+    : Object.values(OrderingDomainModel.MealType);
+
   return (
     <LuminousCard className="mx-auto py-8 sm:py-12 w-full max-w-[1200px] animate-fade-in-down relative">
       <div className="flex flex-col mx-auto mb-5 w-full">
         <h3 className="mx-auto my-3 font-display font-medium text-luminous-text-primary text-xl sm:text-2xl text-center tracking-wide">
           Commande de {presenter.currentGuest.firstName} {presenter.currentGuest.lastName}
         </h3>
+        {guestMenu && (
+          <div className="flex justify-center mb-2">
+            <span className="bg-luminous-gold/20 text-luminous-gold px-4 py-1 rounded-full text-sm font-medium">
+              {guestMenu.title} - {guestMenu.price} €
+            </span>
+          </div>
+        )}
         <p className="text-center text-luminous-text-secondary text-sm mb-2">
           Invité {presenter.currentGuestIndex + 1}/{presenter.totalGuests}
         </p>
+        {menuProgress && (
+          <p className="text-center text-luminous-text-muted text-sm mb-4">
+            {menuProgress.selected}/{menuProgress.total} selections
+          </p>
+        )}
         <div className="h-1 w-16 bg-luminous-gold mx-auto my-4" />
       </div>
 
       {/* Vertical scroll sections for meal categories */}
       <div className="flex flex-col gap-8 mb-8">
-        {Object.values(OrderingDomainModel.MealType).map((type) => {
+        {displayedMealTypes.map((type) => {
           const meals = groupedMeals[type];
           if (meals.length === 0) return null;
 

@@ -8,6 +8,54 @@ import { chooseMeal } from "@taotask/modules/order/core/useCase/choose-meal.usec
 
 export const useMeals = () => {
     const [currentGuestIndex, setCurrentGuestIndex] = useState(0);
+    const menus: OrderingDomainModel.Menu[] = useSelector((state: AppState) => state.ordering.availableMenus.data);
+
+    function getGuestMenu(guest: OrderingDomainModel.Guest): OrderingDomainModel.Menu | null {
+        if (!guest.menuId) return null;
+        return menus.find(m => m.id === guest.menuId) || null;
+    }
+
+    function getRequiredMealTypes(guest: OrderingDomainModel.Guest): OrderingDomainModel.MealType[] {
+        const menu = getGuestMenu(guest);
+        if (!menu) return []; // À la carte - no requirements
+        return menu.items
+            .filter(item => item.quantity > 0)
+            .map(item => item.mealType);
+    }
+
+    function getMealIdForType(guest: OrderingDomainModel.Guest, mealType: OrderingDomainModel.MealType): string | null {
+        switch (mealType) {
+            case OrderingDomainModel.MealType.ENTRY: return guest.meals.entry;
+            case OrderingDomainModel.MealType.MAIN_COURSE: return guest.meals.mainCourse;
+            case OrderingDomainModel.MealType.DESSERT: return guest.meals.dessert;
+            case OrderingDomainModel.MealType.DRINK: return guest.meals.drink;
+        }
+    }
+
+    function isGuestComplete(guest: OrderingDomainModel.Guest): boolean {
+        const menu = getGuestMenu(guest);
+        if (!menu) return true; // À la carte always valid
+
+        return menu.items.every(item => {
+            if (item.quantity === 0) return true;
+            const mealId = getMealIdForType(guest, item.mealType);
+            return mealId !== null;
+        });
+    }
+
+    function getMenuProgress(guest: OrderingDomainModel.Guest): { selected: number; total: number } | null {
+        const menu = getGuestMenu(guest);
+        if (!menu) return null;
+
+        const requiredItems = menu.items.filter(item => item.quantity > 0);
+        const total = requiredItems.length;
+        const selected = requiredItems.filter(item => {
+            const mealId = getMealIdForType(guest, item.mealType);
+            return mealId !== null;
+        }).length;
+
+        return { selected, total };
+    }
 
     function findGuestById(guestId: string) {
         return form.guests.find(guest => guest.id === guestId);
@@ -147,5 +195,10 @@ export const useMeals = () => {
         isFirstGuest,
         isSubmittable: isSubmittable(),
         onMealSelected: assignMeals,
+        menus,
+        getGuestMenu,
+        getRequiredMealTypes,
+        isGuestComplete,
+        getMenuProgress,
     }
 }
