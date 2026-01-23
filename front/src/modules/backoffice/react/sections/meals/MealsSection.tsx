@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { LuxuryCard } from '../../components/ui/LuxuryCard';
 import { LuxuryButton } from '../../components/ui/LuxuryButton';
 import { LuxuryModal } from '../../components/ui/LuxuryModal';
@@ -121,6 +122,19 @@ export const MealsSection: React.FC<MealsSectionProps> = ({ restaurantId }) => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {typeMeals.map((meal) => (
                                         <LuxuryCard key={meal.id} hoverable>
+                                            {meal.imageUrl && (
+                                                <div className="relative w-full h-32 mb-3 rounded-lg overflow-hidden">
+                                                    <Image
+                                                        src={meal.imageUrl}
+                                                        alt={meal.title}
+                                                        fill
+                                                        className="object-cover"
+                                                        onError={(e) => {
+                                                            (e.target as HTMLImageElement).src = '/placeholder-meal.jpg';
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
                                             <h4 className="text-lg font-semibold text-luxury-text-primary mb-2">
                                                 {meal.title}
                                             </h4>
