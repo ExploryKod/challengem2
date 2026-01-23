@@ -68,6 +68,11 @@ export const SummarySection = () => {
                                 Eviter l&#39;alcool car vous organisez
                             </p>
                         )}
+                        {guest.menuTitle && !guest.meals.entry && !guest.meals.mainCourse && !guest.meals.dessert && !guest.meals.drink && (
+                            <p className="text-center text-luminous-text-secondary text-sm">
+                                <span className="text-luminous-gold font-medium">Menu:</span> {guest.menuTitle}
+                            </p>
+                        )}
                         {guest.meals.entry && (
                             <p className="text-center text-luminous-text-secondary text-sm">
                                 <span className="text-luminous-meal-entry font-medium">Entrée:</span> {guest.meals.entry.title}
@@ -93,7 +98,7 @@ export const SummarySection = () => {
                                 </p>
                             )}
                         </div>
-                        {!guest.meals.entry && !guest.meals.mainCourse && !guest.meals.dessert && !guest.meals.drink && (
+                        {!guest.menuTitle && !guest.meals.entry && !guest.meals.mainCourse && !guest.meals.dessert && !guest.meals.drink && (
                             <p className="text-center text-luminous-text-muted text-sm italic mt-2">
                                 Aucune commande
                             </p>

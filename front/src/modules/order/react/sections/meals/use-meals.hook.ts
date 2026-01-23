@@ -209,21 +209,24 @@ export const useMeals = () => {
     }
 
     function onSelectMenu(menuId: string | null) {
-        // Dispatch menu selection to Redux
+        // Dispatch menu selection to Redux (UI state)
         dispatch(orderingActions.selectMenu(menuId));
 
         // Get the new menu
         const newMenu = menuId ? menus.find(m => m.id === menuId) || null : null;
 
-        // Clear incompatible meals for the current guest
+        // Update current guest menu + clear incompatible meals
         if (currentGuest) {
-            const updatedGuest = clearIncompatibleMeals(currentGuest, newMenu);
+            const nextGuest = clearIncompatibleMeals(
+                { ...currentGuest, menuId },
+                newMenu
+            );
 
             // Update the form state with the updated guest
             setForm(prevForm => ({
                 ...prevForm,
                 guests: prevForm.guests.map(g =>
-                    g.id === currentGuest.id ? updatedGuest : g
+                    g.id === currentGuest.id ? nextGuest : g
                 )
             }));
         }
