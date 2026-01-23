@@ -1,3 +1,8 @@
+type MealSelection = {
+    mealId: string;
+    quantity: number;
+} | null;
+
 type Guest = {
     id?: string | number,
     firstName: string,
@@ -5,10 +10,10 @@ type Guest = {
     age: number,
     isOrganizer?: boolean,
     meals: {
-        entry: string | null,
-        mainCourse: string | null,
-        dessert: string | null,
-        drink: string | null
+        entry: MealSelection,
+        mainCourse: MealSelection,
+        dessert: MealSelection,
+        drink: MealSelection
     }
 }
 

@@ -66,61 +66,121 @@ export class MealForm {
     assignEntry(
         form: OrderingDomainModel.Form,
         guestId: string | number,
-        mealId: OrderingDomainModel.MealId | null
+        mealId: OrderingDomainModel.MealId | null,
+        quantity: number = 1
     ) {
         return produce(form, draft => {
             const guest = draft.guests.find(guest => guest.id === guestId);
             if(!guest) {
                 return;
             }
-            // Toggle: if same meal, set to null; otherwise set new meal
-            guest.meals.entry = guest.meals.entry === mealId ? null : mealId;
+            // Toggle: if same meal, set to null; otherwise set new meal with quantity
+            if (guest.meals.entry?.mealId === mealId) {
+                guest.meals.entry = null;
+            } else if (mealId) {
+                guest.meals.entry = { mealId, quantity };
+            } else {
+                guest.meals.entry = null;
+            }
         });
     }
 
     assignMainCourse(
         form: OrderingDomainModel.Form,
         guestId: string | number,
-        mealId: OrderingDomainModel.MealId | null
+        mealId: OrderingDomainModel.MealId | null,
+        quantity: number = 1
     ) {
         return produce(form, draft => {
             const guest = draft.guests.find(guest => guest.id === guestId);
             if(!guest) {
                 return;
             }
-            // Toggle: if same meal, set to null; otherwise set new meal
-            guest.meals.mainCourse = guest.meals.mainCourse === mealId ? null : mealId;
+            // Toggle: if same meal, set to null; otherwise set new meal with quantity
+            if (guest.meals.mainCourse?.mealId === mealId) {
+                guest.meals.mainCourse = null;
+            } else if (mealId) {
+                guest.meals.mainCourse = { mealId, quantity };
+            } else {
+                guest.meals.mainCourse = null;
+            }
         });
     }
 
     assignDessert(
         form: OrderingDomainModel.Form,
         guestId: string | number,
-        mealId: OrderingDomainModel.MealId | null
+        mealId: OrderingDomainModel.MealId | null,
+        quantity: number = 1
     ) {
         return produce(form, draft => {
             const guest = draft.guests.find(guest => guest.id === guestId);
             if(!guest) {
                 return;
             }
-            // Toggle: if same meal, set to null; otherwise set new meal
-            guest.meals.dessert = guest.meals.dessert === mealId ? null : mealId;
+            // Toggle: if same meal, set to null; otherwise set new meal with quantity
+            if (guest.meals.dessert?.mealId === mealId) {
+                guest.meals.dessert = null;
+            } else if (mealId) {
+                guest.meals.dessert = { mealId, quantity };
+            } else {
+                guest.meals.dessert = null;
+            }
         });
     }
 
     assignDrink(
         form: OrderingDomainModel.Form,
         guestId: string | number,
-        mealId: OrderingDomainModel.MealId | null
+        mealId: OrderingDomainModel.MealId | null,
+        quantity: number = 1
     ) {
         return produce(form, draft => {
             const guest = draft.guests.find(guest => guest.id === guestId);
             if(!guest) {
                 return;
             }
-            // Toggle: if same meal, set to null; otherwise set new meal
-            guest.meals.drink = guest.meals.drink === mealId ? null : mealId;
+            // Toggle: if same meal, set to null; otherwise set new meal with quantity
+            if (guest.meals.drink?.mealId === mealId) {
+                guest.meals.drink = null;
+            } else if (mealId) {
+                guest.meals.drink = { mealId, quantity };
+            } else {
+                guest.meals.drink = null;
+            }
         });
+    }
+
+    updateQuantity(
+        form: OrderingDomainModel.Form,
+        guestId: string | number,
+        mealType: OrderingDomainModel.MealType,
+        quantity: number
+    ) {
+        return produce(form, draft => {
+            const guest = draft.guests.find(guest => guest.id === guestId);
+            if (!guest) return;
+
+            const mealKey = this.getMealKey(mealType);
+            const currentSelection = guest.meals[mealKey];
+
+            if (currentSelection) {
+                if (quantity <= 0) {
+                    guest.meals[mealKey] = null;
+                } else {
+                    guest.meals[mealKey] = { ...currentSelection, quantity };
+                }
+            }
+        });
+    }
+
+    private getMealKey(mealType: OrderingDomainModel.MealType): keyof OrderingDomainModel.Guest['meals'] {
+        switch (mealType) {
+            case OrderingDomainModel.MealType.ENTRY: return 'entry';
+            case OrderingDomainModel.MealType.MAIN_COURSE: return 'mainCourse';
+            case OrderingDomainModel.MealType.DESSERT: return 'dessert';
+            case OrderingDomainModel.MealType.DRINK: return 'drink';
+        }
     }
 
     isSubmitable(state: OrderingDomainModel.Form) {

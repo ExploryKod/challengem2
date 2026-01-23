@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import type { IMenuRepository } from '../../../application/ports/menu.repository.port';
 import { Menu } from '../../../domain/entities/menu.entity';
 import { MenuOrmEntity } from '../orm-entities/menu.orm-entity';
+import { MenuItemOrmEntity } from '../orm-entities/menu-item.orm-entity';
 import { MenuMapper } from '../mappers/menu.mapper';
 
 @Injectable()
@@ -11,6 +12,8 @@ export class MenuRepository implements IMenuRepository {
   constructor(
     @InjectRepository(MenuOrmEntity)
     private readonly repository: Repository<MenuOrmEntity>,
+    @InjectRepository(MenuItemOrmEntity)
+    private readonly menuItemRepository: Repository<MenuItemOrmEntity>,
   ) {}
 
   async save(menu: Menu): Promise<Menu> {
@@ -64,6 +67,22 @@ export class MenuRepository implements IMenuRepository {
       ...(data.imageUrl && { imageUrl: data.imageUrl }),
       ...(data.isActive !== undefined && { isActive: data.isActive }),
     });
+
+    // Handle items update if provided
+    if (data.items !== undefined) {
+      // Delete existing items
+      await this.menuItemRepository.delete({ menuId: id });
+
+      // Insert new items
+      if (data.items.length > 0) {
+        const newItems = data.items.map((item) => ({
+          menuId: id,
+          mealType: item.mealType,
+          quantity: item.quantity,
+        }));
+        await this.menuItemRepository.save(newItems);
+      }
+    }
 
     return this.findById(id);
   }

@@ -29,8 +29,20 @@ export class GuestDto {
 
   @IsOptional()
   @IsInt()
+  @Min(1)
+  @Type(() => Number)
+  entryQuantity?: number;
+
+  @IsOptional()
+  @IsInt()
   @Type(() => Number)
   mainCourseId?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Type(() => Number)
+  mainCourseQuantity?: number;
 
   @IsOptional()
   @IsInt()
@@ -39,6 +51,18 @@ export class GuestDto {
 
   @IsOptional()
   @IsInt()
+  @Min(1)
+  @Type(() => Number)
+  dessertQuantity?: number;
+
+  @IsOptional()
+  @IsInt()
   @Type(() => Number)
   drinkId?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Type(() => Number)
+  drinkQuantity?: number;
 }

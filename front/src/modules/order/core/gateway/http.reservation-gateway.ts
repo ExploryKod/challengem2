@@ -9,9 +9,13 @@ type BackendGuestDto = {
     age: number;
     isOrganizer: boolean;
     entryId?: string;
+    entryQuantity?: number;
     mainCourseId?: string;
+    mainCourseQuantity?: number;
     dessertId?: string;
+    dessertQuantity?: number;
     drinkId?: string;
+    drinkQuantity?: number;
 }
 
 type BackendCreateReservationDto = {
@@ -29,10 +33,14 @@ const mapReserveDtoToBackend = (dto: ReserveDTO, restaurantId: string): BackendC
             lastName: guest.lastName,
             age: guest.age,
             isOrganizer: guest.isOrganizer || false,
-            entryId: guest.meals.entry || undefined,
-            mainCourseId: guest.meals.mainCourse || undefined,
-            dessertId: guest.meals.dessert || undefined,
-            drinkId: guest.meals.drink || undefined
+            entryId: guest.meals.entry?.mealId || undefined,
+            entryQuantity: guest.meals.entry?.quantity || undefined,
+            mainCourseId: guest.meals.mainCourse?.mealId || undefined,
+            mainCourseQuantity: guest.meals.mainCourse?.quantity || undefined,
+            dessertId: guest.meals.dessert?.mealId || undefined,
+            dessertQuantity: guest.meals.dessert?.quantity || undefined,
+            drinkId: guest.meals.drink?.mealId || undefined,
+            drinkQuantity: guest.meals.drink?.quantity || undefined
         }))
     }
 }

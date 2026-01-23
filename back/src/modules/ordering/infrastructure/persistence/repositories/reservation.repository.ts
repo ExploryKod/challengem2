@@ -40,7 +40,9 @@ export class ReservationRepository implements IReservationRepository {
     const entity = await this.repository
       .createQueryBuilder('reservation')
       .leftJoinAndSelect('reservation.guests', 'guest')
-      .where('UPPER(reservation.reservation_code) = :code', { code: code.toUpperCase() })
+      .where('UPPER(reservation.reservation_code) = :code', {
+        code: code.toUpperCase(),
+      })
       .getOne();
     return entity ? ReservationMapper.toDomain(entity) : null;
   }
@@ -66,7 +68,10 @@ export class ReservationRepository implements IReservationRepository {
     return entities.map(ReservationMapper.toDomain);
   }
 
-  async update(id: number, data: Partial<Reservation>): Promise<Reservation | null> {
+  async update(
+    id: number,
+    data: Partial<Reservation>,
+  ): Promise<Reservation | null> {
     await this.repository.update(id, {
       ...(data.tableId && { tableId: data.tableId }),
       ...(data.status && { status: data.status }),
@@ -75,7 +80,10 @@ export class ReservationRepository implements IReservationRepository {
     return this.findById(id);
   }
 
-  async updateStatus(id: number, status: ReservationStatus): Promise<Reservation | null> {
+  async updateStatus(
+    id: number,
+    status: ReservationStatus,
+  ): Promise<Reservation | null> {
     await this.repository.update(id, { status });
     return this.findById(id);
   }

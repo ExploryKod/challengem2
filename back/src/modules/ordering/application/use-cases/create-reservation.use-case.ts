@@ -12,9 +12,13 @@ export interface CreateReservationGuestInput {
   age: number;
   isOrganizer: boolean;
   entryId?: number;
+  entryQuantity?: number;
   mainCourseId?: number;
+  mainCourseQuantity?: number;
   dessertId?: number;
+  dessertQuantity?: number;
   drinkId?: number;
+  drinkQuantity?: number;
 }
 
 export interface CreateReservationInput {
@@ -45,10 +49,18 @@ export class CreateReservationUseCase {
       guest.age = g.age;
       guest.isOrganizer = g.isOrganizer;
       guest.meals = {
-        entry: g.entryId ?? null,
-        mainCourse: g.mainCourseId ?? null,
-        dessert: g.dessertId ?? null,
-        drink: g.drinkId ?? null,
+        entry: g.entryId
+          ? { mealId: g.entryId, quantity: g.entryQuantity ?? 1 }
+          : null,
+        mainCourse: g.mainCourseId
+          ? { mealId: g.mainCourseId, quantity: g.mainCourseQuantity ?? 1 }
+          : null,
+        dessert: g.dessertId
+          ? { mealId: g.dessertId, quantity: g.dessertQuantity ?? 1 }
+          : null,
+        drink: g.drinkId
+          ? { mealId: g.drinkId, quantity: g.drinkQuantity ?? 1 }
+          : null,
       };
       return guest;
     });

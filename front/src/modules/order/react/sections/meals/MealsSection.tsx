@@ -5,7 +5,21 @@ import { useMeals } from '@taotask/modules/order/react/sections/meals/use-meals.
 import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
 import { LuminousButton } from '@taotask/modules/order/react/components/ui/LuminousButton';
 import { MealSelectionSummary } from '@taotask/modules/order/react/components/meals/MealSelectionSummary';
-import { Check } from 'lucide-react';
+import { Check, Plus, Minus } from 'lucide-react';
+
+const MEAL_TYPE_LABELS: Record<OrderingDomainModel.MealType, string> = {
+  ENTRY: 'E',
+  MAIN_COURSE: 'P',
+  DESSERT: 'D',
+  DRINK: 'B',
+};
+
+const formatMenuItems = (items: OrderingDomainModel.MenuItem[]): string => {
+  return items
+    .filter(item => item.quantity > 0)
+    .map(item => `${item.quantity}${MEAL_TYPE_LABELS[item.mealType]}`)
+    .join(' + ');
+};
 
 export const MealsSection = () => {
   const presenter = useMeals();
@@ -14,8 +28,6 @@ export const MealsSection = () => {
     return null;
   }
 
-  const guestMenu = presenter.getGuestMenu(presenter.currentGuest);
-  const requiredTypes = presenter.getRequiredMealTypes(presenter.currentGuest);
   const menuProgress = presenter.getMenuProgress(presenter.currentGuest);
 
   const mealTypes: Record<OrderingDomainModel.MealType, string> = {
@@ -46,9 +58,16 @@ export const MealsSection = () => {
     [OrderingDomainModel.MealType.DRINK]: presenter.getSelectableDrinks(presenter.currentGuest),
   };
 
-  // Filter displayed meal types - only show required categories for menu guests
-  const displayedMealTypes = guestMenu
-    ? Object.values(OrderingDomainModel.MealType).filter(type => requiredTypes.includes(type))
+  // Get selected menu's required types for filtering
+  const selectedMenuRequiredTypes = presenter.selectedMenu
+    ? presenter.selectedMenu.items
+        .filter(item => item.quantity > 0)
+        .map(item => item.mealType)
+    : [];
+
+  // Filter displayed meal types - only show required categories when a menu is selected
+  const displayedMealTypes = presenter.selectedMenu
+    ? Object.values(OrderingDomainModel.MealType).filter(type => selectedMenuRequiredTypes.includes(type))
     : Object.values(OrderingDomainModel.MealType);
 
   return (
@@ -57,13 +76,6 @@ export const MealsSection = () => {
         <h3 className="mx-auto my-3 font-display font-medium text-luminous-text-primary text-xl sm:text-2xl text-center tracking-wide">
           Commande de {presenter.currentGuest.firstName} {presenter.currentGuest.lastName}
         </h3>
-        {guestMenu && (
-          <div className="flex justify-center mb-2">
-            <span className="bg-luminous-gold/20 text-luminous-gold px-4 py-1 rounded-full text-sm font-medium">
-              {guestMenu.title} - {guestMenu.price} €
-            </span>
-          </div>
-        )}
         <p className="text-center text-luminous-text-secondary text-sm mb-2">
           Invité {presenter.currentGuestIndex + 1}/{presenter.totalGuests}
         </p>
@@ -75,17 +87,82 @@ export const MealsSection = () => {
         <div className="h-1 w-16 bg-luminous-gold mx-auto my-4" />
       </div>
 
+      {/* Menu Selection Section */}
+      {presenter.menus.length > 0 && (
+        <div className="mb-10">
+          <h4 className="text-lg font-display font-medium text-luminous-text-primary mb-4 uppercase tracking-wide">
+            Nos Menus
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {presenter.menus.map((menu) => {
+              const isSelected = presenter.selectedMenuId === menu.id;
+              return (
+                <div
+                  key={menu.id}
+                  onClick={() => presenter.onSelectMenu(isSelected ? null : menu.id)}
+                  className="cursor-pointer"
+                >
+                  <div className={`relative rounded-xl overflow-hidden border-2 ${isSelected ? 'border-luminous-gold' : 'border-luminous-gold-border'} bg-luminous-bg-card shadow-[0_4px_20px_rgba(201,162,39,0.08)] hover:shadow-[0_8px_30px_rgba(201,162,39,0.12)] transition-all duration-300`}>
+                    {/* Selected checkmark */}
+                    {isSelected && (
+                      <div className="absolute top-3 right-3 z-10 w-7 h-7 bg-luminous-sage rounded-full flex items-center justify-center">
+                        <Check className="w-5 h-5 text-white" />
+                      </div>
+                    )}
+
+                    {/* Menu image */}
+                    {menu.imageUrl && (
+                      <Image
+                        width={400}
+                        height={200}
+                        src={menu.imageUrl}
+                        alt={menu.title}
+                        className="w-full h-[140px] object-cover"
+                      />
+                    )}
+
+                    {/* Menu info */}
+                    <div className="p-4">
+                      <h5 className="text-base font-semibold text-luminous-text-primary mb-1">
+                        {menu.title}
+                      </h5>
+                      <p className="text-sm text-luminous-text-secondary mb-2">
+                        {menu.description}
+                      </p>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-luminous-gold-muted">
+                          {formatMenuItems(menu.items)}
+                        </span>
+                        <span className="text-lg font-bold text-luminous-gold">
+                          {menu.price} €
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center my-8">
+            <div className="flex-1 h-px bg-luminous-gold-border"></div>
+            <span className="px-4 text-sm text-luminous-text-muted italic">
+              {presenter.selectedMenu ? `Menu : ${presenter.selectedMenu.title}` : 'À la carte'}
+            </span>
+            <div className="flex-1 h-px bg-luminous-gold-border"></div>
+          </div>
+        </div>
+      )}
+
       {/* Vertical scroll sections for meal categories */}
       <div className="flex flex-col gap-8 mb-8">
         {displayedMealTypes.map((type) => {
           const meals = groupedMeals[type];
           if (meals.length === 0) return null;
 
-          const selectedMealId =
-            type === OrderingDomainModel.MealType.ENTRY ? presenter.currentGuest.meals.entry :
-            type === OrderingDomainModel.MealType.MAIN_COURSE ? presenter.currentGuest.meals.mainCourse :
-            type === OrderingDomainModel.MealType.DESSERT ? presenter.currentGuest.meals.dessert :
-            presenter.currentGuest.meals.drink;
+          const selectedMealId = presenter.getMealIdForType(presenter.currentGuest, type);
+          const selectedQuantity = presenter.getMealQuantityForType(presenter.currentGuest, type);
 
           return (
             <div key={type}>
@@ -141,6 +218,32 @@ export const MealsSection = () => {
                             <p className={`text-xs text-center mt-1 ${isAgeRestricted ? 'text-luminous-rose' : 'text-luminous-text-muted'}`}>
                               {meal.requiredAge}+ ans requis
                             </p>
+                          )}
+                          {/* Quantity controls - only show when selected */}
+                          {isSelected && (
+                            <div className="flex items-center justify-center gap-2 mt-2">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  presenter.decrementQuantity(String(presenter.currentGuest.id), type);
+                                }}
+                                className="w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center hover:bg-luminous-gold/20 transition-colors"
+                              >
+                                <Minus className="w-4 h-4 text-luminous-gold" />
+                              </button>
+                              <span className="text-sm font-bold text-luminous-text-primary min-w-[24px] text-center">
+                                {selectedQuantity}
+                              </span>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  presenter.incrementQuantity(String(presenter.currentGuest.id), type);
+                                }}
+                                className="w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center hover:bg-luminous-gold/20 transition-colors"
+                              >
+                                <Plus className="w-4 h-4 text-luminous-gold" />
+                              </button>
+                            </div>
                           )}
                         </div>
                       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { TerminalSection } from './TerminalSection';
 
 describe('TerminalSection', () => {
@@ -35,25 +35,41 @@ describe('TerminalSection', () => {
     });
 
     it('should copy terminal URL to clipboard when copy button is clicked', async () => {
+        jest.useFakeTimers();
         render(<TerminalSection restaurantId={mockRestaurantId} />);
 
         const copyButton = screen.getByRole('button', { name: 'Copier' });
-        fireEvent.click(copyButton);
+        await act(async () => {
+            fireEvent.click(copyButton);
+        });
 
         expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
             expect.stringContaining('/terminal?restaurantId=42')
         );
+
+        // Clean up the timeout to avoid act() warning
+        await act(async () => {
+            jest.runAllTimers();
+        });
+        jest.useRealTimers();
     });
 
     it('should show "Copié !" after copying', async () => {
+        jest.useFakeTimers();
         render(<TerminalSection restaurantId={mockRestaurantId} />);
 
         const copyButton = screen.getByRole('button', { name: 'Copier' });
-        fireEvent.click(copyButton);
-
-        await waitFor(() => {
-            expect(screen.getByRole('button', { name: 'Copié !' })).toBeInTheDocument();
+        await act(async () => {
+            fireEvent.click(copyButton);
         });
+
+        expect(screen.getByRole('button', { name: 'Copié !' })).toBeInTheDocument();
+
+        // Clean up the timeout
+        await act(async () => {
+            jest.runAllTimers();
+        });
+        jest.useRealTimers();
     });
 
     it('should open terminal URL in new tab when test button is clicked', () => {

@@ -32,4 +32,20 @@ describe('GetReservationByCodeUseCase', () => {
     const result = await useCase.execute('NOTFOUND');
     expect(result).toBeNull();
   });
+
+  it('should find reservation by code case-insensitively', async () => {
+    const reservation = new Reservation();
+    reservation.id = 1;
+    reservation.restaurantId = 1;
+    reservation.tableId = 1;
+    reservation.status = ReservationStatus.PENDING;
+    reservation.reservationCode = 'ABC123';
+    reservation.guests = [];
+    await repository.save(reservation);
+
+    const result = await useCase.execute('abc123');
+
+    expect(result).not.toBeNull();
+    expect(result!.reservationCode).toBe('ABC123');
+  });
 });

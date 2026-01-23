@@ -84,10 +84,10 @@ describe('CreateReservationUseCase', () => {
 
     expect(organizer).toBeDefined();
     expect(organizer!.meals).toEqual({
-      entry: 1,
-      mainCourse: 2,
-      dessert: 3,
-      drink: 4,
+      entry: { mealId: 1, quantity: 1 },
+      mainCourse: { mealId: 2, quantity: 1 },
+      dessert: { mealId: 3, quantity: 1 },
+      drink: { mealId: 4, quantity: 1 },
     });
 
     expect(guest).toBeDefined();
@@ -106,7 +106,9 @@ describe('CreateReservationUseCase', () => {
     const input: CreateReservationInput = {
       restaurantId: 1,
       tableId: 1,
-      guests: [{ firstName: 'John', lastName: 'Doe', age: 30, isOrganizer: true }],
+      guests: [
+        { firstName: 'John', lastName: 'Doe', age: 30, isOrganizer: true },
+      ],
     };
 
     // Act

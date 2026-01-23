@@ -36,12 +36,18 @@ export class InMemoryReservationRepository implements IReservationRepository {
   }
 
   findByCode(code: string): Promise<Reservation | null> {
-    const found = this.reservations.find((r) => r.reservationCode === code) ?? null;
+    const upperCode = code.toUpperCase();
+    const found =
+      this.reservations.find(
+        (r) => r.reservationCode?.toUpperCase() === upperCode,
+      ) ?? null;
     return Promise.resolve(found);
   }
 
   findByRestaurantId(restaurantId: number): Promise<Reservation[]> {
-    const found = this.reservations.filter((r) => r.restaurantId === restaurantId);
+    const found = this.reservations.filter(
+      (r) => r.restaurantId === restaurantId,
+    );
     return Promise.resolve(found);
   }
 
@@ -68,7 +74,10 @@ export class InMemoryReservationRepository implements IReservationRepository {
     return Promise.resolve(this.reservations[index]);
   }
 
-  updateStatus(id: number, status: ReservationStatus): Promise<Reservation | null> {
+  updateStatus(
+    id: number,
+    status: ReservationStatus,
+  ): Promise<Reservation | null> {
     return this.update(id, { status });
   }
 
