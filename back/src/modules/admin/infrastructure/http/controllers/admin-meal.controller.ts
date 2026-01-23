@@ -9,6 +9,8 @@ import {
   Query,
   ParseIntPipe,
   NotFoundException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { GetMealsUseCase } from '../../../application/use-cases/meal/get-meals.use-case';
 import { GetMealUseCase } from '../../../application/use-cases/meal/get-meal.use-case';
@@ -66,6 +68,7 @@ export class AdminMealController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     const deleted = await this.deleteMealUseCase.execute(id);
     if (!deleted) {

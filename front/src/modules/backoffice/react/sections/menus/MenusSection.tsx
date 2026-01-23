@@ -326,9 +326,12 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
                                     <button
                                         type="button"
                                         onClick={() => {
-                                            const newItems = [...editFormData.items];
-                                            newItems[index].quantity = Math.max(0, item.quantity - 1);
-                                            setEditFormData(prev => ({ ...prev, items: newItems }));
+                                            setEditFormData(prev => ({
+                                                ...prev,
+                                                items: prev.items.map((it, i) =>
+                                                    i === index ? { ...it, quantity: Math.max(0, it.quantity - 1) } : it
+                                                )
+                                            }));
                                         }}
                                         className="w-8 h-8 rounded bg-luxury-bg-secondary text-luxury-text-primary hover:bg-luxury-gold/20"
                                     >
@@ -340,9 +343,12 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
                                     <button
                                         type="button"
                                         onClick={() => {
-                                            const newItems = [...editFormData.items];
-                                            newItems[index].quantity = item.quantity + 1;
-                                            setEditFormData(prev => ({ ...prev, items: newItems }));
+                                            setEditFormData(prev => ({
+                                                ...prev,
+                                                items: prev.items.map((it, i) =>
+                                                    i === index ? { ...it, quantity: it.quantity + 1 } : it
+                                                )
+                                            }));
                                         }}
                                         className="w-8 h-8 rounded bg-luxury-bg-secondary text-luxury-text-primary hover:bg-luxury-gold/20"
                                     >

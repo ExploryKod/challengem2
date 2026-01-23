@@ -9,6 +9,8 @@ import {
   Body,
   NotFoundException,
   ParseIntPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { GetMenusUseCase } from '../../../application/use-cases/get-menus.use-case';
 import { CreateMenuUseCase } from '../../../application/use-cases/create-menu.use-case';
@@ -64,6 +66,7 @@ export class MenuController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.deleteMenuUseCase.execute(id);
   }

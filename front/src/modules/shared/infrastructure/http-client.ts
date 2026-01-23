@@ -43,7 +43,12 @@ export class HttpClient {
             return undefined as T;
         }
 
-        return await response.json();
+        const text = await response.text();
+        if (!text) {
+            return undefined as T;
+        }
+
+        return JSON.parse(text);
     }
 
     get<T>(endpoint: string): Promise<T> {

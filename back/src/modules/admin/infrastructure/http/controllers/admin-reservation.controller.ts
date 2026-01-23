@@ -9,6 +9,8 @@ import {
   Query,
   ParseIntPipe,
   NotFoundException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { GetReservationsUseCase } from '../../../application/use-cases/reservation/get-reservations.use-case';
 import { GetReservationUseCase } from '../../../application/use-cases/reservation/get-reservation.use-case';
@@ -67,6 +69,7 @@ export class AdminReservationController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     const deleted = await this.deleteReservationUseCase.execute(id);
     if (!deleted) {

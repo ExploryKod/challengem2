@@ -9,6 +9,8 @@ import {
   Query,
   ParseIntPipe,
   NotFoundException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { GetTablesUseCase } from '../../../application/use-cases/table/get-tables.use-case';
 import { GetTableUseCase } from '../../../application/use-cases/table/get-table.use-case';
@@ -63,6 +65,7 @@ export class AdminTableController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     const deleted = await this.deleteTableUseCase.execute(id);
     if (!deleted) {
