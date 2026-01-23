@@ -5,11 +5,13 @@ import { Dependencies } from "@taotask/modules/store/dependencies";
 import { orderingReducer } from "@taotask/modules/order/core/store/ordering.slice";
 import { registerOrderingStepListener } from "@taotask/modules/order/core/store/ordering.step.listener";
 import { registerFetcherListeners } from "@taotask/modules/order/core/store/fetcher.listener";
-import { backofficeReducer } from "@taotask/modules/backoffice/core/store/backoffice.slice";  // ← AJOUTER
+import { backofficeReducer } from "@taotask/modules/backoffice/core/store/backoffice.slice";
+import { terminalReducer } from "@taotask/modules/terminal/core/store/terminal.slice";
 
 const reducers = combineReducers({
   ordering: orderingReducer,
   backoffice: backofficeReducer,
+  terminal: terminalReducer,
 });
 
 export type AppStore = ReturnType<typeof createStore>;
