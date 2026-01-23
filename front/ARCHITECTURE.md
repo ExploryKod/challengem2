@@ -1,8 +1,8 @@
-# Justification de l'Architecture - Application Papilles des Suds
+# Justification de l'Architecture - Application Taste Federation
 
 ## Introduction
 
-Ce document présente les choix architecturaux du projet **Papilles des Suds**, une application de réservation de restaurants. L'architecture s'appuie sur les principes du **Domain-Driven Design (DDD)** et de la **Clean Architecture** pour garantir maintenabilité, testabilité et évolutivité.
+Ce document présente les choix architecturaux du projet **Taste Federation**, une application de réservation de restaurants. L'architecture s'appuie sur les principes du **Domain-Driven Design (DDD)** et de la **Clean Architecture** pour garantir maintenabilité, testabilité et évolutivité.
 
 ---
 
@@ -742,7 +742,7 @@ Isolation complète, aucun impact sur `order` ou `backoffice`.
 
 ## Conclusion
 
-L'architecture choisie pour **Papilles des Suds** repose sur des principes éprouvés du génie logiciel :
+L'architecture choisie pour **Taste Federation** repose sur des principes éprouvés du génie logiciel :
 
 **Domain-Driven Design (DDD)** pour :
 - Aligner le code sur le métier

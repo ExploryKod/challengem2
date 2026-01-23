@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Politique de Confidentialité - Papilles des Suds",
-  description: "Politique de protection des données du site Papilles des Suds",
+  title: "Politique de Confidentialité - Taste Federation",
+  description: "Politique de protection des données du site Taste Federation",
   robots: {
     index: false,
     follow: false,
@@ -26,7 +26,7 @@ export default function PolitiqueConfidentialite() {
             Politique de Protection des Données
           </h1>
           <p className="text-gray-600">
-            Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+            Dernière mise à jour : 23 janvier 2026
           </p>
         </header>
 
@@ -34,17 +34,17 @@ export default function PolitiqueConfidentialite() {
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Introduction</h2>
           <p className="text-gray-700 mb-4">
             La présente Politique a pour objectif de vous informer du traitement de vos données personnelles 
-            et de l&apos;utilisation de cookies lors de votre navigation sur le site web Papilles des Suds 
-            (le « <strong>Site</strong> »), accessible à l&apos;adresse <strong>https://papilles-du-sud.vercel.app</strong>.
+            et de l&apos;utilisation de cookies lors de votre navigation sur le site web Taste Federation
+            (le « <strong>Site</strong> »), accessible à l&apos;adresse <strong>https://taste-federation.vercel.app</strong>.
           </p>
           <p className="text-gray-700 mb-4">
-            Papilles des Suds est un site de démonstration proposant un service de réservation de tables de restaurant. 
+            Taste Federation est un site de démonstration proposant un service de réservation de tables de restaurant. 
             À travers cette Politique, nous souhaitons que vous compreniez la nature des informations personnelles 
             que nous recueillons, la façon dont nous les utilisons, avec qui nous les partageons, comment nous nous 
             efforçons de les protéger, comment vous pouvez exercer vos droits et, enfin, comment nous contacter.
           </p>
           <p className="text-gray-700 mb-4">
-            <strong>Important : Papilles des Suds est un site de démonstration à des fins éducatives.</strong> Ce Site est une démonstration 
+            <strong>Important : Taste Federation est un site de démonstration à des fins éducatives.</strong> Ce Site est une démonstration 
             et les utilisateurs ne doivent <strong>pas utiliser leurs vraies données personnelles</strong> (notamment leur adresse email réelle) lors de 
             l&apos;utilisation du service. Les utilisateurs doivent utiliser uniquement des données fictives.
           </p>
@@ -65,7 +65,7 @@ export default function PolitiqueConfidentialite() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Article 1 – Responsable du traitement</h2>
           <p className="text-gray-700 mb-4">
-            Le responsable du traitement des données personnelles collectées sur le Site Papilles des Suds est l&apos;équipe 
+            Le responsable du traitement des données personnelles collectées sur le Site Taste Federation est l&apos;équipe 
             de développement du projet, dans le cadre d&apos;un projet éducatif et de démonstration.
           </p>
           <p className="text-gray-700 mb-4">
@@ -123,7 +123,7 @@ export default function PolitiqueConfidentialite() {
             Dans l&apos;hypothèse où vous refuseriez de communiquer lesdites données, votre demande ne pourra pas être traitée.
           </p>
           <p className="text-gray-700">
-            <strong>Important :</strong> Étant donné que Papilles des Suds est un site de démonstration, vous êtes expressément 
+            <strong>Important :</strong> Étant donné que Taste Federation est un site de démonstration, vous êtes expressément 
             invité à ne pas utiliser vos vraies données personnelles lors de la réservation. Utilisez uniquement des données fictives.
           </p>
         </section>
@@ -160,7 +160,7 @@ export default function PolitiqueConfidentialite() {
           </p>
           <ul className="list-disc list-inside text-gray-700 mb-4 space-y-2">
             <li>
-              <strong>L&apos;équipe de développement du projet Papilles des Suds</strong> : pour la gestion et la maintenance 
+              <strong>L&apos;équipe de développement du projet Taste Federation</strong> : pour la gestion et la maintenance 
               du Site
             </li>
           </ul>
@@ -316,14 +316,14 @@ export default function PolitiqueConfidentialite() {
             <strong>Email :</strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a>
           </p>
           <p className="text-gray-700">
-            <strong>Important :</strong> Papilles des Suds étant un site de démonstration à des fins éducatives, certaines fonctionnalités 
+            <strong>Important :</strong> Taste Federation étant un site de démonstration à des fins éducatives, certaines fonctionnalités 
             peuvent être limitées. Nous nous engageons à répondre à vos demandes dans les meilleurs délais.
           </p>
         </section>
 
         <footer className="mt-8 pt-6 border-t border-gray-200">
           <p className="text-gray-600 text-sm">
-            Cette politique de protection des données est fournie à titre informatif pour le site de démonstration Papilles des Suds. 
+            Cette politique de protection des données est fournie à titre informatif pour le site de démonstration Taste Federation. 
             Pour toute question concernant cette politique ou l&apos;exercice de vos droits, veuillez nous contacter à l&apos;adresse 
             <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>.
           </p>
