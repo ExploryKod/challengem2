@@ -8,9 +8,10 @@ import { IIDProvider } from '@taotask/modules/core/id-provider';
 import { useSelector } from 'react-redux';
 
 export const useGuestSection = () => {
+    const selectedMenuId = useSelector((state: AppState) => state.ordering.selectedMenuId);
 
     function addGuest() {
-        const newState = guestForm.current.addGuest(form);
+        const newState = guestForm.current.addGuest(form, selectedMenuId);
         setForm(newState);
     }
 
