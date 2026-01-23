@@ -6,6 +6,7 @@ export namespace BackofficeDomainModel {
         type: string;
         stars: number;
         tableCount?: number;
+        mealCount?: number;
     };
 
     export type CreateRestaurantDTO = {
