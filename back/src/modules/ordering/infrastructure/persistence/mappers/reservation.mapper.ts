@@ -2,6 +2,7 @@ import { Reservation } from '../../../domain/entities/reservation.entity';
 import { Guest } from '../../../domain/entities/guest.entity';
 import { ReservationOrmEntity } from '../orm-entities/reservation.orm-entity';
 import { GuestOrmEntity } from '../orm-entities/guest.orm-entity';
+import { ReservationStatus } from '../../../domain/enums/reservation-status.enum';
 
 export class ReservationMapper {
   static toDomain(ormEntity: ReservationOrmEntity): Reservation {
@@ -9,7 +10,11 @@ export class ReservationMapper {
     reservation.id = ormEntity.id;
     reservation.restaurantId = ormEntity.restaurantId;
     reservation.tableId = ormEntity.tableId;
+    reservation.status = ormEntity.status;
+    reservation.reservationCode = ormEntity.reservationCode;
+    reservation.notes = ormEntity.notes;
     reservation.createdAt = ormEntity.createdAt;
+    reservation.updatedAt = ormEntity.updatedAt;
     reservation.guests =
       ormEntity.guests?.map((g) => this.guestToDomain(g)) ?? [];
     return reservation;
@@ -39,6 +44,9 @@ export class ReservationMapper {
     }
     ormEntity.restaurantId = domain.restaurantId;
     ormEntity.tableId = domain.tableId;
+    ormEntity.status = domain.status ?? ReservationStatus.PENDING;
+    ormEntity.reservationCode = domain.reservationCode;
+    ormEntity.notes = domain.notes ?? null;
     ormEntity.guests =
       domain.guests?.map((g) => this.guestToOrm(g, domain.id)) ?? [];
     return ormEntity;
