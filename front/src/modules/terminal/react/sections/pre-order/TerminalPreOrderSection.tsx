@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch, AppState } from '@taotask/modules/store/store';
 import { terminalActions } from '../../../core/store/terminal.slice';
 import { seatReservation } from '../../../core/useCase/seat-reservation.usecase';
+import { savePreOrders } from '../../../core/useCase/save-pre-orders.usecase';
 import { orderingActions } from '@taotask/modules/order/core/store/ordering.slice';
 import { fetchMeals } from '@taotask/modules/order/core/useCase/fetch-meals.usecase';
 import { fetchMenus } from '@taotask/modules/order/core/useCase/fetch-menus.usecase';
@@ -65,8 +66,12 @@ export const TerminalPreOrderSection: React.FC = () => {
     // Listen for ordering step changes to handle completion
     useEffect(() => {
         if (orderingStep === OrderingDomainModel.OrderingStep.SUMMARY) {
-            // User completed meal selection, seat them
-            dispatch(seatReservation());
+            // User completed meal selection, save pre-orders and seat them
+            const completePreOrder = async () => {
+                await dispatch(savePreOrders());
+                await dispatch(seatReservation());
+            };
+            completePreOrder();
         }
     }, [orderingStep, dispatch]);
 
