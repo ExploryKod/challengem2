@@ -36,15 +36,9 @@ export const ConfirmationSection: React.FC = () => {
                 </h1>
                 <div className="h-1 w-16 bg-luminous-gold mx-auto mb-6" />
 
-                {identifyMode === 'reservation' && reservation?.code && (
-                    <div className="bg-luminous-bg-secondary border-2 border-luminous-gold rounded-xl p-6 mb-6">
-                        <p className="text-luminous-text-secondary text-sm mb-2">
-                            Votre code de reservation
-                        </p>
-                        <p className="text-4xl font-bold text-luminous-gold tracking-wider">
-                            {reservation.code}
-                        </p>
-                        <p className="text-luminous-text-muted text-sm mt-2">
+                {identifyMode === 'reservation' && reservation && (
+                    <div className="bg-luminous-bg-secondary border border-luminous-gold-border rounded-xl p-4 mb-6">
+                        <p className="text-luminous-text-secondary text-sm">
                             {reservation.guests.length} convive{reservation.guests.length > 1 ? 's' : ''}
                         </p>
                     </div>
