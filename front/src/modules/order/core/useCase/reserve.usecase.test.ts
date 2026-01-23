@@ -30,6 +30,9 @@ const orderingState: OrderingState = {
     form: orderForm,
     restaurantId: "1",
     isTerminalMode: false,
+    isQrMode: false,
+    qrTableCapacity: null,
+    qrError: null,
     selectedMenuId: null,
     availableTables: {
         status: "idle",
