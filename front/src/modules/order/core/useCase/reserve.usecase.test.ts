@@ -29,6 +29,7 @@ const orderingState: OrderingState = {
     step: OrderingDomainModel.OrderingStep.SUMMARY,
     form: orderForm,
     restaurantId: "1",
+    isTerminalMode: false,
     availableTables: {
         status: "idle",
         error: null,
