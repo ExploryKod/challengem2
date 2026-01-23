@@ -57,10 +57,10 @@ export class InMemoryAdminReservationRepository implements IAdminReservationRepo
     guest.age = data.age;
     guest.isOrganizer = data.isOrganizer;
     guest.meals = {
-      entry: data.entryId ?? null,
-      mainCourse: data.mainCourseId ?? null,
-      dessert: data.dessertId ?? null,
-      drink: data.drinkId ?? null,
+      entry: data.entryId ? { mealId: data.entryId, quantity: 1 } : null,
+      mainCourse: data.mainCourseId ? { mealId: data.mainCourseId, quantity: 1 } : null,
+      dessert: data.dessertId ? { mealId: data.dessertId, quantity: 1 } : null,
+      drink: data.drinkId ? { mealId: data.drinkId, quantity: 1 } : null,
     };
     return guest;
   }
