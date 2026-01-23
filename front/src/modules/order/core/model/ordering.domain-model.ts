@@ -30,8 +30,23 @@ export namespace OrderingDomainModel {
         imageUrl: string
     }
 
+    export type MenuItem = {
+        mealType: MealType;
+        quantity: number;
+    }
+
+    export type Menu = {
+        id: string;
+        restaurantId: RestaurantId;
+        title: string;
+        description: string;
+        price: number;
+        imageUrl: string;
+        items: MenuItem[];
+    }
+
     export type Guest = {
-        id: string | number, 
+        id: string | number,
         firstName: string,
         lastName: string,
         age: number,
@@ -42,7 +57,8 @@ export namespace OrderingDomainModel {
             drink : MealId | null
         }
         restaurantId: RestaurantId,
-        isOrganizer: boolean
+        isOrganizer: boolean,
+        menuId: string | null  // null means à la carte
     }
 
     export type RestaurantList = {

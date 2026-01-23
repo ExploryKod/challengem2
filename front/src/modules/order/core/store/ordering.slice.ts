@@ -6,6 +6,7 @@ export type OrderingState = {
     form: OrderingDomainModel.Form,
     restaurantId: OrderingDomainModel.RestaurantId,
     isTerminalMode: boolean;
+    selectedMenuId: string | null;
     availableTables: {
         data: OrderingDomainModel.Table[];
         status: 'idle' | 'loading' | 'success' | 'error';
@@ -13,6 +14,11 @@ export type OrderingState = {
     };
     availableMeals: {
         data: OrderingDomainModel.Meal[];
+        status: 'idle' | 'loading' | 'success' | 'error';
+        error: string | null;
+    };
+    availableMenus: {
+        data: OrderingDomainModel.Menu[];
         status: 'idle' | 'loading' | 'success' | 'error';
         error: string | null;
     };
@@ -30,12 +36,18 @@ export const initialState: OrderingState = {
     },
     restaurantId: null,
     isTerminalMode: false,
+    selectedMenuId: null,
     availableTables: {
         status: 'idle',
         error: null,
         data: []
     },
     availableMeals: {
+        status: 'idle',
+        error: null,
+        data: []
+    },
+    availableMenus: {
         status: 'idle',
         error: null,
         data: []
@@ -116,6 +128,22 @@ export const orderingSlice = createSlice({
                 status: "success"
             }
             state.step = OrderingDomainModel.OrderingStep.RESERVED;
+        },
+        // Menu reducers
+        handleMenusLoading: (state) => {
+            state.availableMenus.status = 'loading';
+            state.availableMenus.error = null;
+        },
+        handleMenusError: (state, action: PayloadAction<string>) => {
+            state.availableMenus.status = 'error';
+            state.availableMenus.error = action.payload;
+        },
+        storeMenus: (state, action: PayloadAction<OrderingDomainModel.Menu[]>) => {
+            state.availableMenus.data = action.payload;
+            state.availableMenus.status = 'success';
+        },
+        selectMenu: (state, action: PayloadAction<string | null>) => {
+            state.selectedMenuId = action.payload;
         }
     }
 });
