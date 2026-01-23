@@ -11,6 +11,6 @@ export class GetReservationByCodeUseCase {
   ) {}
 
   async execute(code: string): Promise<Reservation | null> {
-    return this.reservationRepository.findByCode(code);
+    return this.reservationRepository.findByCode(code.toUpperCase());
   }
 }
