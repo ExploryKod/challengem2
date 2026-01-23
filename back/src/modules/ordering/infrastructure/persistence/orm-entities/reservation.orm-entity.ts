@@ -31,7 +31,7 @@ export class ReservationOrmEntity {
   })
   status: ReservationStatus;
 
-  @Column({ name: 'reservation_code', length: 8 })
+  @Column({ name: 'reservation_code', length: 8, default: () => "substring(md5(random()::text) from 1 for 6)" })
   reservationCode: string;
 
   @Column({ type: 'text', nullable: true })
