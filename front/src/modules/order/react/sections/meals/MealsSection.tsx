@@ -74,17 +74,23 @@ export const MealsSection = () => {
               <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory">
                 {meals.map((meal) => {
                   const isSelected = selectedMealId === meal.id;
-                  const isAgeRestricted = meal.requiredAge && meal.requiredAge > presenter.currentGuest.age;
+                  const isAgeRestricted = Boolean(
+                    meal.requiredAge && meal.requiredAge > presenter.currentGuest.age
+                  );
 
                   return (
-                    <div
+                    <button
                       key={meal.id}
+                      type="button"
                       onClick={() => {
                         if (!isAgeRestricted) {
                           presenter.onMealSelected(String(presenter.currentGuest.id), meal.id, meal.type);
                         }
                       }}
-                      className={`flex-shrink-0 w-[140px] sm:w-[180px] snap-start ${isAgeRestricted ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                      aria-pressed={isSelected}
+                      aria-disabled={isAgeRestricted}
+                      disabled={isAgeRestricted}
+                      className={`flex-shrink-0 w-[140px] sm:w-[180px] snap-start text-left ${isAgeRestricted ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luminous-gold/60 rounded-xl`}
                     >
                       <div className={`relative rounded-xl overflow-hidden border-2 ${isSelected ? 'border-luminous-gold' : 'border-luminous-gold-border'} bg-luminous-bg-card shadow-[0_4px_20px_rgba(201,162,39,0.08)] hover:shadow-[0_8px_30px_rgba(201,162,39,0.12)] transition-all duration-300`}>
                         {/* Meal type badge */}
@@ -95,7 +101,7 @@ export const MealsSection = () => {
                         {/* Selected checkmark */}
                         {isSelected && (
                           <div className="absolute top-2 right-2 z-10 w-6 h-6 bg-luminous-sage rounded-full flex items-center justify-center">
-                            <Check className="w-4 h-4 text-white" />
+                            <Check className="w-4 h-4 text-white" aria-hidden="true" />
                           </div>
                         )}
 
@@ -123,7 +129,7 @@ export const MealsSection = () => {
                           )}
                         </div>
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>

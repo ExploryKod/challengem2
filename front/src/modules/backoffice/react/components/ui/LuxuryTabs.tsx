@@ -19,13 +19,16 @@ export const LuxuryTabs: React.FC<LuxuryTabsProps> = ({
 }) => {
   return (
     <div className="border-b border-luxury-gold-border">
-      <nav className="flex gap-8" aria-label="Tabs">
+      <nav className="flex gap-8" aria-label="Tabs" role="tablist">
         {tabs.map((tab) => {
           const isActive = tab.id === activeTab;
           return (
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
               className={`
                 relative pb-4 px-1 text-sm font-medium uppercase tracking-wider
                 transition-colors duration-200

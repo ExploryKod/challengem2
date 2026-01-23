@@ -70,7 +70,12 @@ const RestaurantRows: React.FC<{
     selectRestaurant: any,
 }> = ({id, restaurantName, restaurantType, stars, selectRestaurant, selectedRestaurantId}) => {
     return (
-    <div onClick={() => selectRestaurant(id)} className="w-full sm:w-auto my-3 sm:my-4 mx-auto flex gap-2">
+    <button
+        type="button"
+        onClick={() => selectRestaurant(id)}
+        aria-pressed={selectedRestaurantId === id}
+        className="w-full sm:w-auto my-3 sm:my-4 mx-auto flex gap-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luminous-gold/60 rounded-xl"
+    >
         <div className={`
             cursor-pointer mx-auto p-5 sm:p-6 w-full sm:min-w-[280px] rounded-xl
             border-2 transition-all duration-300
@@ -96,6 +101,7 @@ const RestaurantRows: React.FC<{
                                 viewBox="0 0 24 24"
                                 fill={selectedRestaurantId === id ? "#C9A227" : "#C9A227"}
                                 className="w-4 h-4 sm:w-5 sm:h-5"
+                                aria-hidden="true"
                             >
                                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                             </svg>
@@ -104,6 +110,6 @@ const RestaurantRows: React.FC<{
                 </ul>
             </div>
         </div>
-    </div>
+    </button>
     )
 }
