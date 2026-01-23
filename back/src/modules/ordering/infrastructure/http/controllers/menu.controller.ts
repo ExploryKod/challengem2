@@ -37,6 +37,15 @@ export class MenuController {
     return this.getMenusUseCase.execute(restId, active);
   }
 
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Menu> {
+    const menu = await this.getMenusUseCase.executeOne(id);
+    if (!menu) {
+      throw new NotFoundException(`Menu with id ${id} not found`);
+    }
+    return menu;
+  }
+
   @Post()
   async create(@Body() dto: CreateMenuDto): Promise<Menu> {
     return this.createMenuUseCase.execute(dto);

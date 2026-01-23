@@ -19,4 +19,8 @@ export class GetMenusUseCase {
     }
     return this.menuRepository.findAll();
   }
+
+  async executeOne(id: number): Promise<Menu | null> {
+    return this.menuRepository.findById(id);
+  }
 }
