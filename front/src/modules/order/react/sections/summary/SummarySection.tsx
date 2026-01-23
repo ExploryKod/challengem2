@@ -1,5 +1,6 @@
 import {useSummary} from "@taotask/modules/order/react/sections/summary/use-summary.hook";
 import Image from "next/image";
+import { Table } from 'lucide-react';
 import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
 import { LuminousButton } from '@taotask/modules/order/react/components/ui/LuminousButton';
 
@@ -18,6 +19,9 @@ export const SummarySection = () => {
                 <p className='mb-2 font-display font-medium text-center text-base sm:text-lg text-luminous-text-primary'>
                     Emplacement de la table
                 </p>
+                <div className="flex justify-center mb-2">
+                    <Table className="w-8 h-8 text-luminous-gold" />
+                </div>
                 <p className="text-sm sm:text-base italic text-center text-luminous-gold">
                     {presenter.summary.table.title}
                 </p>
