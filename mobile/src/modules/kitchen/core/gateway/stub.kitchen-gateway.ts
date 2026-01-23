@@ -2,6 +2,7 @@ import { IKitchenGateway } from './kitchen.gateway';
 import { KitchenDomainModel } from '../model/kitchen.domain-model';
 
 export class StubKitchenGateway implements IKitchenGateway {
+  private completedOrders: KitchenDomainModel.KitchenOrder[] = [];
   private orders: KitchenDomainModel.KitchenOrder[] = [
     {
       id: 1,
@@ -74,6 +75,14 @@ export class StubKitchenGateway implements IKitchenGateway {
     );
   }
 
+  async getCompletedOrders(
+    _restaurantId: number,
+    limit = 20,
+  ): Promise<KitchenDomainModel.KitchenOrder[]> {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return [...this.completedOrders].slice(0, limit);
+  }
+
   async markCourseReady(
     reservationId: number,
     course: KitchenDomainModel.CourseType,
@@ -101,7 +110,9 @@ export class StubKitchenGateway implements IKitchenGateway {
       (!hasDrink || order.coursesReady.drink);
 
     if (allReady) {
-      // Remove from list (completed)
+      // Move to completed list
+      order.status = 'COMPLETED';
+      this.completedOrders.unshift(order);
       this.orders.splice(orderIndex, 1);
     } else if (order.status === 'SEATED') {
       order.status = 'IN_PREPARATION';

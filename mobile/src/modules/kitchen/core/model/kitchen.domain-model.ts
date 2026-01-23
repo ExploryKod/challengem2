@@ -25,7 +25,7 @@ export namespace KitchenDomainModel {
     tableId: number;
     tableTitle?: string;
     guestCount: number;
-    status: 'SEATED' | 'IN_PREPARATION';
+    status: 'SEATED' | 'IN_PREPARATION' | 'COMPLETED';
     createdAt: string;
     meals: OrderMeals;
     coursesReady: CoursesReady;

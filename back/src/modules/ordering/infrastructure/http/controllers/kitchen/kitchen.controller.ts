@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { GetKitchenOrdersUseCase } from '../../../../application/use-cases/kitchen/get-kitchen-orders.use-case';
+import { GetCompletedOrdersUseCase } from '../../../../application/use-cases/kitchen/get-completed-orders.use-case';
 import { MarkCourseReadyUseCase } from '../../../../application/use-cases/kitchen/mark-course-ready.use-case';
 import { MarkCourseReadyDto } from '../../dtos/kitchen/mark-course-ready.dto';
 
@@ -16,12 +17,25 @@ import { MarkCourseReadyDto } from '../../dtos/kitchen/mark-course-ready.dto';
 export class KitchenController {
   constructor(
     private readonly getKitchenOrdersUseCase: GetKitchenOrdersUseCase,
+    private readonly getCompletedOrdersUseCase: GetCompletedOrdersUseCase,
     private readonly markCourseReadyUseCase: MarkCourseReadyUseCase,
   ) {}
 
   @Get('orders')
   async getOrders(@Query('restaurantId', ParseIntPipe) restaurantId: number) {
     const orders = await this.getKitchenOrdersUseCase.execute(restaurantId);
+    return orders.map((order) => this.toResponse(order));
+  }
+
+  @Get('orders/completed')
+  async getCompletedOrders(
+    @Query('restaurantId', ParseIntPipe) restaurantId: number,
+    @Query('limit') limit?: string,
+  ) {
+    const orders = await this.getCompletedOrdersUseCase.execute(
+      restaurantId,
+      limit ? parseInt(limit, 10) : 20,
+    );
     return orders.map((order) => this.toResponse(order));
   }
 

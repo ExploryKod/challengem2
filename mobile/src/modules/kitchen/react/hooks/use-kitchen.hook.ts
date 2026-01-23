@@ -11,9 +11,8 @@ import { KitchenDomainModel } from '../../core/model/kitchen.domain-model';
 import { IKitchenGateway } from '../../core/gateway/kitchen.gateway';
 
 const POLLING_INTERVAL = 8000; // 8 seconds
-const RESTAURANT_ID = 1; // Hardcoded for MVP - single restaurant
 
-export const useKitchen = (gateway: IKitchenGateway) => {
+export const useKitchen = (gateway: IKitchenGateway, restaurantId: number) => {
   const dispatch = useDispatch();
   const orders = useSelector(selectFilteredOrders);
   const filter = useSelector(selectFilter);
@@ -24,7 +23,7 @@ export const useKitchen = (gateway: IKitchenGateway) => {
   const fetchOrders = useCallback(async () => {
     try {
       dispatch(kitchenActions.setLoading(true));
-      const fetchedOrders = await gateway.getOrders(RESTAURANT_ID);
+      const fetchedOrders = await gateway.getOrders(restaurantId);
       dispatch(kitchenActions.setOrders(fetchedOrders));
       dispatch(kitchenActions.setError(null));
     } catch (err) {
@@ -36,7 +35,7 @@ export const useKitchen = (gateway: IKitchenGateway) => {
     } finally {
       dispatch(kitchenActions.setLoading(false));
     }
-  }, [dispatch, gateway]);
+  }, [dispatch, gateway, restaurantId]);
 
   const markCourseReady = useCallback(
     async (

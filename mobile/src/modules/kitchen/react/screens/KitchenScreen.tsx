@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   RefreshControl,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { colors } from '../../../../theme';
 import { KitchenDomainModel } from '../../core/model/kitchen.domain-model';
@@ -17,9 +18,19 @@ import { OrderCard } from '../components/OrderCard';
 
 type KitchenScreenProps = {
   gateway: IKitchenGateway;
+  restaurantId: number;
+  restaurantName?: string;
+  onBack?: () => void;
+  onHistory?: () => void;
 };
 
-export const KitchenScreen: React.FC<KitchenScreenProps> = ({ gateway }) => {
+export const KitchenScreen: React.FC<KitchenScreenProps> = ({
+  gateway,
+  restaurantId,
+  restaurantName,
+  onBack,
+  onHistory,
+}) => {
   const {
     orders,
     filter,
@@ -28,7 +39,7 @@ export const KitchenScreen: React.FC<KitchenScreenProps> = ({ gateway }) => {
     setFilter,
     markCourseReady,
     refresh,
-  } = useKitchen(gateway);
+  } = useKitchen(gateway, restaurantId);
 
   const handleMarkCourseReady = (
     orderId: number,
@@ -61,9 +72,24 @@ export const KitchenScreen: React.FC<KitchenScreenProps> = ({ gateway }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
+        {onBack && (
+          <TouchableOpacity onPress={onBack} style={styles.backButton}>
+            <Text style={styles.backText}>←</Text>
+          </TouchableOpacity>
+        )}
         <Text style={styles.headerIcon}>🍳</Text>
-        <Text style={styles.headerTitle}>Cuisine</Text>
+        <View style={styles.headerTitleContainer}>
+          <Text style={styles.headerTitle}>Cuisine</Text>
+          {restaurantName && (
+            <Text style={styles.restaurantName}>{restaurantName}</Text>
+          )}
+        </View>
         {loading && <ActivityIndicator color={colors.gold} size="small" />}
+        {onHistory && (
+          <TouchableOpacity onPress={onHistory} style={styles.historyButton}>
+            <Text style={styles.historyText}>Historique</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <FilterTabs activeFilter={filter} onFilterChange={setFilter} />
@@ -106,14 +132,42 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bgSecondary,
     gap: 8,
   },
+  backButton: {
+    padding: 4,
+    marginRight: 4,
+  },
+  backText: {
+    color: colors.gold,
+    fontSize: 24,
+    fontWeight: '600',
+  },
   headerIcon: {
     fontSize: 24,
   },
-  headerTitle: {
+  headerTitleContainer: {
     flex: 1,
+  },
+  headerTitle: {
     color: colors.textPrimary,
     fontSize: 24,
     fontWeight: '700',
+  },
+  restaurantName: {
+    color: colors.textMuted,
+    fontSize: 12,
+  },
+  historyButton: {
+    backgroundColor: colors.bgCard,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: colors.goldBorder,
+  },
+  historyText: {
+    color: colors.gold,
+    fontSize: 14,
+    fontWeight: '500',
   },
   list: {
     paddingVertical: 8,

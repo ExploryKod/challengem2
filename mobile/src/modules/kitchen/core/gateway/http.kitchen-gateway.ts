@@ -18,6 +18,21 @@ export class HttpKitchenGateway implements IKitchenGateway {
     return response.json();
   }
 
+  async getCompletedOrders(
+    restaurantId: number,
+    limit = 20,
+  ): Promise<KitchenDomainModel.KitchenOrder[]> {
+    const response = await fetch(
+      `${this.baseUrl}/kitchen/orders/completed?restaurantId=${restaurantId}&limit=${limit}`,
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch completed orders: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
   async markCourseReady(
     reservationId: number,
     course: KitchenDomainModel.CourseType,

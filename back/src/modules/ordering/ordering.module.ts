@@ -38,6 +38,7 @@ import { CreateMenuUseCase } from './application/use-cases/create-menu.use-case'
 import { UpdateMenuUseCase } from './application/use-cases/update-menu.use-case';
 import { DeleteMenuUseCase } from './application/use-cases/delete-menu.use-case';
 import { GetKitchenOrdersUseCase } from './application/use-cases/kitchen/get-kitchen-orders.use-case';
+import { GetCompletedOrdersUseCase } from './application/use-cases/kitchen/get-completed-orders.use-case';
 import { MarkCourseReadyUseCase } from './application/use-cases/kitchen/mark-course-ready.use-case';
 
 // Controllers
@@ -104,6 +105,7 @@ import { KitchenController } from './infrastructure/http/controllers/kitchen/kit
     UpdateMenuUseCase,
     DeleteMenuUseCase,
     GetKitchenOrdersUseCase,
+    GetCompletedOrdersUseCase,
     MarkCourseReadyUseCase,
   ],
   exports: [
