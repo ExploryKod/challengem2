@@ -7,18 +7,22 @@ import { TableOrmEntity } from './infrastructure/persistence/orm-entities/table.
 import { MealOrmEntity } from './infrastructure/persistence/orm-entities/meal.orm-entity';
 import { ReservationOrmEntity } from './infrastructure/persistence/orm-entities/reservation.orm-entity';
 import { GuestOrmEntity } from './infrastructure/persistence/orm-entities/guest.orm-entity';
+import { MenuOrmEntity } from './infrastructure/persistence/orm-entities/menu.orm-entity';
+import { MenuItemOrmEntity } from './infrastructure/persistence/orm-entities/menu-item.orm-entity';
 
 // Repositories
 import { RestaurantRepository } from './infrastructure/persistence/repositories/restaurant.repository';
 import { TableRepository } from './infrastructure/persistence/repositories/table.repository';
 import { MealRepository } from './infrastructure/persistence/repositories/meal.repository';
 import { ReservationRepository } from './infrastructure/persistence/repositories/reservation.repository';
+import { MenuRepository } from './infrastructure/persistence/repositories/menu.repository';
 
 // Ports
 import { RESTAURANT_REPOSITORY } from './application/ports/restaurant.repository.port';
 import { TABLE_REPOSITORY } from './application/ports/table.repository.port';
 import { MEAL_REPOSITORY } from './application/ports/meal.repository.port';
 import { RESERVATION_REPOSITORY } from './application/ports/reservation.repository.port';
+import { MENU_REPOSITORY } from './application/ports/menu.repository.port';
 
 // Use Cases
 import { GetRestaurantsUseCase } from './application/use-cases/get-restaurants.use-case';
@@ -29,12 +33,17 @@ import { GetReservationByIdUseCase } from './application/use-cases/get-reservati
 import { CreateReservationUseCase } from './application/use-cases/create-reservation.use-case';
 import { UpdateReservationUseCase } from './application/use-cases/update-reservation.use-case';
 import { GetReservationByCodeUseCase } from './application/use-cases/get-reservation-by-code.use-case';
+import { GetMenusUseCase } from './application/use-cases/get-menus.use-case';
+import { CreateMenuUseCase } from './application/use-cases/create-menu.use-case';
+import { UpdateMenuUseCase } from './application/use-cases/update-menu.use-case';
+import { DeleteMenuUseCase } from './application/use-cases/delete-menu.use-case';
 
 // Controllers
 import { RestaurantController } from './infrastructure/http/controllers/restaurant.controller';
 import { TableController } from './infrastructure/http/controllers/table.controller';
 import { MealController } from './infrastructure/http/controllers/meal.controller';
 import { ReservationController } from './infrastructure/http/controllers/reservation.controller';
+import { MenuController } from './infrastructure/http/controllers/menu.controller';
 
 @Module({
   imports: [
@@ -44,6 +53,8 @@ import { ReservationController } from './infrastructure/http/controllers/reserva
       MealOrmEntity,
       ReservationOrmEntity,
       GuestOrmEntity,
+      MenuOrmEntity,
+      MenuItemOrmEntity,
     ]),
   ],
   controllers: [
@@ -51,6 +62,7 @@ import { ReservationController } from './infrastructure/http/controllers/reserva
     TableController,
     MealController,
     ReservationController,
+    MenuController,
   ],
   providers: [
     // Repositories
@@ -70,6 +82,10 @@ import { ReservationController } from './infrastructure/http/controllers/reserva
       provide: RESERVATION_REPOSITORY,
       useClass: ReservationRepository,
     },
+    {
+      provide: MENU_REPOSITORY,
+      useClass: MenuRepository,
+    },
     // Use Cases
     GetRestaurantsUseCase,
     GetTablesUseCase,
@@ -79,12 +95,17 @@ import { ReservationController } from './infrastructure/http/controllers/reserva
     CreateReservationUseCase,
     UpdateReservationUseCase,
     GetReservationByCodeUseCase,
+    GetMenusUseCase,
+    CreateMenuUseCase,
+    UpdateMenuUseCase,
+    DeleteMenuUseCase,
   ],
   exports: [
     RESTAURANT_REPOSITORY,
     TABLE_REPOSITORY,
     MEAL_REPOSITORY,
     RESERVATION_REPOSITORY,
+    MENU_REPOSITORY,
   ],
 })
 export class OrderingModule {}
