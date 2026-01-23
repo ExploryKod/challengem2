@@ -26,7 +26,7 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({ restaurantId }
     const [copied, setCopied] = useState(false);
 
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-    const terminalUrl = `${baseUrl}/order/${restaurantId}`;
+    const terminalUrl = `${baseUrl}/terminal?restaurantId=${restaurantId}`;
 
     const handleCopy = useCallback(async () => {
         try {
