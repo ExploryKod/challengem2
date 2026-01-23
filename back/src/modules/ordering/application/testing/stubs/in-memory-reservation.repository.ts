@@ -1,4 +1,5 @@
 import { Reservation } from '../../../domain/entities/reservation.entity';
+import { ReservationStatus } from '../../../domain/enums/reservation-status.enum';
 import type { IReservationRepository } from '../../ports/reservation.repository.port';
 
 export class InMemoryReservationRepository implements IReservationRepository {
@@ -18,6 +19,9 @@ export class InMemoryReservationRepository implements IReservationRepository {
     if (!saved.createdAt) {
       saved.createdAt = new Date();
     }
+    if (!saved.updatedAt) {
+      saved.updatedAt = new Date();
+    }
     this.reservations.push(saved);
     return Promise.resolve(saved);
   }
@@ -29,5 +33,47 @@ export class InMemoryReservationRepository implements IReservationRepository {
   findById(id: number): Promise<Reservation | null> {
     const found = this.reservations.find((r) => r.id === id) ?? null;
     return Promise.resolve(found);
+  }
+
+  findByCode(code: string): Promise<Reservation | null> {
+    const found = this.reservations.find((r) => r.reservationCode === code) ?? null;
+    return Promise.resolve(found);
+  }
+
+  findByRestaurantId(restaurantId: number): Promise<Reservation[]> {
+    const found = this.reservations.filter((r) => r.restaurantId === restaurantId);
+    return Promise.resolve(found);
+  }
+
+  findByRestaurantIdAndStatus(
+    restaurantId: number,
+    status: ReservationStatus,
+  ): Promise<Reservation[]> {
+    const found = this.reservations.filter(
+      (r) => r.restaurantId === restaurantId && r.status === status,
+    );
+    return Promise.resolve(found);
+  }
+
+  update(id: number, data: Partial<Reservation>): Promise<Reservation | null> {
+    const index = this.reservations.findIndex((r) => r.id === id);
+    if (index === -1) {
+      return Promise.resolve(null);
+    }
+    this.reservations[index] = {
+      ...this.reservations[index],
+      ...data,
+      updatedAt: new Date(),
+    };
+    return Promise.resolve(this.reservations[index]);
+  }
+
+  updateStatus(id: number, status: ReservationStatus): Promise<Reservation | null> {
+    return this.update(id, { status });
+  }
+
+  delete(id: number): Promise<void> {
+    this.reservations = this.reservations.filter((r) => r.id !== id);
+    return Promise.resolve();
   }
 }

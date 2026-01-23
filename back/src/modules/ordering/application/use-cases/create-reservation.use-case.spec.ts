@@ -3,6 +3,7 @@ import {
   CreateReservationInput,
 } from './create-reservation.use-case';
 import { InMemoryReservationRepository } from '../testing/stubs';
+import { ReservationStatus } from '../../domain/enums/reservation-status.enum';
 
 describe('CreateReservationUseCase', () => {
   it('should create reservation with guests and their meal selections', async () => {
@@ -96,5 +97,24 @@ describe('CreateReservationUseCase', () => {
       dessert: null,
       drink: null,
     });
+  });
+
+  it('should generate a reservation code when creating', async () => {
+    // Arrange
+    const repository = new InMemoryReservationRepository();
+    const useCase = new CreateReservationUseCase(repository);
+    const input: CreateReservationInput = {
+      restaurantId: 1,
+      tableId: 1,
+      guests: [{ firstName: 'John', lastName: 'Doe', age: 30, isOrganizer: true }],
+    };
+
+    // Act
+    const result = await useCase.execute(input);
+
+    // Assert
+    expect(result.reservationCode).toBeDefined();
+    expect(result.reservationCode).toHaveLength(6);
+    expect(result.status).toBe(ReservationStatus.PENDING);
   });
 });

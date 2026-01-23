@@ -1,6 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Reservation } from '../../domain/entities/reservation.entity';
 import { Guest } from '../../domain/entities/guest.entity';
+import { ReservationStatus } from '../../domain/enums/reservation-status.enum';
+import { generateReservationCode } from '../../domain/utils/reservation-code.util';
 import type { IReservationRepository } from '../ports/reservation.repository.port';
 import { RESERVATION_REPOSITORY } from '../ports/reservation.repository.port';
 
@@ -19,6 +21,7 @@ export interface CreateReservationInput {
   restaurantId: number;
   tableId: number;
   guests: CreateReservationGuestInput[];
+  notes?: string;
 }
 
 @Injectable()
@@ -32,6 +35,9 @@ export class CreateReservationUseCase {
     const reservation = new Reservation();
     reservation.restaurantId = input.restaurantId;
     reservation.tableId = input.tableId;
+    reservation.status = ReservationStatus.PENDING;
+    reservation.reservationCode = generateReservationCode();
+    reservation.notes = input.notes ?? null;
     reservation.guests = input.guests.map((g) => {
       const guest = new Guest();
       guest.firstName = g.firstName;
