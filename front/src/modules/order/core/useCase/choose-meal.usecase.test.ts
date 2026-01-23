@@ -7,7 +7,12 @@ const guestForm: OrderingDomainModel.Form = {
     guests: [
         GuestFactory.create({
             id: "1",
-            meals: {entry: "", mainCourse: "", dessert: "", drink: ""}
+            meals: {
+                entries: [{ mealId: "entry-1", quantity: 1 }],
+                mainCourses: [{ mealId: "main-1", quantity: 1 }],
+                desserts: [],
+                drinks: []
+            }
         })
     ],
     organizerId: "1",

@@ -1,11 +1,20 @@
-import {useSummary} from "@taotask/modules/order/react/sections/summary/use-summary.hook";
+import {useSummary, MealSummary} from "@taotask/modules/order/react/sections/summary/use-summary.hook";
 import Image from "next/image";
 import { Table } from 'lucide-react';
 import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
 import { LuminousButton } from '@taotask/modules/order/react/components/ui/LuminousButton';
 
+const formatMealList = (meals: MealSummary[]): string => {
+    if (meals.length === 0) return '';
+    return meals.map(m => m.quantity > 1 ? `${m.quantity}x ${m.title}` : m.title).join(', ');
+};
+
+const hasAlcoholicDrink = (drinks: MealSummary[]): boolean => {
+    return drinks.some(d => d.requiredAge !== null && d.requiredAge >= 18);
+};
+
 export const SummarySection = () => {
-    const presenter = useSummary()
+    const presenter = useSummary();
 
     return (
     <LuminousCard className="mx-auto py-8 sm:py-12 w-full max-w-[1200px] animate-fade-in-down">
@@ -35,81 +44,85 @@ export const SummarySection = () => {
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 mx-auto my-3 w-full max-w-full sm:max-w-[85%]">
-            {presenter.summary.guests.map((guest: any) => (
-                <div key={guest.id} className="
-                    relative flex flex-col justify-center items-center
-                    border-2 border-luminous-gold-border hover:border-luminous-gold
-                    bg-luminous-bg-card rounded-xl
-                    mb-5 p-4 w-full sm:min-w-[280px] sm:basis-1/4
-                    transition-all duration-200 shadow-[0_4px_20px_rgba(201,162,39,0.08)]
-                ">
-                    {guest.isOrganizer && (
-                        <span className="block -top-3 left-3 absolute bg-luminous-gold px-3 py-1 rounded-full font-medium text-white text-xs uppercase tracking-wider">
-                            Organisateur
-                        </span>
-                    )}
+            {presenter.summary.guests.map((guest) => {
+                const hasAlcohol = hasAlcoholicDrink(guest.meals.drinks);
+                const hasNoMeals =
+                    guest.meals.entries.length === 0 &&
+                    guest.meals.mainCourses.length === 0 &&
+                    guest.meals.desserts.length === 0 &&
+                    guest.meals.drinks.length === 0;
 
-                    <div className="mt-4 mb-3">
-                        <p className="font-display font-medium text-luminous-text-primary text-lg">{guest.name}</p>
-                        {guest.menuTitle ? (
-                            <span className="bg-luminous-gold/20 text-luminous-gold px-2 py-0.5 rounded text-xs">
-                                {guest.menuTitle}
-                            </span>
-                        ) : (
-                            <span className="bg-luminous-bg-secondary text-luminous-text-muted px-2 py-0.5 rounded text-xs">
-                                A la carte
+                return (
+                    <div key={guest.id} className="
+                        relative flex flex-col justify-center items-center
+                        border-2 border-luminous-gold-border hover:border-luminous-gold
+                        bg-luminous-bg-card rounded-xl
+                        mb-5 p-4 w-full sm:min-w-[280px] sm:basis-1/4
+                        transition-all duration-200 shadow-[0_4px_20px_rgba(201,162,39,0.08)]
+                    ">
+                        {guest.isOrganizer && (
+                            <span className="block -top-3 left-3 absolute bg-luminous-gold px-3 py-1 rounded-full font-medium text-white text-xs uppercase tracking-wider">
+                                Organisateur
                             </span>
                         )}
-                    </div>
 
-                    <div className="flex flex-col justify-center items-center grow gap-1">
-                        {guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18 && guest.isOrganizer && (
-                            <p className="my-2 text-center text-luminous-rose text-sm italic">
-                                Eviter l&#39;alcool car vous organisez
-                            </p>
-                        )}
-                        {guest.menuTitle && !guest.meals.entry && !guest.meals.mainCourse && !guest.meals.dessert && !guest.meals.drink && (
-                            <p className="text-center text-luminous-text-secondary text-sm">
-                                <span className="text-luminous-gold font-medium">Menu:</span> {guest.menuTitle}
-                            </p>
-                        )}
-                        {guest.meals.entry && (
-                            <p className="text-center text-luminous-text-secondary text-sm">
-                                <span className="text-luminous-meal-entry font-medium">Entrée:</span>{' '}
-                                {guest.meals.entry.quantity > 1 ? `${guest.meals.entry.quantity}x ` : ''}{guest.meals.entry.title}
-                            </p>
-                        )}
-                        {guest.meals.mainCourse && (
-                            <p className="text-center text-luminous-text-secondary text-sm">
-                                <span className="text-luminous-meal-main font-medium">Plat:</span>{' '}
-                                {guest.meals.mainCourse.quantity > 1 ? `${guest.meals.mainCourse.quantity}x ` : ''}{guest.meals.mainCourse.title}
-                            </p>
-                        )}
-                        {guest.meals.dessert && (
-                            <p className="text-center text-luminous-text-secondary text-sm">
-                                <span className="text-luminous-meal-dessert font-medium">Dessert:</span>{' '}
-                                {guest.meals.dessert.quantity > 1 ? `${guest.meals.dessert.quantity}x ` : ''}{guest.meals.dessert.title}
-                            </p>
-                        )}
-                        <div className={`${guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18 ? "flex gap-2 items-center justify-center" : ""}`}>
-                            {guest.isOrganizer && (guest.meals.drink && guest.meals.drink.requiredAge !== null && guest.meals.drink.requiredAge >= 18) && (
-                                <Image src="/danger.svg" height={18} width={18} alt="warning" />
+                        <div className="mt-4 mb-3">
+                            <p className="font-display font-medium text-luminous-text-primary text-lg">{guest.name}</p>
+                            {guest.menuTitle ? (
+                                <span className="bg-luminous-gold/20 text-luminous-gold px-2 py-0.5 rounded text-xs">
+                                    {guest.menuTitle}
+                                </span>
+                            ) : (
+                                <span className="bg-luminous-bg-secondary text-luminous-text-muted px-2 py-0.5 rounded text-xs">
+                                    A la carte
+                                </span>
                             )}
-                            {guest.meals.drink && (
+                        </div>
+
+                        <div className="flex flex-col justify-center items-center grow gap-1">
+                            {hasAlcohol && guest.isOrganizer && (
+                                <p className="my-2 text-center text-luminous-rose text-sm italic">
+                                    Eviter l&#39;alcool car vous organisez
+                                </p>
+                            )}
+                            {guest.meals.entries.length > 0 && (
                                 <p className="text-center text-luminous-text-secondary text-sm">
-                                    <span className="text-luminous-meal-drink font-medium">Boisson:</span>{' '}
-                                    {guest.meals.drink.quantity > 1 ? `${guest.meals.drink.quantity}x ` : ''}{guest.meals.drink.title}
+                                    <span className="text-luminous-meal-entry font-medium">Entrée:</span>{' '}
+                                    {formatMealList(guest.meals.entries)}
+                                </p>
+                            )}
+                            {guest.meals.mainCourses.length > 0 && (
+                                <p className="text-center text-luminous-text-secondary text-sm">
+                                    <span className="text-luminous-meal-main font-medium">Plat:</span>{' '}
+                                    {formatMealList(guest.meals.mainCourses)}
+                                </p>
+                            )}
+                            {guest.meals.desserts.length > 0 && (
+                                <p className="text-center text-luminous-text-secondary text-sm">
+                                    <span className="text-luminous-meal-dessert font-medium">Dessert:</span>{' '}
+                                    {formatMealList(guest.meals.desserts)}
+                                </p>
+                            )}
+                            <div className={hasAlcohol ? "flex gap-2 items-center justify-center" : ""}>
+                                {guest.isOrganizer && hasAlcohol && (
+                                    <Image src="/danger.svg" height={18} width={18} alt="warning" />
+                                )}
+                                {guest.meals.drinks.length > 0 && (
+                                    <p className="text-center text-luminous-text-secondary text-sm">
+                                        <span className="text-luminous-meal-drink font-medium">Boisson:</span>{' '}
+                                        {formatMealList(guest.meals.drinks)}
+                                    </p>
+                                )}
+                            </div>
+                            {hasNoMeals && (
+                                <p className="text-center text-luminous-text-muted text-sm italic mt-2">
+                                    Aucune commande
                                 </p>
                             )}
                         </div>
-                        {!guest.menuTitle && !guest.meals.entry && !guest.meals.mainCourse && !guest.meals.dessert && !guest.meals.drink && (
-                            <p className="text-center text-luminous-text-muted text-sm italic mt-2">
-                                Aucune commande
-                            </p>
-                        )}
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
 
         {/* Price Total */}
@@ -160,5 +173,5 @@ export const SummarySection = () => {
             </LuminousButton>
         </div>
     </LuminousCard>
-    )
-}
+    );
+};

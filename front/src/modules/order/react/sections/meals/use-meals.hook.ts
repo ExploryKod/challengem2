@@ -10,6 +10,19 @@ export const useMeals = () => {
     const [currentGuestIndex, setCurrentGuestIndex] = useState(0);
     const menus: OrderingDomainModel.Menu[] = useSelector((state: AppState) => state.ordering.availableMenus.data);
     const selectedMenuId = useSelector((state: AppState) => state.ordering.selectedMenuId);
+    const dispatch = useAppDispatch();
+    const meals: OrderingDomainModel.Meal[] = useSelector((state: AppState) => state.ordering.availableMeals.data);
+    const initialState = useSelector((state: AppState) => state.ordering.form);
+    const [form, setForm] = useState<OrderingDomainModel.Form>(initialState);
+    const mealForm = useRef(new MealForm());
+
+    const currentGuest = form.guests[currentGuestIndex];
+    const isLastGuest = currentGuestIndex === form.guests.length - 1;
+    const isFirstGuest = currentGuestIndex === 0;
+
+    const selectedMenu = selectedMenuId
+        ? menus.find(m => m.id === selectedMenuId) || null
+        : null;
 
     function getGuestMenu(guest: OrderingDomainModel.Guest): OrderingDomainModel.Menu | null {
         if (!guest.menuId) return null;
@@ -18,56 +31,54 @@ export const useMeals = () => {
 
     function getRequiredMealTypes(guest: OrderingDomainModel.Guest): OrderingDomainModel.MealType[] {
         const menu = getGuestMenu(guest);
-        if (!menu) return []; // À la carte - no requirements
+        if (!menu) return [];
         return menu.items
             .filter(item => item.quantity > 0)
             .map(item => item.mealType);
     }
 
-    function getMealIdForType(guest: OrderingDomainModel.Guest, mealType: OrderingDomainModel.MealType): string | null {
-        switch (mealType) {
-            case OrderingDomainModel.MealType.ENTRY: return guest.meals.entry?.mealId ?? null;
-            case OrderingDomainModel.MealType.MAIN_COURSE: return guest.meals.mainCourse?.mealId ?? null;
-            case OrderingDomainModel.MealType.DESSERT: return guest.meals.dessert?.mealId ?? null;
-            case OrderingDomainModel.MealType.DRINK: return guest.meals.drink?.mealId ?? null;
-        }
-    }
-
-    function getMealQuantityForType(guest: OrderingDomainModel.Guest, mealType: OrderingDomainModel.MealType): number {
-        switch (mealType) {
-            case OrderingDomainModel.MealType.ENTRY: return guest.meals.entry?.quantity ?? 0;
-            case OrderingDomainModel.MealType.MAIN_COURSE: return guest.meals.mainCourse?.quantity ?? 0;
-            case OrderingDomainModel.MealType.DESSERT: return guest.meals.dessert?.quantity ?? 0;
-            case OrderingDomainModel.MealType.DRINK: return guest.meals.drink?.quantity ?? 0;
-        }
-    }
-
     function getMaxQuantityForType(guest: OrderingDomainModel.Guest, mealType: OrderingDomainModel.MealType): number {
         const A_LA_CARTE_MAX = 10;
 
-        // A la carte mode - no menu restrictions
         if (!guest.menuId) {
             return A_LA_CARTE_MAX;
         }
 
-        // Menu mode - find the menu and get the quantity limit for this meal type
         const menu = getGuestMenu(guest);
         if (!menu) {
-            return A_LA_CARTE_MAX; // Fallback if menu not found
+            return A_LA_CARTE_MAX;
         }
 
         const menuItem = menu.items.find(item => item.mealType === mealType);
-        return menuItem?.quantity ?? 0; // Return 0 if meal type not in menu
+        return menuItem?.quantity ?? 0;
+    }
+
+    function getTotalQuantityForType(guest: OrderingDomainModel.Guest, mealType: OrderingDomainModel.MealType): number {
+        return mealForm.current.getTotalQuantityForType(guest, mealType);
+    }
+
+    function getMealQuantity(guest: OrderingDomainModel.Guest, mealId: string, mealType: OrderingDomainModel.MealType): number {
+        return mealForm.current.getMealQuantity(guest, mealId, mealType);
+    }
+
+    function isMealSelected(guest: OrderingDomainModel.Guest, mealId: string, mealType: OrderingDomainModel.MealType): boolean {
+        return mealForm.current.isMealSelected(guest, mealId, mealType);
+    }
+
+    function canAddMoreOfType(guest: OrderingDomainModel.Guest, mealType: OrderingDomainModel.MealType): boolean {
+        const currentTotal = getTotalQuantityForType(guest, mealType);
+        const maxAllowed = getMaxQuantityForType(guest, mealType);
+        return currentTotal < maxAllowed;
     }
 
     function isGuestComplete(guest: OrderingDomainModel.Guest): boolean {
         const menu = getGuestMenu(guest);
-        if (!menu) return true; // À la carte always valid
+        if (!menu) return true;
 
         return menu.items.every(item => {
             if (item.quantity === 0) return true;
-            const mealId = getMealIdForType(guest, item.mealType);
-            return mealId !== null;
+            const currentTotal = getTotalQuantityForType(guest, item.mealType);
+            return currentTotal >= item.quantity;
         });
     }
 
@@ -75,12 +86,10 @@ export const useMeals = () => {
         const menu = getGuestMenu(guest);
         if (!menu) return null;
 
-        const requiredItems = menu.items.filter(item => item.quantity > 0);
-        const total = requiredItems.length;
-        const selected = requiredItems.filter(item => {
-            const mealId = getMealIdForType(guest, item.mealType);
-            return mealId !== null;
-        }).length;
+        const total = menu.items.reduce((sum, item) => sum + item.quantity, 0);
+        const selected = Object.values(OrderingDomainModel.MealType).reduce((sum, type) => {
+            return sum + getTotalQuantityForType(guest, type);
+        }, 0);
 
         return { selected, total };
     }
@@ -91,89 +100,111 @@ export const useMeals = () => {
 
     function getSelectableEntries(guest: OrderingDomainModel.Guest | string): OrderingDomainModel.Meal[] {
         const guestObj = typeof guest === 'string' ? findGuestById(guest) : guest;
-        if(!guestObj) {
-            return [];
-        }
-
+        if (!guestObj) return [];
         return mealForm.current.getSelectableEntries(meals, guestObj);
     }
 
     function getSelectableMainCourses(guest: OrderingDomainModel.Guest | string): OrderingDomainModel.Meal[] {
         const guestObj = typeof guest === 'string' ? findGuestById(guest) : guest;
-        if(!guestObj) {
-            return [];
-        }
-
+        if (!guestObj) return [];
         return mealForm.current.getSelectableMainCourse(meals, guestObj);
     }
 
     function getSelectableDesserts(guest: OrderingDomainModel.Guest | string): OrderingDomainModel.Meal[] {
         const guestObj = typeof guest === 'string' ? findGuestById(guest) : guest;
-        if(!guestObj) {
-            return [];
-        }
-
+        if (!guestObj) return [];
         return mealForm.current.getSelectableDessert(meals, guestObj);
     }
 
     function getSelectableDrinks(guest: OrderingDomainModel.Guest | string): OrderingDomainModel.Meal[] {
         const guestObj = typeof guest === 'string' ? findGuestById(guest) : guest;
-        if(!guestObj) {
-            return [];
-        }
-
+        if (!guestObj) return [];
         return mealForm.current.getSelectableDrink(meals, guestObj);
     }
 
-    function assignEntry(guestId: string, mealId: string) {
-        const nextState = mealForm.current.assignEntry(form, guestId, mealId)
-        setForm(nextState)
-    }
+    function onMealSelected(guestId: string, mealId: string, mealType: OrderingDomainModel.MealType) {
+        const guest = form.guests.find(g => String(g.id) === guestId);
+        if (!guest) return;
 
-    function assignMainCourse(guestId: string, mealId: string) {
-        const nextState = mealForm.current.assignMainCourse(form, guestId, mealId)
-        setForm(nextState)
-    }
+        const isSelected = isMealSelected(guest, mealId, mealType);
 
-    function assignDessert(guestId: string, mealId: string) {
-        const nextState = mealForm.current.assignDessert(form, guestId, mealId)
-        setForm(nextState)
-    }
-
-    function assignDrink(guestId: string, mealId: string) {
-        const nextState = mealForm.current.assignDrink(form, guestId, mealId)
-        setForm(nextState)
-    }
-
-
-    function assignMeals(guestId: string, mealId: string, mealType: string) {
-        switch (mealType) {
-            case OrderingDomainModel.MealType.ENTRY:
-                assignEntry(guestId, mealId);
-                break;
-            case OrderingDomainModel.MealType.MAIN_COURSE:
-                assignMainCourse(guestId, mealId);
-                break;
-            case OrderingDomainModel.MealType.DESSERT:
-                assignDessert(guestId, mealId);
-                break;
-            case OrderingDomainModel.MealType.DRINK:
-                assignDrink(guestId, mealId);
-                break;
+        if (isSelected) {
+            const nextState = mealForm.current.toggleMealSelection(form, guestId, mealId, mealType);
+            setForm(nextState);
+        } else if (canAddMoreOfType(guest, mealType)) {
+            const nextState = mealForm.current.toggleMealSelection(form, guestId, mealId, mealType);
+            setForm(nextState);
         }
     }
 
+    function incrementQuantity(guestId: string, mealId: string, mealType: OrderingDomainModel.MealType) {
+        const guest = form.guests.find(g => String(g.id) === guestId);
+        if (!guest) return;
+
+        if (!canAddMoreOfType(guest, mealType)) return;
+
+        const currentQty = getMealQuantity(guest, mealId, mealType);
+        const nextState = mealForm.current.updateMealQuantity(form, guestId, mealId, mealType, currentQty + 1);
+        setForm(nextState);
+    }
+
+    function decrementQuantity(guestId: string, mealId: string, mealType: OrderingDomainModel.MealType) {
+        const guest = form.guests.find(g => String(g.id) === guestId);
+        if (!guest) return;
+
+        const currentQty = getMealQuantity(guest, mealId, mealType);
+        const nextState = mealForm.current.updateMealQuantity(form, guestId, mealId, mealType, currentQty - 1);
+        setForm(nextState);
+    }
+
+    function clearIncompatibleMeals(guest: OrderingDomainModel.Guest, menu: OrderingDomainModel.Menu | null): OrderingDomainModel.Guest {
+        if (!menu) return guest;
+
+        const requiredTypes = menu.items
+            .filter(item => item.quantity > 0)
+            .map(item => item.mealType);
+
+        return {
+            ...guest,
+            meals: {
+                entries: requiredTypes.includes(OrderingDomainModel.MealType.ENTRY) ? guest.meals.entries : [],
+                mainCourses: requiredTypes.includes(OrderingDomainModel.MealType.MAIN_COURSE) ? guest.meals.mainCourses : [],
+                desserts: requiredTypes.includes(OrderingDomainModel.MealType.DESSERT) ? guest.meals.desserts : [],
+                drinks: requiredTypes.includes(OrderingDomainModel.MealType.DRINK) ? guest.meals.drinks : [],
+            }
+        };
+    }
+
+    function onSelectMenu(menuId: string | null) {
+        dispatch(orderingActions.selectMenu(menuId));
+
+        const newMenu = menuId ? menus.find(m => m.id === menuId) || null : null;
+
+        if (currentGuest) {
+            const updatedGuest = {
+                ...clearIncompatibleMeals(currentGuest, newMenu),
+                menuId: menuId
+            };
+
+            setForm(prevForm => ({
+                ...prevForm,
+                guests: prevForm.guests.map(g =>
+                    g.id === currentGuest.id ? updatedGuest : g
+                )
+            }));
+        }
+    }
 
     function onNext() {
-        dispatch(chooseMeal(form))
+        dispatch(chooseMeal(form));
     }
 
     function onPrevious() {
-        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.GUESTS))
+        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.GUESTS));
     }
 
     function onSkip() {
-        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.SUMMARY))
+        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.SUMMARY));
     }
 
     function onNextGuest() {
@@ -188,106 +219,35 @@ export const useMeals = () => {
         }
     }
 
-    function clearIncompatibleMeals(guest: OrderingDomainModel.Guest, menu: OrderingDomainModel.Menu | null): OrderingDomainModel.Guest {
-        if (!menu) return guest; // a la carte keeps all meals
-
-        const requiredTypes = menu.items
-            .filter(item => item.quantity > 0)
-            .map(item => item.mealType);
-
-        return {
-            ...guest,
-            meals: {
-                entry: requiredTypes.includes(OrderingDomainModel.MealType.ENTRY) ? guest.meals.entry : null,
-                mainCourse: requiredTypes.includes(OrderingDomainModel.MealType.MAIN_COURSE) ? guest.meals.mainCourse : null,
-                dessert: requiredTypes.includes(OrderingDomainModel.MealType.DESSERT) ? guest.meals.dessert : null,
-                drink: requiredTypes.includes(OrderingDomainModel.MealType.DRINK) ? guest.meals.drink : null,
-            }
-        };
+    function isSubmittable() {
+        return mealForm.current.isSubmitable(form);
     }
-
-    function incrementQuantity(guestId: string, mealType: OrderingDomainModel.MealType) {
-        const guest = form.guests.find(g => g.id === guestId);
-        if (!guest) return;
-
-        const currentQty = getMealQuantityForType(guest, mealType);
-        const maxQty = getMaxQuantityForType(guest, mealType);
-        if (currentQty >= maxQty) return; // Respect menu constraints
-
-        const nextState = mealForm.current.updateQuantity(form, guestId, mealType, currentQty + 1);
-        setForm(nextState);
-    }
-
-    function decrementQuantity(guestId: string, mealType: OrderingDomainModel.MealType) {
-        const guest = form.guests.find(g => g.id === guestId);
-        if (!guest) return;
-
-        const currentQty = getMealQuantityForType(guest, mealType);
-        const nextState = mealForm.current.updateQuantity(form, guestId, mealType, currentQty - 1);
-        setForm(nextState);
-    }
-
-    function onSelectMenu(menuId: string | null) {
-        // Dispatch menu selection to Redux (UI state)
-        dispatch(orderingActions.selectMenu(menuId));
-
-        // Get the new menu
-        const newMenu = menuId ? menus.find(m => m.id === menuId) || null : null;
-
-        // Update current guest menu + clear incompatible meals
-        if (currentGuest) {
-            const nextGuest = clearIncompatibleMeals(
-                { ...currentGuest, menuId },
-                newMenu
-            );
-
-            // Update the form state with the updated guest
-            setForm(prevForm => ({
-                ...prevForm,
-                guests: prevForm.guests.map(g =>
-                    g.id === currentGuest.id ? nextGuest : g
-                )
-            }));
-        }
-    }
-
-    function isSubmittable() { return false; }
-    const dispatch = useAppDispatch();
-    const meals: OrderingDomainModel.Meal[] = useSelector((state: AppState) => state.ordering.availableMeals.data);
-    const initialState = useSelector((state: AppState) => state.ordering.form);
-    const [form, setForm] = useState<OrderingDomainModel.Form>(initialState);
-    const mealForm = useRef(new MealForm())
-
-    const currentGuest = form.guests[currentGuestIndex];
-    const isLastGuest = currentGuestIndex === form.guests.length - 1;
-    const isFirstGuest = currentGuestIndex === 0;
-
-    const selectedMenu = selectedMenuId
-        ? menus.find(m => m.id === selectedMenuId) || null
-        : null;
 
     return {
+        // Selectable meals
         getSelectableEntries,
         getSelectableMainCourses,
         getSelectableDesserts,
         getSelectableDrinks,
-        assignMeals,
-        assignEntry,
-        assignMainCourse,
-        assignDessert,
-        assignDrink,
+        // Meal selection
+        onMealSelected,
+        incrementQuantity,
+        decrementQuantity,
+        // Quantity helpers
+        getMealQuantity,
+        isMealSelected,
+        getTotalQuantityForType,
+        getMaxQuantityForType,
+        canAddMoreOfType,
+        // Navigation
         onNext,
         onPrevious,
         onSkip,
         onNextGuest,
         onPreviousGuest,
         onSelectMenu,
-        incrementQuantity,
-        decrementQuantity,
-        getMealIdForType,
-        getMealQuantityForType,
-        getMaxQuantityForType,
-        meals: meals || null,
+        // State
+        meals: meals || [],
         guests: form.guests,
         currentGuest,
         currentGuestIndex,
@@ -295,7 +255,7 @@ export const useMeals = () => {
         isLastGuest,
         isFirstGuest,
         isSubmittable: isSubmittable(),
-        onMealSelected: assignMeals,
+        // Menu
         menus,
         selectedMenuId,
         selectedMenu,
@@ -303,5 +263,5 @@ export const useMeals = () => {
         getRequiredMealTypes,
         isGuestComplete,
         getMenuProgress,
-    }
-}
+    };
+};

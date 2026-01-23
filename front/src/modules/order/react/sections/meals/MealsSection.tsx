@@ -44,13 +44,6 @@ export const MealsSection = () => {
     "DRINK": "bg-luminous-meal-drink-bg text-luminous-meal-drink",
   };
 
-  const mealBorder: Record<OrderingDomainModel.MealType, string> = {
-    "ENTRY": "border-luminous-meal-entry",
-    "MAIN_COURSE": "border-luminous-meal-main",
-    "DESSERT": "border-luminous-meal-dessert",
-    "DRINK": "border-luminous-meal-drink",
-  };
-
   const groupedMeals = {
     [OrderingDomainModel.MealType.ENTRY]: presenter.getSelectableEntries(presenter.currentGuest),
     [OrderingDomainModel.MealType.MAIN_COURSE]: presenter.getSelectableMainCourses(presenter.currentGuest),
@@ -161,34 +154,44 @@ export const MealsSection = () => {
           const meals = groupedMeals[type];
           if (meals.length === 0) return null;
 
-          const selectedMealId = presenter.getMealIdForType(presenter.currentGuest, type);
-          const selectedQuantity = presenter.getMealQuantityForType(presenter.currentGuest, type);
+          const maxQty = presenter.getMaxQuantityForType(presenter.currentGuest, type);
+          const totalSelected = presenter.getTotalQuantityForType(presenter.currentGuest, type);
+          const canAddMore = presenter.canAddMoreOfType(presenter.currentGuest, type);
 
           return (
             <div key={type}>
-              <h4 className="text-lg font-display font-medium text-luminous-text-primary mb-4 uppercase tracking-wide">
-                {mealTypes[type]}s
-              </h4>
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-lg font-display font-medium text-luminous-text-primary uppercase tracking-wide">
+                  {mealTypes[type]}s
+                </h4>
+                {maxQty > 0 && (
+                  <span className={`text-sm ${totalSelected >= maxQty ? 'text-luminous-sage' : 'text-luminous-text-muted'}`}>
+                    {totalSelected}/{maxQty} sélectionné{totalSelected > 1 ? 's' : ''}
+                  </span>
+                )}
+              </div>
               <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory">
                 {meals.map((meal) => {
-                  const isSelected = selectedMealId === meal.id;
+                  const isSelected = presenter.isMealSelected(presenter.currentGuest, meal.id, type);
+                  const mealQuantity = presenter.getMealQuantity(presenter.currentGuest, meal.id, type);
                   const isAgeRestricted = Boolean(
                     meal.requiredAge && meal.requiredAge > presenter.currentGuest.age
                   );
+                  const isDisabled = isAgeRestricted || (!isSelected && !canAddMore);
 
                   return (
                     <button
                       key={meal.id}
                       type="button"
                       onClick={() => {
-                        if (!isAgeRestricted) {
-                          presenter.onMealSelected(String(presenter.currentGuest.id), meal.id, meal.type);
+                        if (!isDisabled || isSelected) {
+                          presenter.onMealSelected(String(presenter.currentGuest.id), meal.id, type);
                         }
                       }}
                       aria-pressed={isSelected}
-                      aria-disabled={isAgeRestricted}
+                      aria-disabled={isDisabled && !isSelected}
                       disabled={isAgeRestricted}
-                      className={`flex-shrink-0 w-[140px] sm:w-[180px] snap-start text-left ${isAgeRestricted ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luminous-gold/60 rounded-xl`}
+                      className={`flex-shrink-0 w-[140px] sm:w-[180px] snap-start text-left ${isDisabled && !isSelected ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luminous-gold/60 rounded-xl`}
                     >
                       <div className={`relative rounded-xl overflow-hidden border-2 ${isSelected ? 'border-luminous-gold' : 'border-luminous-gold-border'} bg-luminous-bg-card shadow-[0_4px_20px_rgba(201,162,39,0.08)] hover:shadow-[0_8px_30px_rgba(201,162,39,0.12)] transition-all duration-300`}>
                         {/* Meal type badge */}
@@ -196,10 +199,14 @@ export const MealsSection = () => {
                           {mealTypes[meal.type]}
                         </span>
 
-                        {/* Selected checkmark */}
+                        {/* Selected checkmark with quantity */}
                         {isSelected && (
                           <div className="absolute top-2 right-2 z-10 w-6 h-6 bg-luminous-sage rounded-full flex items-center justify-center">
-                            <Check className="w-4 h-4 text-white" aria-hidden="true" />
+                            {mealQuantity > 1 ? (
+                              <span className="text-xs font-bold text-white">{mealQuantity}</span>
+                            ) : (
+                              <Check className="w-4 h-4 text-white" aria-hidden="true" />
+                            )}
                           </div>
                         )}
 
@@ -226,38 +233,33 @@ export const MealsSection = () => {
                             </p>
                           )}
                           {/* Quantity controls - only show when selected */}
-                          {isSelected && (() => {
-                            const maxQty = presenter.getMaxQuantityForType(presenter.currentGuest, type);
-                            const isAtMin = selectedQuantity <= 1;
-                            const isAtMax = selectedQuantity >= maxQty;
-                            return (
-                              <div className="flex items-center justify-center gap-2 mt-2">
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    presenter.decrementQuantity(String(presenter.currentGuest.id), type);
-                                  }}
-                                  disabled={isAtMin}
-                                  className={`w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center transition-colors ${isAtMin ? 'opacity-50 cursor-not-allowed' : 'hover:bg-luminous-gold/20'}`}
-                                >
-                                  <Minus className="w-4 h-4 text-luminous-gold" />
-                                </button>
-                                <span className="text-sm font-bold text-luminous-text-primary min-w-[24px] text-center">
-                                  {selectedQuantity}{maxQty > 1 ? `/${maxQty}` : ''}
-                                </span>
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    presenter.incrementQuantity(String(presenter.currentGuest.id), type);
-                                  }}
-                                  disabled={isAtMax}
-                                  className={`w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center transition-colors ${isAtMax ? 'opacity-50 cursor-not-allowed' : 'hover:bg-luminous-gold/20'}`}
-                                >
-                                  <Plus className="w-4 h-4 text-luminous-gold" />
-                                </button>
-                              </div>
-                            );
-                          })()}
+                          {isSelected && (
+                            <div className="flex items-center justify-center gap-2 mt-2">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  presenter.decrementQuantity(String(presenter.currentGuest.id), meal.id, type);
+                                }}
+                                disabled={mealQuantity <= 1}
+                                className={`w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center transition-colors ${mealQuantity <= 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-luminous-gold/20'}`}
+                              >
+                                <Minus className="w-4 h-4 text-luminous-gold" />
+                              </button>
+                              <span className="text-sm font-bold text-luminous-text-primary min-w-[24px] text-center">
+                                {mealQuantity}
+                              </span>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  presenter.incrementQuantity(String(presenter.currentGuest.id), meal.id, type);
+                                }}
+                                disabled={!canAddMore}
+                                className={`w-7 h-7 rounded-full bg-luminous-bg-secondary border border-luminous-gold-border flex items-center justify-center transition-colors ${!canAddMore ? 'opacity-50 cursor-not-allowed' : 'hover:bg-luminous-gold/20'}`}
+                              >
+                                <Plus className="w-4 h-4 text-luminous-gold" />
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </button>

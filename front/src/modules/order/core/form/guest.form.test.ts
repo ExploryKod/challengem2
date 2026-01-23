@@ -21,7 +21,7 @@ const JohnDoe: OrderingDomainModel.Guest = GuestFactory.create({
     firstName: 'John',
     lastName: 'Doe',
     age: 24,
-    meals: {entry: null, mainCourse: null, dessert: null, drink: null}
+    meals: {entries: [], mainCourses: [], desserts: [], drinks: []}
 });
 
 const BrigitteMonin: OrderingDomainModel.Guest = GuestFactory.create({
@@ -57,7 +57,7 @@ describe('Add a Guest', () => {
                 restaurantId: null,
                 isOrganizer: false,
                 menuId: null,
-                meals: {entry: null, mainCourse: null, dessert: null, drink: null}
+                meals: {entries: [], mainCourses: [], desserts: [], drinks: []}
             }]
         );
     });
@@ -78,7 +78,7 @@ describe('Add a Guest', () => {
                 restaurantId: null,
                 isOrganizer: false,
                 menuId: null,
-                meals: {entry: null, mainCourse: null, dessert: null, drink: null}
+                meals: {entries: [], mainCourses: [], desserts: [], drinks: []}
             }]
         );
     });
@@ -104,7 +104,7 @@ describe('Remove a Guest', () => {
                 restaurantId: null,
                 isOrganizer: false,
                 menuId: null,
-                meals: {entry: null, mainCourse: null, dessert: null, drink: null}
+                meals: {entries: [], mainCourses: [], desserts: [], drinks: []}
             }
         ]);
     });
@@ -144,28 +144,15 @@ describe('Set Is Submittable', () => {
         expect(isSubmitable).toEqual(true)
     })
 
-    it.each(
-        [
-            {
-                key: "age" as keyof OrderingDomainModel.Guest,
-                value: 0 as OrderingDomainModel.Guest["age"]
-            },
-            {
-                key: "firstName" as keyof OrderingDomainModel.Guest,
-                value: "" as OrderingDomainModel.Guest["firstName"]
-            },
-            {
-                key: "lastName" as keyof OrderingDomainModel.Guest,
-                value: "" as OrderingDomainModel.Guest["lastName"]
-            }
-        ]
-    )(`When %s is empty, it can't be submittable`, ({key, value}) =>{
+    // Note: firstName and lastName are no longer required for submitting
+    // because the app uses placeholder defaults (e.g., "Invité 1")
+    it("When age is 0, it can't be submittable", () =>{
         const withOrganizerState = {
             ...stateWithOneUser,
             organizerId: "1",
             guests: [{
                 ...JohnDoe,
-                [key]: value
+                age: 0
             }]
         }
         const isSubmitable = form.isSubmitable(withOrganizerState)

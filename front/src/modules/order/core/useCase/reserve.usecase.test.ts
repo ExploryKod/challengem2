@@ -16,10 +16,10 @@ const orderForm: OrderingDomainModel.Form = {
             lastName: "",
             age: 21,
             meals: {
-                entry: null,
-                mainCourse: "1",
-                dessert: null,
-                drink: null
+                entries: [],
+                mainCourses: [{ mealId: "1", quantity: 1 }],
+                desserts: [],
+                drinks: []
             }
         })
     ]
@@ -65,7 +65,7 @@ describe("Reserve", () => {
         await promise;
         expect(store.getState().ordering.reservation.status).toEqual("success")
 
-        reservationGateway.expectReserveWasCallWith({  
+        reservationGateway.expectReserveWasCallWith({
             tableId: "1",
             guests: [
                 {
@@ -75,10 +75,10 @@ describe("Reserve", () => {
                     age: 21,
                     isOrganizer: true,
                     meals: {
-                        entry: null,
-                        mainCourse: "1",
-                        dessert: null,
-                        drink: null
+                        entries: [],
+                        mainCourses: [{ mealId: "1", quantity: 1 }],
+                        desserts: [],
+                        drinks: []
                     }
                 }
             ]

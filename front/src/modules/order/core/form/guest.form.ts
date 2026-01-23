@@ -21,7 +21,7 @@ export class GuestForm {
                 restaurantId: null,
                 isOrganizer: false,
                 menuId: menuId,
-                meals: {entry: null, mainCourse: null, dessert: null, drink: null}
+                meals: { entries: [], mainCourses: [], desserts: [], drinks: [] }
             })
         })
 
@@ -99,7 +99,7 @@ export class GuestForm {
                     restaurantId: null,
                     isOrganizer: false,
                     menuId: menuId,
-                    meals: { entry: null, mainCourse: null, dessert: null, drink: null }
+                    meals: { entries: [], mainCourses: [], desserts: [], drinks: [] }
                 });
             }
             // Set the first guest as organizer by default
