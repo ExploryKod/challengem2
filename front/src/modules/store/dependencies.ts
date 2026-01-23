@@ -1,4 +1,5 @@
 import { IMealGateway } from '@taotask/modules/order/core/gateway/meal.gateway';
+import { IMenuGateway } from '@taotask/modules/order/core/gateway/menu.gateway';
 import { IIDProvider } from '@taotask/modules/core/id-provider';
 import { ITableGateway } from '@taotask/modules/order/core/gateway/table.gateway';
 import { IReservationGateway } from "@taotask/modules/order/core/gateway/reservation.gateway";
@@ -12,6 +13,7 @@ export type Dependencies = {
     idProvider?: IIDProvider;
     tableGateway?: ITableGateway;
     mealGateway?: IMealGateway;
+    menuGateway?: IMenuGateway;
     reservationGateway?: IReservationGateway;
     restaurantGateway?: IRestaurantGateway;
     restaurantManagementGateway?: IRestaurantManagementGateway;
