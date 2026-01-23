@@ -158,7 +158,7 @@ describe('Selecting Meals', () => {
 
         it('Should assign the entry and return entry id if an entry meal is selected', () => {
             const result = mealForm.assignEntry(form, adult.id, adultEntry.id);
-            expect(result.guests[0].meals.entry).toEqual(adultEntry.id);
+            expect(result.guests[0].meals.entry).toEqual({ mealId: adultEntry.id, quantity: 1 });
         });
 
         it('Should return to initial state if guest id is non-existant', () => {
@@ -175,7 +175,7 @@ describe('Selecting Meals', () => {
 
         it('Should assign the meal and return the meal id if an entry meal is selected', () => {
             const result = mealForm.assignMainCourse(form, adult.id, adultMainCourse.id);
-            expect(result.guests[0].meals.mainCourse).toEqual(adultMainCourse.id);
+            expect(result.guests[0].meals.mainCourse).toEqual({ mealId: adultMainCourse.id, quantity: 1 });
         });
 
         it('Should return to initial state if guest id is non-existant', () => {
@@ -192,7 +192,7 @@ describe('Selecting Meals', () => {
 
         it('Should assign the meal and return the meal id if an entry meal is selected', () => {
             const result = mealForm.assignDessert(form, adult.id, adultDessert.id);
-            expect(result.guests[0].meals.dessert).toEqual(adultDessert.id);
+            expect(result.guests[0].meals.dessert).toEqual({ mealId: adultDessert.id, quantity: 1 });
         });
 
         it('Should return to initial state if guest id is non-existant', () => {
@@ -209,7 +209,7 @@ describe('Selecting Meals', () => {
 
         it('Should assign the meal and return the meal id if an entry meal is selected', () => {
             const result = mealForm.assignDrink(form, adult.id, adultDrink.id);
-            expect(result.guests[0].meals.drink).toEqual(adultDrink.id);
+            expect(result.guests[0].meals.drink).toEqual({ mealId: adultDrink.id, quantity: 1 });
         });
 
         it('Should return to initial state if guest id is non-existant', () => {
