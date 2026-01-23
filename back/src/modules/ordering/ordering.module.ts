@@ -37,6 +37,8 @@ import { GetMenusUseCase } from './application/use-cases/get-menus.use-case';
 import { CreateMenuUseCase } from './application/use-cases/create-menu.use-case';
 import { UpdateMenuUseCase } from './application/use-cases/update-menu.use-case';
 import { DeleteMenuUseCase } from './application/use-cases/delete-menu.use-case';
+import { GetKitchenOrdersUseCase } from './application/use-cases/kitchen/get-kitchen-orders.use-case';
+import { MarkCourseReadyUseCase } from './application/use-cases/kitchen/mark-course-ready.use-case';
 
 // Controllers
 import { RestaurantController } from './infrastructure/http/controllers/restaurant.controller';
@@ -44,6 +46,7 @@ import { TableController } from './infrastructure/http/controllers/table.control
 import { MealController } from './infrastructure/http/controllers/meal.controller';
 import { ReservationController } from './infrastructure/http/controllers/reservation.controller';
 import { MenuController } from './infrastructure/http/controllers/menu.controller';
+import { KitchenController } from './infrastructure/http/controllers/kitchen/kitchen.controller';
 
 @Module({
   imports: [
@@ -63,6 +66,7 @@ import { MenuController } from './infrastructure/http/controllers/menu.controlle
     MealController,
     ReservationController,
     MenuController,
+    KitchenController,
   ],
   providers: [
     // Repositories
@@ -99,6 +103,8 @@ import { MenuController } from './infrastructure/http/controllers/menu.controlle
     CreateMenuUseCase,
     UpdateMenuUseCase,
     DeleteMenuUseCase,
+    GetKitchenOrdersUseCase,
+    MarkCourseReadyUseCase,
   ],
   exports: [
     RESTAURANT_REPOSITORY,

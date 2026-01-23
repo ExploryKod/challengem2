@@ -12,6 +12,7 @@ import { RestaurantOrmEntity } from './restaurant.orm-entity';
 import { TableOrmEntity } from './table.orm-entity';
 import { GuestOrmEntity } from './guest.orm-entity';
 import { ReservationStatus } from '../../../domain/enums/reservation-status.enum';
+import type { CoursesReady } from '../../../domain/entities/reservation.entity';
 
 @Entity('reservations')
 export class ReservationOrmEntity {
@@ -40,6 +41,13 @@ export class ReservationOrmEntity {
 
   @Column({ type: 'text', nullable: true })
   notes: string | null;
+
+  @Column({
+    name: 'courses_ready',
+    type: 'jsonb',
+    default: () => `'{"entry": false, "mainCourse": false, "dessert": false, "drink": false}'::jsonb`,
+  })
+  coursesReady: CoursesReady;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

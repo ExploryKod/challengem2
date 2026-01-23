@@ -13,6 +13,10 @@ export interface IReservationRepository {
     restaurantId: number,
     status: ReservationStatus,
   ): Promise<Reservation[]>;
+  findByRestaurantIdAndStatuses(
+    restaurantId: number,
+    statuses: ReservationStatus[],
+  ): Promise<Reservation[]>;
   update(id: number, data: Partial<Reservation>): Promise<Reservation | null>;
   updateStatus(
     id: number,

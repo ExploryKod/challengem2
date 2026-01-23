@@ -22,6 +22,14 @@ export class InMemoryReservationRepository implements IReservationRepository {
     if (!saved.updatedAt) {
       saved.updatedAt = new Date();
     }
+    if (!saved.coursesReady) {
+      saved.coursesReady = {
+        entry: false,
+        mainCourse: false,
+        dessert: false,
+        drink: false,
+      };
+    }
     this.reservations.push(saved);
     return Promise.resolve(saved);
   }
@@ -57,6 +65,16 @@ export class InMemoryReservationRepository implements IReservationRepository {
   ): Promise<Reservation[]> {
     const found = this.reservations.filter(
       (r) => r.restaurantId === restaurantId && r.status === status,
+    );
+    return Promise.resolve(found);
+  }
+
+  findByRestaurantIdAndStatuses(
+    restaurantId: number,
+    statuses: ReservationStatus[],
+  ): Promise<Reservation[]> {
+    const found = this.reservations.filter(
+      (r) => r.restaurantId === restaurantId && statuses.includes(r.status),
     );
     return Promise.resolve(found);
   }
