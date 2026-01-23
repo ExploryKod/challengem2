@@ -14,7 +14,12 @@ export class RestaurantRepository implements IRestaurantRepository {
   ) {}
 
   async findAll(): Promise<Restaurant[]> {
-    const entities = await this.repository.find();
+    const entities = await this.repository
+      .createQueryBuilder('restaurant')
+      .innerJoin('restaurant.tables', 'table')
+      .innerJoin('restaurant.meals', 'meal')
+      .groupBy('restaurant.id')
+      .getMany();
     return entities.map((entity) => RestaurantMapper.toDomain(entity));
   }
 
