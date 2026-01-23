@@ -30,12 +30,18 @@ const orderingState: OrderingState = {
     form: orderForm,
     restaurantId: "1",
     isTerminalMode: false,
+    selectedMenuId: null,
     availableTables: {
         status: "idle",
         error: null,
         data: []
     },
     availableMeals: {
+      status: "idle",
+      error: null,
+      data: []
+    },
+    availableMenus: {
       status: "idle",
       error: null,
       data: []
