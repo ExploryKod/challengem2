@@ -34,12 +34,15 @@ export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId }) => {
           <ProgressBar step={step} />
         )}
 
-        {!presenter.isTerminalMode && (
-          <RestaurantSection
-            restaurantList={presenter.restaurantList}
-            selectRestaurant={presenter.selectRestaurant}
-          />
-        )}
+        {!presenter.isTerminalMode &&
+          (step === OrderingDomainModel.OrderingStep.RESTAURANT ||
+            step === OrderingDomainModel.OrderingStep.MEALS_PREVIEW) && (
+            <RestaurantSection
+              restaurantList={presenter.restaurantList}
+              selectRestaurant={presenter.selectRestaurant}
+              step={step}
+            />
+          )}
 
         {presenter.restaurantList.restaurantId &&
           step === OrderingDomainModel.OrderingStep.MEALS_PREVIEW && (
