@@ -3,14 +3,16 @@ import React from 'react';
 interface LuxuryInputProps {
   label: string;
   name: string;
-  value: string | number;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  type?: 'text' | 'number' | 'email';
+  value?: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  type?: 'text' | 'number' | 'email' | 'password';
   placeholder?: string;
   error?: string | null;
   required?: boolean;
   min?: number;
   max?: number;
+  autoComplete?: string;
+  defaultValue?: string | number;
 }
 
 export const LuxuryInput: React.FC<LuxuryInputProps> = ({
@@ -24,6 +26,8 @@ export const LuxuryInput: React.FC<LuxuryInputProps> = ({
   required = false,
   min,
   max,
+  autoComplete,
+  defaultValue,
 }) => {
   return (
     <div className="mb-4">
@@ -39,10 +43,12 @@ export const LuxuryInput: React.FC<LuxuryInputProps> = ({
         name={name}
         type={type}
         value={value}
+        defaultValue={defaultValue}
         onChange={onChange}
         placeholder={placeholder}
         min={min}
         max={max}
+        autoComplete={autoComplete}
         className={`
           w-full px-4 py-3 rounded-lg
           bg-luxury-bg-primary border

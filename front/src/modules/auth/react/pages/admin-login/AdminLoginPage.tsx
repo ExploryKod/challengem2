@@ -2,6 +2,7 @@ import {
   AdminLoginSearchParams,
   useAdminLoginPage,
 } from "./use-admin-login-page";
+import { LuxuryButton, LuxuryInput } from "@taotask/modules/backoffice/react/components/ui";
 
 export async function AdminLoginPage({
   searchParams,
@@ -16,53 +17,54 @@ export async function AdminLoginPage({
   });
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-6 py-12">
-      <h1 className="text-2xl font-semibold text-slate-900">
-        Accès administration
-      </h1>
-      <p className="mt-2 text-sm text-slate-600">
-        Entrez le mot de passe pour accéder à l'administration.
-      </p>
-      <p className="mt-2 text-xs text-slate-500">
-        Identifiants définis dans <code>.env.local</code> (mot de passe ≥ 8
-        caractères).
-      </p>
+    <main className="min-h-screen bg-luxury-bg-primary flex items-center justify-center">
+      <div className="w-full max-w-md px-6 py-12">
+        <div className="mb-8">
+          <h1 className="text-3xl font-serif text-luxury-text-primary mb-2">
+            Accès administration
+          </h1>
+          <div className="h-1 w-16 bg-luxury-gold" />
+        </div>
 
-      {hasError ? (
-        <p className="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-          Mot de passe invalide.
+        <p className="text-luxury-text-secondary mb-2">
+          Entrez vos identifiants pour accéder à l'administration.
         </p>
-      ) : null}
+        <p className="text-sm text-luxury-text-secondary/70 mb-6">
+          Identifiants définis dans <code className="text-luxury-gold-muted">.env.local</code> (mot de passe minimum 8 caractères).
+        </p>
 
-      <form action={authenticate} className="mt-6 space-y-4">
-        <input type="hidden" name="next" value={nextPath} />
-        <label className="block text-sm font-medium text-slate-700">
-          Email
-          <input
-            className="mt-2 w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 shadow-sm"
+        {hasError ? (
+          <div className="mb-6 bg-luxury-rose/20 border border-luxury-rose text-luxury-text-primary px-4 py-3 rounded-lg">
+            Mot de passe invalide.
+          </div>
+        ) : null}
+
+        <form action={authenticate} className="space-y-4">
+          <input type="hidden" name="next" value={nextPath} />
+
+          <LuxuryInput
+            label="Email"
             name="email"
             type="email"
             autoComplete="username"
             required
           />
-        </label>
-        <label className="block text-sm font-medium text-slate-700">
-          Mot de passe
-          <input
-            className="mt-2 w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 shadow-sm"
+
+          <LuxuryInput
+            label="Mot de passe"
             name="password"
             type="password"
             autoComplete="current-password"
             required
           />
-        </label>
-        <button
-          className="w-full rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-          type="submit"
-        >
-          Se connecter
-        </button>
-      </form>
-    </div>
+
+          <div className="pt-4">
+            <LuxuryButton type="submit" className="w-full">
+              Se connecter
+            </LuxuryButton>
+          </div>
+        </form>
+      </div>
+    </main>
   );
 }
