@@ -3,4 +3,6 @@ export class Restaurant {
   name: string;
   type: string;
   stars: number;
+  tableCount?: number;
+  mealCount?: number;
 }

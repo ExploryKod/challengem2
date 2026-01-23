@@ -26,8 +26,17 @@ export class AdminRestaurantRepository implements IAdminRestaurantRepository {
   ) {}
 
   async findAll(): Promise<Restaurant[]> {
-    const entities = await this.restaurantRepository.find();
-    return entities.map((entity) => RestaurantMapper.toDomain(entity));
+    const entities = await this.restaurantRepository
+      .createQueryBuilder('restaurant')
+      .loadRelationCountAndMap('restaurant.tableCount', 'restaurant.tables')
+      .loadRelationCountAndMap('restaurant.mealCount', 'restaurant.meals')
+      .getMany();
+    return entities.map((entity) => {
+      const restaurant = RestaurantMapper.toDomain(entity);
+      restaurant.tableCount = (entity as any).tableCount ?? 0;
+      restaurant.mealCount = (entity as any).mealCount ?? 0;
+      return restaurant;
+    });
   }
 
   async findById(id: number): Promise<Restaurant | null> {
