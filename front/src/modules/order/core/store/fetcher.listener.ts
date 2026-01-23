@@ -27,6 +27,12 @@ export const registerFetcherListeners = (listener: ListenerMiddlewareInstance) =
                     api.dispatch(fetchMeals as any);
                     break;
                 }
+                case OrderingDomainModel.OrderingStep.QR_GUESTS: {
+                    // Pre-fetch menus and meals for QR flow
+                    api.dispatch(fetchMenus as any);
+                    api.dispatch(fetchMeals as any);
+                    break;
+                }
             }
         }
     });

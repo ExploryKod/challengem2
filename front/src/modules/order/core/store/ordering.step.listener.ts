@@ -36,4 +36,12 @@ export const registerOrderingStepListener = (listener: ListenerMiddlewareInstanc
             api.dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.SUMMARY));
         }
     });
+
+    listener.startListening({
+        // Dés que l'on choisis le nombre d'invités en mode QR, on passe à l'étape de sélection des repas
+        actionCreator: orderingSlice.actions.chooseQrGuestCount,
+        effect: (_, api) => {
+            api.dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.MEALS));
+        }
+    });
 }
