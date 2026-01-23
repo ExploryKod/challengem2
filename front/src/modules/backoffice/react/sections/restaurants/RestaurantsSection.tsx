@@ -26,7 +26,7 @@ export const RestaurantsSection: React.FC = () => {
     };
 
     return (
-        <section className="min-h-screen bg-luxury-bg-primary">
+        <section className="bg-luxury-bg-primary">
             <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-8 sm:mb-12">
                     <div>

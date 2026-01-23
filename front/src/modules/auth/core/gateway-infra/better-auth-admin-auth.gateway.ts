@@ -8,7 +8,7 @@ export class BetterAuthAdminAuthGateway implements IAdminAuthGateway {
         body: { email, password },
       });
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }

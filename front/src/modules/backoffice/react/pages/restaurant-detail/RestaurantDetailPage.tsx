@@ -30,7 +30,7 @@ export const RestaurantDetailPage: React.FC<RestaurantDetailPageProps> = ({ rest
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-luxury-bg-primary flex items-center justify-center">
+            <div className="flex items-center justify-center py-12">
                 <div className="text-luxury-gold">Chargement...</div>
             </div>
         );
@@ -38,7 +38,7 @@ export const RestaurantDetailPage: React.FC<RestaurantDetailPageProps> = ({ rest
 
     if (!restaurant) {
         return (
-            <div className="min-h-screen bg-luxury-bg-primary flex items-center justify-center">
+            <div className="flex items-center justify-center py-12">
                 <div className="text-luxury-text-primary">Restaurant non trouve</div>
             </div>
         );
@@ -64,7 +64,7 @@ export const RestaurantDetailPage: React.FC<RestaurantDetailPageProps> = ({ rest
     };
 
     return (
-        <main className="min-h-screen bg-luxury-bg-primary">
+        <main className="bg-luxury-bg-primary">
             <div className="border-b border-luxury-gold-border">
                 <div className="container mx-auto px-4 sm:px-6 py-6">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

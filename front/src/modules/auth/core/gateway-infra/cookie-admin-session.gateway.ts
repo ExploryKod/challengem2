@@ -17,4 +17,9 @@ export class CookieAdminSessionGateway implements IAdminSessionGateway {
       maxAge: ADMIN_SESSION_MAX_AGE_SECONDS,
     });
   }
+
+  async closeSession(): Promise<void> {
+    const cookieStore = (await cookies()) as ResponseCookies;
+    cookieStore.delete(ADMIN_AUTH_COOKIE);
+  }
 }

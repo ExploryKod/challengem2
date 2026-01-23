@@ -7,6 +7,7 @@ describe("Authenticate admin", () => {
     };
     const adminSessionGateway = {
       openSession: jest.fn().mockResolvedValue(undefined),
+      closeSession: jest.fn().mockResolvedValue(undefined),
     };
 
     const result = await authenticateAdminUseCase(
@@ -38,6 +39,7 @@ describe("Authenticate admin", () => {
     };
     const adminSessionGateway = {
       openSession: jest.fn().mockResolvedValue(undefined),
+      closeSession: jest.fn().mockResolvedValue(undefined),
     };
 
     const result = await authenticateAdminUseCase(
