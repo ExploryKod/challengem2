@@ -1,4 +1,4 @@
-# PROJET TASTE FEDERATION
+# Projet Taste Federation
 
 Étudiants : Nassim Assiaoui, Amaury Franssen.
 
@@ -8,6 +8,10 @@ Ce projet se compose de trois parties :
 - Application mobile (React Native) : dossier `mobile`
 
 Consultez le PDF du projet pour le détail des parcours.
+
+## Documentation
+- API backend : [back/README.md](back/README.md)
+- Front web : [front/README.md](front/README.md)
 
 ## Prérequis
 - Docker et Docker Compose
