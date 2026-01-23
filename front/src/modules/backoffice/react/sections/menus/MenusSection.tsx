@@ -30,7 +30,7 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [formData, setFormData] = useState(initialFormData);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const value = e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
         setFormData((prev) => ({ ...prev, [e.target.name]: value }));
     };
