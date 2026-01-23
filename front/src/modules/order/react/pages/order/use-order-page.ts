@@ -56,6 +56,7 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
             if (restaurant) {
                 setRestaurantList({ restaurants: [restaurant], restaurantId });
                 dispatch(orderingActions.setRestaurantId(restaurantId));
+                dispatch(orderingActions.setTerminalMode(true));
                 fetchMealsForRestaurant();
             } else {
                 console.error('Restaurant not found:', restaurantId);

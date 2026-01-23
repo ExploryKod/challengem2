@@ -5,6 +5,7 @@ export type OrderingState = {
     step: OrderingDomainModel.OrderingStep,
     form: OrderingDomainModel.Form,
     restaurantId: OrderingDomainModel.RestaurantId,
+    isTerminalMode: boolean;
     availableTables: {
         data: OrderingDomainModel.Table[];
         status: 'idle' | 'loading' | 'success' | 'error';
@@ -28,6 +29,7 @@ export const initialState: OrderingState = {
         tableId: null
     },
     restaurantId: null,
+    isTerminalMode: false,
     availableTables: {
         status: 'idle',
         error: null,
@@ -71,6 +73,9 @@ export const orderingSlice = createSlice({
         },
         setRestaurantId: (state, action: PayloadAction<OrderingDomainModel.RestaurantId>) => {
             state.restaurantId = action.payload;
+        },
+        setTerminalMode: (state, action: PayloadAction<boolean>) => {
+            state.isTerminalMode = action.payload;
         },
         chooseGuests: (state, action:PayloadAction<OrderingDomainModel.Form>) => {
             state.form = action.payload;
