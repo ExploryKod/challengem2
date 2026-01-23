@@ -20,6 +20,7 @@ export class App {
    
     dependenciesRef.tableGateway = GatewayFactory.createTableGateway(getState);
     dependenciesRef.mealGateway = GatewayFactory.createMealGateway(getState);
+    dependenciesRef.menuGateway = GatewayFactory.createMenuGateway();
     dependenciesRef.reservationGateway = GatewayFactory.createReservationGateway(getState);
     dependenciesRef.restaurantGateway = GatewayFactory.createRestaurantGateway();
 
