@@ -125,7 +125,9 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {menus.map((menu) => (
+                    {menus.map((menu) => {
+                        const hasNoItems = !menu.items || menu.items.length === 0;
+                        return (
                         <LuxuryCard key={menu.id} hoverable>
                             {menu.imageUrl && (
                                 <div className="relative w-full h-40 mb-3 rounded-lg overflow-hidden">
@@ -141,9 +143,24 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
                                 <h4 className="text-lg font-semibold text-luxury-text-primary">
                                     {menu.title}
                                 </h4>
-                                <span className={`px-2 py-1 rounded text-xs ${menu.isActive ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'}`}>
-                                    {menu.isActive ? 'Actif' : 'Inactif'}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                    {hasNoItems && (
+                                        <div className="relative group">
+                                            <div className="flex items-center gap-1 bg-luxury-rose/30 text-luxury-rose px-2 py-1 rounded-full text-xs font-medium cursor-help">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                                                </svg>
+                                                <span>Vide</span>
+                                            </div>
+                                            <div className="absolute right-0 top-full mt-2 w-56 p-3 bg-luxury-bg-secondary border border-luxury-gold-border rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                                                <p className="text-luxury-text-primary text-xs">Ce menu n&apos;a aucun element. Ajoutez des elements pour qu&apos;il soit visible sur la page de commande.</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <span className={`px-2 py-1 rounded text-xs ${menu.isActive ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'}`}>
+                                        {menu.isActive ? 'Actif' : 'Inactif'}
+                                    </span>
+                                </div>
                             </div>
                             <p className="text-luxury-text-secondary text-sm mb-2">{menu.description}</p>
                             <p className="text-luxury-gold font-semibold mb-3">{menu.price.toFixed(2)} EUR</p>
@@ -182,7 +199,7 @@ export const MenusSection: React.FC<MenusSectionProps> = ({ restaurantId }) => {
                                 </LuxuryButton>
                             </div>
                         </LuxuryCard>
-                    ))}
+                    )})}
                 </div>
             )}
 
