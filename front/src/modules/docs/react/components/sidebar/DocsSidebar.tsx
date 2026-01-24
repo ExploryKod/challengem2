@@ -18,7 +18,7 @@ export const DocsSidebar: React.FC<DocsSidebarProps> = ({
   return (
     <nav className="p-6">
       <h1 className="font-display text-xl text-luminous-text-primary mb-6">
-        Documentation
+        Documentation Fonctionnelle
       </h1>
       <div className="space-y-1">
         {DocsDomainModel.SECTIONS.map((section) => (

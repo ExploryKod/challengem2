@@ -5,6 +5,7 @@ import {
   QrCode,
   Settings,
   ChefHat,
+  Utensils,
   LucideIcon,
 } from 'lucide-react';
 
@@ -14,6 +15,7 @@ const iconMap: Record<string, LucideIcon> = {
   QrCode,
   Settings,
   ChefHat,
+  Utensils,
 };
 
 interface SidebarItemProps {
