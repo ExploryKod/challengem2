@@ -2,34 +2,33 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+const SESSION_STORAGE_KEY = "hasSeenDocPopup";
+
 export const DocumentationPopup: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isMounted, setIsMounted] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    useEffect(() => {
-        if (!isMounted) return;
-
-        const hasSeenPopup = sessionStorage.getItem("hasSeenDocPopup");
+        const hasSeenPopup = sessionStorage.getItem(SESSION_STORAGE_KEY);
         if (!hasSeenPopup) {
             const timer = setTimeout(() => {
                 setIsOpen(true);
             }, 500);
             return () => clearTimeout(timer);
         }
-    }, [isMounted]);
+    }, []);
+
+    const markAsSeen = () => {
+        sessionStorage.setItem(SESSION_STORAGE_KEY, "true");
+    };
 
     const handleClose = () => {
-        sessionStorage.setItem("hasSeenDocPopup", "true");
+        markAsSeen();
         setIsOpen(false);
     };
 
     const handleGoToDoc = () => {
-        sessionStorage.setItem("hasSeenDocPopup", "true");
+        markAsSeen();
         router.push("/docs");
     };
 

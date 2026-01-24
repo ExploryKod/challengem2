@@ -4,9 +4,8 @@ import { useRouter } from 'next/navigation';
 import { DocumentationPopup } from '@taotask/modules/welcome/react/components/DocumentationPopup';
 
 export const HeroSection: React.FC = () => {
-    const presenter: any = useHeroSection();
+    const { font: fontFamily } = useHeroSection();
     const router = useRouter();
-    const fontFamily = presenter.font;
 
     const handleDiscover = () => {
         router.push('/order');
