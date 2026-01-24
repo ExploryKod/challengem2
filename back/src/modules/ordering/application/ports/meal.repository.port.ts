@@ -10,4 +10,5 @@ export interface MealFilters {
 
 export interface IMealRepository {
   findByFilters(filters: MealFilters): Promise<Meal[]>;
+  findByIds(ids: number[]): Promise<Meal[]>;
 }

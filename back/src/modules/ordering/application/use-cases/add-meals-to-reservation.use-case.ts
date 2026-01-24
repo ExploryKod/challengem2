@@ -1,12 +1,10 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { Reservation } from '../../domain/entities/reservation.entity';
 import { Guest } from '../../domain/entities/guest.entity';
-import { ReservationStatus } from '../../domain/enums/reservation-status.enum';
-import { generateReservationCode } from '../../domain/utils/reservation-code.util';
 import type { IReservationRepository } from '../ports/reservation.repository.port';
 import { RESERVATION_REPOSITORY } from '../ports/reservation.repository.port';
 
-export interface CreateReservationGuestInput {
+export interface AddMealsGuestInput {
   firstName: string;
   lastName: string;
   age: number;
@@ -21,31 +19,31 @@ export interface CreateReservationGuestInput {
   drinkQuantity?: number;
 }
 
-export interface CreateReservationInput {
-  restaurantId: number;
-  tableId: number;
-  guests: CreateReservationGuestInput[];
-  notes?: string;
-  isQrOrder?: boolean;
+export interface AddMealsToReservationInput {
+  guests: AddMealsGuestInput[];
 }
 
 @Injectable()
-export class CreateReservationUseCase {
+export class AddMealsToReservationUseCase {
   constructor(
     @Inject(RESERVATION_REPOSITORY)
     private readonly reservationRepository: IReservationRepository,
   ) {}
 
-  async execute(input: CreateReservationInput): Promise<Reservation> {
-    const reservation = new Reservation();
-    reservation.restaurantId = input.restaurantId;
-    reservation.tableId = input.tableId;
-    reservation.status = input.isQrOrder
-      ? ReservationStatus.SEATED
-      : ReservationStatus.PENDING;
-    reservation.reservationCode = generateReservationCode();
-    reservation.notes = input.notes ?? null;
-    reservation.guests = input.guests.map((g) => {
+  async execute(
+    reservationId: number,
+    input: AddMealsToReservationInput,
+  ): Promise<Reservation> {
+    const reservation =
+      await this.reservationRepository.findById(reservationId);
+
+    if (!reservation) {
+      throw new NotFoundException(
+        `Reservation with id ${reservationId} not found`,
+      );
+    }
+
+    const newGuests = input.guests.map((g) => {
       const guest = new Guest();
       guest.firstName = g.firstName;
       guest.lastName = g.lastName;
@@ -68,6 +66,6 @@ export class CreateReservationUseCase {
       return guest;
     });
 
-    return this.reservationRepository.save(reservation);
+    return this.reservationRepository.addGuests(reservationId, newGuests);
   }
 }

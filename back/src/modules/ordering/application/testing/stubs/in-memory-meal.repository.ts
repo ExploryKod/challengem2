@@ -19,4 +19,9 @@ export class InMemoryMealRepository implements IMealRepository {
     });
     return Promise.resolve(results);
   }
+
+  findByIds(ids: number[]): Promise<Meal[]> {
+    const results = this.meals.filter((m) => ids.includes(m.id));
+    return Promise.resolve(results);
+  }
 }

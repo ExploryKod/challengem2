@@ -14,8 +14,10 @@ import { GetReservationsUseCase } from '../../../application/use-cases/get-reser
 import { GetReservationByIdUseCase } from '../../../application/use-cases/get-reservation-by-id.use-case';
 import { GetReservationByCodeUseCase } from '../../../application/use-cases/get-reservation-by-code.use-case';
 import { UpdateReservationUseCase } from '../../../application/use-cases/update-reservation.use-case';
+import { AddMealsToReservationUseCase } from '../../../application/use-cases/add-meals-to-reservation.use-case';
 import { CreateReservationDto } from '../dtos/create-reservation.dto';
 import { UpdateReservationDto } from '../dtos/update-reservation.dto';
+import { AddMealsToReservationDto } from '../dtos/add-meals-to-reservation.dto';
 import { Reservation } from '../../../domain/entities/reservation.entity';
 import { ReservationStatus } from '../../../domain/enums/reservation-status.enum';
 
@@ -27,6 +29,7 @@ export class ReservationController {
     private readonly getReservationByIdUseCase: GetReservationByIdUseCase,
     private readonly getReservationByCodeUseCase: GetReservationByCodeUseCase,
     private readonly updateReservationUseCase: UpdateReservationUseCase,
+    private readonly addMealsToReservationUseCase: AddMealsToReservationUseCase,
   ) {}
 
   @Get()
@@ -81,5 +84,13 @@ export class ReservationController {
       throw new NotFoundException(`Reservation with id ${id} not found`);
     }
     return reservation;
+  }
+
+  @Patch(':id/meals')
+  async addMeals(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: AddMealsToReservationDto,
+  ): Promise<Reservation> {
+    return this.addMealsToReservationUseCase.execute(id, dto);
   }
 }

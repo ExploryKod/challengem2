@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import type { IReservationRepository } from '../../../application/ports/reservation.repository.port';
 import { Reservation } from '../../../domain/entities/reservation.entity';
+import { Guest } from '../../../domain/entities/guest.entity';
 import { ReservationStatus } from '../../../domain/enums/reservation-status.enum';
 import { ReservationOrmEntity } from '../orm-entities/reservation.orm-entity';
+import { GuestOrmEntity } from '../orm-entities/guest.orm-entity';
 import { ReservationMapper } from '../mappers/reservation.mapper';
 
 @Injectable()
@@ -12,6 +14,8 @@ export class ReservationRepository implements IReservationRepository {
   constructor(
     @InjectRepository(ReservationOrmEntity)
     private readonly repository: Repository<ReservationOrmEntity>,
+    @InjectRepository(GuestOrmEntity)
+    private readonly guestRepository: Repository<GuestOrmEntity>,
   ) {}
 
   async save(reservation: Reservation): Promise<Reservation> {
@@ -25,7 +29,7 @@ export class ReservationRepository implements IReservationRepository {
       relations: ['guests'],
       order: { createdAt: 'DESC' },
     });
-    return entities.map(ReservationMapper.toDomain);
+    return entities.map((e) => ReservationMapper.toDomain(e));
   }
 
   async findById(id: number): Promise<Reservation | null> {
@@ -53,7 +57,7 @@ export class ReservationRepository implements IReservationRepository {
       relations: ['guests'],
       order: { createdAt: 'DESC' },
     });
-    return entities.map(ReservationMapper.toDomain);
+    return entities.map((e) => ReservationMapper.toDomain(e));
   }
 
   async findByRestaurantIdAndStatus(
@@ -65,7 +69,7 @@ export class ReservationRepository implements IReservationRepository {
       relations: ['guests'],
       order: { createdAt: 'DESC' },
     });
-    return entities.map(ReservationMapper.toDomain);
+    return entities.map((e) => ReservationMapper.toDomain(e));
   }
 
   async findByRestaurantIdAndStatuses(
@@ -77,7 +81,30 @@ export class ReservationRepository implements IReservationRepository {
       relations: ['guests'],
       order: { createdAt: 'ASC' },
     });
-    return entities.map(ReservationMapper.toDomain);
+    return entities.map((e) => ReservationMapper.toDomain(e));
+  }
+
+  async findActiveByTableId(
+    tableId: number,
+    statuses: ReservationStatus[],
+  ): Promise<Reservation | null> {
+    const entity = await this.repository.findOne({
+      where: { tableId, status: In(statuses) },
+      relations: ['guests'],
+      order: { createdAt: 'DESC' },
+    });
+    return entity ? ReservationMapper.toDomain(entity) : null;
+  }
+
+  async addGuests(
+    reservationId: number,
+    guests: Guest[],
+  ): Promise<Reservation> {
+    const guestOrmEntities = guests.map((g) =>
+      ReservationMapper.guestToOrm(g, reservationId),
+    );
+    await this.guestRepository.save(guestOrmEntities);
+    return this.findById(reservationId) as Promise<Reservation>;
   }
 
   async update(

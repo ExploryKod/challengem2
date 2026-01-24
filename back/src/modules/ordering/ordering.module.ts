@@ -40,6 +40,8 @@ import { DeleteMenuUseCase } from './application/use-cases/delete-menu.use-case'
 import { GetKitchenOrdersUseCase } from './application/use-cases/kitchen/get-kitchen-orders.use-case';
 import { GetCompletedOrdersUseCase } from './application/use-cases/kitchen/get-completed-orders.use-case';
 import { MarkCourseReadyUseCase } from './application/use-cases/kitchen/mark-course-ready.use-case';
+import { GetActiveOrderByTableUseCase } from './application/use-cases/get-active-order-by-table.use-case';
+import { AddMealsToReservationUseCase } from './application/use-cases/add-meals-to-reservation.use-case';
 
 // Controllers
 import { RestaurantController } from './infrastructure/http/controllers/restaurant.controller';
@@ -107,6 +109,8 @@ import { KitchenController } from './infrastructure/http/controllers/kitchen/kit
     GetKitchenOrdersUseCase,
     GetCompletedOrdersUseCase,
     MarkCourseReadyUseCase,
+    GetActiveOrderByTableUseCase,
+    AddMealsToReservationUseCase,
   ],
   exports: [
     RESTAURANT_REPOSITORY,

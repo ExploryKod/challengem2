@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import type {
   IMealRepository,
   MealFilters,
@@ -24,6 +24,16 @@ export class MealRepository implements IMealRepository {
       where.type = filters.type;
     }
     const entities = await this.repository.find({ where });
+    return entities.map((entity) => MealMapper.toDomain(entity));
+  }
+
+  async findByIds(ids: number[]): Promise<Meal[]> {
+    if (ids.length === 0) {
+      return [];
+    }
+    const entities = await this.repository.find({
+      where: { id: In(ids) },
+    });
     return entities.map((entity) => MealMapper.toDomain(entity));
   }
 }

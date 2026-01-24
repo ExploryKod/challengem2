@@ -1,4 +1,5 @@
 import { Reservation } from '../../domain/entities/reservation.entity';
+import { Guest } from '../../domain/entities/guest.entity';
 import { ReservationStatus } from '../../domain/enums/reservation-status.enum';
 
 export const RESERVATION_REPOSITORY = Symbol('RESERVATION_REPOSITORY');
@@ -17,6 +18,11 @@ export interface IReservationRepository {
     restaurantId: number,
     statuses: ReservationStatus[],
   ): Promise<Reservation[]>;
+  findActiveByTableId(
+    tableId: number,
+    statuses: ReservationStatus[],
+  ): Promise<Reservation | null>;
+  addGuests(reservationId: number, guests: Guest[]): Promise<Reservation>;
   update(id: number, data: Partial<Reservation>): Promise<Reservation | null>;
   updateStatus(
     id: number,

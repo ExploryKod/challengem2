@@ -1,4 +1,5 @@
 import { Reservation } from '../../../domain/entities/reservation.entity';
+import { Guest } from '../../../domain/entities/guest.entity';
 import { ReservationStatus } from '../../../domain/enums/reservation-status.enum';
 import type { IReservationRepository } from '../../ports/reservation.repository.port';
 
@@ -77,6 +78,27 @@ export class InMemoryReservationRepository implements IReservationRepository {
       (r) => r.restaurantId === restaurantId && statuses.includes(r.status),
     );
     return Promise.resolve(found);
+  }
+
+  findActiveByTableId(
+    tableId: number,
+    statuses: ReservationStatus[],
+  ): Promise<Reservation | null> {
+    const found = this.reservations.find(
+      (r) => r.tableId === tableId && statuses.includes(r.status),
+    );
+    return Promise.resolve(found ?? null);
+  }
+
+  addGuests(reservationId: number, guests: Guest[]): Promise<Reservation> {
+    const index = this.reservations.findIndex((r) => r.id === reservationId);
+    if (index === -1) {
+      throw new Error(`Reservation ${reservationId} not found`);
+    }
+    const reservation = this.reservations[index];
+    reservation.guests = [...(reservation.guests || []), ...guests];
+    reservation.updatedAt = new Date();
+    return Promise.resolve(reservation);
   }
 
   update(id: number, data: Partial<Reservation>): Promise<Reservation | null> {
