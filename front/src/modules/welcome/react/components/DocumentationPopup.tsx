@@ -4,9 +4,16 @@ import { useRouter } from "next/navigation";
 
 export const DocumentationPopup: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isMounted) return;
+
         const hasSeenPopup = sessionStorage.getItem("hasSeenDocPopup");
         if (!hasSeenPopup) {
             const timer = setTimeout(() => {
@@ -14,7 +21,7 @@ export const DocumentationPopup: React.FC = () => {
             }, 500);
             return () => clearTimeout(timer);
         }
-    }, []);
+    }, [isMounted]);
 
     const handleClose = () => {
         sessionStorage.setItem("hasSeenDocPopup", "true");
