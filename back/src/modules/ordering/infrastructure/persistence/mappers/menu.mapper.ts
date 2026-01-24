@@ -15,7 +15,7 @@ export class MenuMapper {
     menu.isActive = orm.isActive;
     menu.createdAt = orm.createdAt;
     menu.updatedAt = orm.updatedAt;
-    menu.items = orm.items?.map(MenuMapper.itemToDomain) ?? [];
+    menu.items = orm.items?.map((item) => MenuMapper.itemToDomain(item)) ?? [];
     return menu;
   }
 
@@ -39,7 +39,7 @@ export class MenuMapper {
     orm.price = domain.price;
     orm.imageUrl = domain.imageUrl;
     orm.isActive = domain.isActive ?? true;
-    orm.items = domain.items?.map(MenuMapper.itemToOrm) ?? [];
+    orm.items = domain.items?.map((item) => MenuMapper.itemToOrm(item)) ?? [];
     return orm;
   }
 

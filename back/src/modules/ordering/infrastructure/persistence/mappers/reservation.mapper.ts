@@ -39,10 +39,16 @@ export class ReservationMapper {
         ? { mealId: ormEntity.entryId, quantity: ormEntity.entryQuantity ?? 1 }
         : null,
       mainCourse: ormEntity.mainCourseId
-        ? { mealId: ormEntity.mainCourseId, quantity: ormEntity.mainCourseQuantity ?? 1 }
+        ? {
+            mealId: ormEntity.mainCourseId,
+            quantity: ormEntity.mainCourseQuantity ?? 1,
+          }
         : null,
       dessert: ormEntity.dessertId
-        ? { mealId: ormEntity.dessertId, quantity: ormEntity.dessertQuantity ?? 1 }
+        ? {
+            mealId: ormEntity.dessertId,
+            quantity: ormEntity.dessertQuantity ?? 1,
+          }
         : null,
       drink: ormEntity.drinkId
         ? { mealId: ormEntity.drinkId, quantity: ormEntity.drinkQuantity ?? 1 }

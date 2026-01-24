@@ -27,7 +27,7 @@ export class MenuRepository implements IMenuRepository {
       relations: ['items'],
       order: { createdAt: 'DESC' },
     });
-    return entities.map(MenuMapper.toDomain);
+    return entities.map((e) => MenuMapper.toDomain(e));
   }
 
   async findById(id: number): Promise<Menu | null> {
@@ -44,7 +44,7 @@ export class MenuRepository implements IMenuRepository {
       relations: ['items'],
       order: { createdAt: 'DESC' },
     });
-    return entities.map(MenuMapper.toDomain);
+    return entities.map((e) => MenuMapper.toDomain(e));
   }
 
   async findActiveByRestaurantId(restaurantId: number): Promise<Menu[]> {
@@ -56,7 +56,7 @@ export class MenuRepository implements IMenuRepository {
     // Filter out menus with no items
     return entities
       .filter((entity) => entity.items && entity.items.length > 0)
-      .map(MenuMapper.toDomain);
+      .map((e) => MenuMapper.toDomain(e));
   }
 
   async update(id: number, data: Partial<Menu>): Promise<Menu | null> {
