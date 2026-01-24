@@ -45,6 +45,9 @@ export const HeroSection: React.FC = () => {
                             data-te-ripple-init data-te-ripple-color="light">
                             Découvrir
                         </button>
+                        <a href="/docs" className="text-luxury-gold underline text-sm mt-4 block">
+                            Consulter la documentation
+                        </a>
                     </div>
                 </div>
             </div>
