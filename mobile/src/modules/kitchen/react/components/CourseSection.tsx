@@ -35,11 +35,9 @@ export const CourseSection: React.FC<CourseSectionProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.icon}>{config.icon}</Text>
-          <Text style={[styles.label, { color: config.color }]}>
-            {config.label} ({meals.count})
-          </Text>
+        <View style={[styles.categoryBadge, { backgroundColor: config.color }]}>
+          <Text style={styles.categoryIcon}>{config.icon}</Text>
+          <Text style={styles.categoryLabel}>{config.label}</Text>
         </View>
 
         {isReady ? (
@@ -53,16 +51,21 @@ export const CourseSection: React.FC<CourseSectionProps> = ({
         )}
       </View>
 
-      {meals.items.length > 0 && (
-        <Text style={styles.items}>{meals.items.join(', ')}</Text>
-      )}
+      <View style={styles.itemsList}>
+        {meals.items.map((item, index) => (
+          <View key={index} style={styles.itemRow}>
+            <Text style={styles.itemBullet}>•</Text>
+            <Text style={styles.itemText}>{item}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 8,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: colors.goldBorder,
   },
@@ -70,24 +73,43 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 8,
   },
-  titleContainer: {
+  categoryBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    gap: 4,
   },
-  icon: {
-    fontSize: 18,
+  categoryIcon: {
+    fontSize: 14,
   },
-  label: {
-    fontSize: 16,
+  categoryLabel: {
+    color: colors.bgPrimary,
+    fontSize: 12,
     fontWeight: '600',
   },
-  items: {
-    color: colors.textMuted,
-    fontSize: 13,
-    marginTop: 4,
-    marginLeft: 28,
+  itemsList: {
+    gap: 6,
+  },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    paddingLeft: 4,
+  },
+  itemBullet: {
+    color: colors.gold,
+    fontSize: 18,
+    lineHeight: 22,
+    marginRight: 8,
+  },
+  itemText: {
+    color: colors.textPrimary,
+    fontSize: 16,
+    fontWeight: '500',
+    flex: 1,
   },
   readyButton: {
     backgroundColor: colors.gold,

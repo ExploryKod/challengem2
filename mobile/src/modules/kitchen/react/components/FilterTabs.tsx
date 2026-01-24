@@ -13,7 +13,6 @@ const FILTERS: { key: KitchenDomainModel.FilterType; label: string }[] = [
   { key: 'entry', label: 'Entrées' },
   { key: 'mainCourse', label: 'Plats' },
   { key: 'dessert', label: 'Desserts' },
-  { key: 'drink', label: 'Boissons' },
 ];
 
 export const FilterTabs: React.FC<FilterTabsProps> = ({

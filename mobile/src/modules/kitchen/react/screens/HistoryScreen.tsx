@@ -70,19 +70,40 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
     });
   };
 
+  const renderMealSection = (
+    meals: KitchenDomainModel.MealCount,
+    label: string,
+    color: string,
+  ) => {
+    if (meals.count === 0) return null;
+    return (
+      <View style={styles.mealSection}>
+        <View style={[styles.sectionHeader, { borderLeftColor: color }]}>
+          <Text style={[styles.sectionLabel, { color }]}>{label}</Text>
+        </View>
+        <View style={styles.itemsList}>
+          {meals.items.map((item, index) => (
+            <Text key={index} style={styles.itemText}>
+              • {item}
+            </Text>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
   const renderOrder = ({ item }: { item: KitchenDomainModel.KitchenOrder }) => {
     const totalMeals =
       item.meals.entry.count +
       item.meals.mainCourse.count +
-      item.meals.dessert.count +
-      item.meals.drink.count;
+      item.meals.dessert.count;
 
     return (
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <View style={styles.tableInfo}>
             <Text style={styles.tableTitle}>
-              Table {item.tableId}
+              {item.tableTitle || `Table ${item.tableId}`}
             </Text>
             <Text style={styles.guestCount}>
               {item.guestCount} convive{item.guestCount > 1 ? 's' : ''}
@@ -95,41 +116,16 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
         </View>
 
         <View style={styles.mealsContainer}>
-          {item.meals.entry.count > 0 && (
-            <View style={styles.mealBadge}>
-              <Text style={[styles.mealText, { color: colors.mealEntry }]}>
-                {item.meals.entry.count} entrée{item.meals.entry.count > 1 ? 's' : ''}
-              </Text>
-            </View>
-          )}
-          {item.meals.mainCourse.count > 0 && (
-            <View style={styles.mealBadge}>
-              <Text style={[styles.mealText, { color: colors.mealMain }]}>
-                {item.meals.mainCourse.count} plat{item.meals.mainCourse.count > 1 ? 's' : ''}
-              </Text>
-            </View>
-          )}
-          {item.meals.dessert.count > 0 && (
-            <View style={styles.mealBadge}>
-              <Text style={[styles.mealText, { color: colors.mealDessert }]}>
-                {item.meals.dessert.count} dessert{item.meals.dessert.count > 1 ? 's' : ''}
-              </Text>
-            </View>
-          )}
-          {item.meals.drink.count > 0 && (
-            <View style={styles.mealBadge}>
-              <Text style={[styles.mealText, { color: colors.mealDrink }]}>
-                {item.meals.drink.count} boisson{item.meals.drink.count > 1 ? 's' : ''}
-              </Text>
-            </View>
-          )}
+          {renderMealSection(item.meals.entry, 'Entrées', colors.mealEntry)}
+          {renderMealSection(item.meals.mainCourse, 'Plats', colors.mealMain)}
+          {renderMealSection(item.meals.dessert, 'Desserts', colors.mealDessert)}
         </View>
 
         <View style={styles.cardFooter}>
           <View style={styles.completedBadge}>
-            <Text style={styles.completedText}>Terminée</Text>
+            <Text style={styles.completedText}>✓ Terminée</Text>
           </View>
-          <Text style={styles.totalMeals}>{totalMeals} plat{totalMeals > 1 ? 's' : ''} total</Text>
+          <Text style={styles.totalMeals}>{totalMeals} plat{totalMeals > 1 ? 's' : ''}</Text>
         </View>
       </View>
     );
@@ -269,20 +265,27 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   mealsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
+    gap: 12,
     marginBottom: 12,
   },
-  mealBadge: {
-    backgroundColor: colors.bgSecondary,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
+  mealSection: {
+    gap: 4,
   },
-  mealText: {
+  sectionHeader: {
+    borderLeftWidth: 3,
+    paddingLeft: 8,
+  },
+  sectionLabel: {
     fontSize: 13,
-    fontWeight: '500',
+    fontWeight: '600',
+  },
+  itemsList: {
+    paddingLeft: 12,
+    gap: 2,
+  },
+  itemText: {
+    color: colors.textPrimary,
+    fontSize: 14,
   },
   cardFooter: {
     flexDirection: 'row',

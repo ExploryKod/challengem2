@@ -62,12 +62,6 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           isReady={order.coursesReady.dessert}
           onMarkReady={() => onMarkCourseReady('dessert')}
         />
-        <CourseSection
-          courseType="drink"
-          meals={order.meals.drink}
-          isReady={order.coursesReady.drink}
-          onMarkReady={() => onMarkCourseReady('drink')}
-        />
       </View>
     </View>
   );
