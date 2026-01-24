@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build output
+dist
+
+# Development files
+.git
+.gitignore
+*.md
+!README.md
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Test files
+coverage
+test
+*.spec.ts
+*.test.ts
+jest.config.*
+jest-e2e.json
+
+# Environment files (will be provided at runtime)
+.env
+.env.*
+!.env.example
+
+# Docker files (not needed inside container)
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Misc
+.eslintrc*
+.prettierrc*
+# tsconfig.build.json is needed for NestJS build - do not exclude
