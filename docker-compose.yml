@@ -1,0 +1,113 @@
+# =============================================================================
+# Docker Compose - Smart Cafe Production Configuration
+# =============================================================================
+# Usage:
+#   Production: docker compose up -d
+#   Development: docker compose -f docker-compose.yml -f docker-compose.override.yml up
+#   Build: docker compose build
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:15-alpine
+    container_name: smartcafe-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-smartcafe}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Database password is required}
+      POSTGRES_DB: ${POSTGRES_DB:-smartcafe}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - smartcafe-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-smartcafe} -d ${POSTGRES_DB:-smartcafe}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    # Database port not exposed in production - access via internal network only
+
+  # ---------------------------------------------------------------------------
+  # Backend API - NestJS
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: smartcafe-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${POSTGRES_USER:-smartcafe}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?Database password is required}
+      DATABASE_NAME: ${POSTGRES_DB:-smartcafe}
+      DATABASE_SYNCHRONIZE: ${DATABASE_SYNCHRONIZE:-false}
+    networks:
+      - smartcafe-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Backend port not exposed in production - access via frontend/reverse proxy
+
+  # ---------------------------------------------------------------------------
+  # Frontend - Next.js
+  # ---------------------------------------------------------------------------
+  # IMPORTANT: NEXT_PUBLIC_API_URL must be accessible from the browser
+  # - For VPS with reverse proxy: https://api.yourdomain.com
+  # - For local Docker: http://localhost:3000 (with backend port exposed)
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+      args:
+        # This URL is baked into the client-side JS at build time
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?API URL is required for build}
+    container_name: smartcafe-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Auth secret is required}
+      BETTER_AUTH_DATABASE_URL: postgresql://${POSTGRES_USER:-smartcafe}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-smartcafe}
+    ports:
+      - "${FRONTEND_PORT:-3001}:3001"
+    networks:
+      - smartcafe-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
+networks:
+  smartcafe-network:
+    driver: bridge
+    name: smartcafe-network
+
+# -----------------------------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------------------------
+volumes:
+  postgres_data:
+    name: smartcafe-postgres-data

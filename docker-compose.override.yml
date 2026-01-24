@@ -1,0 +1,49 @@
+# =============================================================================
+# Docker Compose Override - Development Configuration
+# =============================================================================
+# This file is automatically loaded when running: docker compose up
+# It extends docker-compose.yml with development-specific settings
+#
+# Usage:
+#   docker compose up              (includes this override automatically)
+#   docker compose up -d           (detached mode)
+#   docker compose logs -f         (follow logs)
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL - Expose port for local development tools
+  # ---------------------------------------------------------------------------
+  postgres:
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+
+  # ---------------------------------------------------------------------------
+  # Adminer - Database administration UI
+  # ---------------------------------------------------------------------------
+  adminer:
+    image: adminer:latest
+    container_name: smartcafe-adminer
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT:-8088}:8080"
+    networks:
+      - smartcafe-network
+    depends_on:
+      - postgres
+
+  # ---------------------------------------------------------------------------
+  # Backend - Expose port for direct API access
+  # ---------------------------------------------------------------------------
+  backend:
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: development
+
+  # ---------------------------------------------------------------------------
+  # Frontend - Development settings
+  # ---------------------------------------------------------------------------
+  frontend:
+    environment:
+      NODE_ENV: development
