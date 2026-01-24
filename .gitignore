@@ -2,6 +2,10 @@
 papilles-des-suds
 placeholder-menu.jpg
 
+# Videos (large files)
+videos/
+front/public/videos/
+
 # Environment files
 .env
 .env.local
