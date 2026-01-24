@@ -3,6 +3,7 @@
 import React from 'react';
 import { DocsLayout } from '../../layouts/DocsLayout';
 import { DocsSidebar } from '../../components/sidebar/DocsSidebar';
+import { OverviewSection } from '../../sections/overview/OverviewSection';
 import { WebOrderSection } from '../../sections/web-order/WebOrderSection';
 import { TerminalOrderSection } from '../../sections/terminal-order/TerminalOrderSection';
 import { QrOrderSection } from '../../sections/qr-order/QrOrderSection';
@@ -23,6 +24,7 @@ export const DocsPage: React.FC = () => {
       }
     >
       <div className="space-y-16">
+        <OverviewSection />
         <WebOrderSection />
         <TerminalOrderSection />
         <QrOrderSection />

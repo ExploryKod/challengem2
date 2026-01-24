@@ -1,5 +1,6 @@
 export namespace DocsDomainModel {
   export type SectionId =
+    | 'apercu'
     | 'commande-web'
     | 'commande-terminal'
     | 'commande-qr'
@@ -13,6 +14,7 @@ export namespace DocsDomainModel {
   }
 
   export const SECTIONS: Section[] = [
+    { id: 'apercu', title: 'Aperçu Général', icon: 'Utensils' },
     { id: 'commande-web', title: 'Commande en Ligne', icon: 'Globe' },
     { id: 'commande-terminal', title: 'Commande sur Borne', icon: 'Monitor' },
     { id: 'commande-qr', title: 'Commande QR Code', icon: 'QrCode' },
