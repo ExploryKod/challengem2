@@ -7,32 +7,32 @@ import { VideoPlayer } from '../../components/content/VideoPlayer';
 
 const steps = [
   {
-    title: 'Reception des commandes',
+    title: 'Réception des commandes',
     description:
-      'Les nouvelles commandes apparaissent automatiquement a ecran, triees par ordre arrivee.',
+      "Les nouvelles commandes apparaissent automatiquement à l'écran, triées par ordre d'arrivée.",
   },
   {
     title: 'Vue par service',
     description:
-      'Chaque commande affiche le detail par categorie : entrees, plats, desserts, boissons avec les quantites.',
+      'Chaque commande affiche le détail par catégorie : entrées, plats, desserts, boissons avec les quantités.',
   },
   {
     title: 'Marquage des services',
     description:
-      'Lorsqu un service est pret, appuyez sur le bouton correspondant pour notifier le personnel de salle.',
+      "Lorsqu'un service est prêt, appuyez sur le bouton correspondant pour notifier le personnel de salle.",
   },
   {
     title: 'Historique',
     description:
-      'Consultez les commandes terminees pour reference ou statistiques.',
+      'Consultez les commandes terminées pour référence ou statistiques.',
   },
 ];
 
 const features = [
-  'Affichage temps reel (pull-to-refresh)',
+  'Affichage temps réel (pull-to-refresh)',
   'Filtrage par type de plat',
-  'Suivi du statut par service (entrees pretes, plats prets, etc.)',
-  'Historique des 20 dernieres commandes',
+  'Suivi du statut par service (entrées prêtes, plats prêts, etc.)',
+  'Historique des commandes terminées',
 ];
 
 export const KitchenAppSection: React.FC = () => {
@@ -41,28 +41,29 @@ export const KitchenAppSection: React.FC = () => {
       <SectionHeader
         id="app-cuisine"
         title="Application Cuisine"
-        subtitle="Suivez et gerez les commandes en temps reel depuis la cuisine"
+        subtitle="Suivez et gérez les commandes en temps réel depuis la cuisine"
         icon="ChefHat"
       />
 
       <ContentBlock className="mt-6">
         <p className="text-luminous-text-secondary italic border-l-4 border-luminous-gold pl-4">
-          Application cuisine (Kitchen Display System) affiche les commandes
-          actives en temps reel. Equipe en cuisine peut suivre avancement et
-          marquer chaque service comme pret.
+          L'application cuisine (Kitchen Display System) affiche les commandes
+          actives en temps réel. L'équipe en cuisine peut suivre l'avancement et
+          marquer chaque service comme prêt.
         </p>
       </ContentBlock>
 
       <VideoPlayer
+        src="/videos/kitchen-app-demo.mp4"
         title="Application Cuisine"
-        fallbackMessage="Demonstration de application cuisine"
+        fallbackMessage="Démonstration de l'application cuisine"
       />
 
       <StepList steps={steps} />
 
       <div className="mt-8">
         <h3 className="font-sans font-medium text-luminous-text-primary mb-3">
-          Fonctionnalites cles
+          Fonctionnalités clés
         </h3>
         <ul className="space-y-2">
           {features.map((feature, index) => (

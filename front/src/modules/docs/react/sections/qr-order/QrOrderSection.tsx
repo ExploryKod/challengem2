@@ -58,6 +58,7 @@ export const QrOrderSection: React.FC = () => {
       </ContentBlock>
 
       <VideoPlayer
+        src="/videos/qr-order-demo.mp4"
         title="Commande par QR Code"
         fallbackMessage="Demonstration de la commande par QR"
       />

@@ -8,31 +8,37 @@ const features = [
   {
     title: 'Gestion des restaurants',
     items: [
-      'Creer et modifier les informations du restaurant (nom, type de cuisine, notation)',
-      'Configurer les horaires et la capacite totale',
+      'Créer et modifier les informations du restaurant (nom, type de cuisine, notation)',
     ],
   },
   {
     title: 'Gestion des tables',
     items: [
-      'Ajouter des tables avec leur capacite (nombre de couverts)',
-      'Generer et telecharger les QR codes pour chaque table',
+      'Ajouter des tables avec leur capacité (nombre de couverts)',
+      'Générer et télécharger les QR codes pour chaque table',
       'Imprimer les QR codes directement',
     ],
   },
   {
-    title: 'Gestion des repas',
+    title: 'Gestion des plats',
     items: [
-      'Creer des plats avec titre, prix, image et categorie (entree, plat, dessert, boisson)',
-      'Definir des restrictions age pour certains produits',
-      'Organiser le menu par categorie',
+      'Créer des plats avec titre, prix, image et catégorie (entrée, plat, dessert, boisson)',
+      'Définir des restrictions âge pour certains produits',
     ],
   },
   {
-    title: 'Suivi des reservations',
+    title: 'Gestion des menus (formules)',
     items: [
-      'Visualiser toutes les reservations par statut (en attente, installee, en preparation, terminee)',
-      'Consulter le detail de chaque reservation',
+      'Créer des formules avec titre, description, prix et image',
+      'Définir la composition (nombre entrées, plats, desserts, boissons)',
+      'Activer ou désactiver des formules',
+    ],
+  },
+  {
+    title: 'Suivi des réservations',
+    items: [
+      'Visualiser toutes les réservations du restaurant',
+      'Consulter le détail de chaque réservation (convives, table, date)',
     ],
   },
 ];
@@ -43,21 +49,22 @@ export const BackofficeSection: React.FC = () => {
       <SectionHeader
         id="back-office"
         title="Espace Administration"
-        subtitle="Gerez votre etablissement depuis une interface dediee"
+        subtitle="Gérez votre établissement depuis une interface dédiée"
         icon="Settings"
       />
 
       <ContentBlock className="mt-6">
         <p className="text-luminous-text-secondary italic border-l-4 border-luminous-gold pl-4">
-          Espace Back Office permet aux gerants de restaurants de configurer
-          leur etablissement, gerer les tables, composer les menus et suivre les
-          reservations.
+          Espace Back Office permet aux gérants de restaurants de configurer
+          leur établissement, gérer les tables, composer les menus et suivre les
+          réservations.
         </p>
       </ContentBlock>
 
       <VideoPlayer
+        src="/videos/backoffice-demo.mp4"
         title="Espace Administration"
-        fallbackMessage="Demonstration de espace admin"
+        fallbackMessage="Démonstration de l'espace admin"
       />
 
       <div className="mt-8 space-y-6">
@@ -80,6 +87,23 @@ export const BackofficeSection: React.FC = () => {
           </div>
         ))}
       </div>
+
+      <ContentBlock className="mt-8">
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+          <h4 className="font-sans font-medium text-amber-400 mb-2">
+            Note sur la gestion du temps
+          </h4>
+          <p className="text-luminous-text-secondary text-sm">
+            La gestion des créneaux horaires de réservation (disponibilité des
+            tables en temps réel, heure d'arrivée, durée de réservation) a été
+            volontairement écartée du périmètre actuel en raison des contraintes
+            de temps du projet et de la complexité d'implémentation associée.
+            Cette fonctionnalité pourra être intégrée sans difficulté dans une
+            version ultérieure, l'architecture actuelle étant conçue pour
+            l'accueillir.
+          </p>
+        </div>
+      </ContentBlock>
     </DocsCard>
   );
 };
