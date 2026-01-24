@@ -1,7 +1,10 @@
 import { Injectable, Inject } from '@nestjs/common';
 import type { IReservationRepository } from '../../ports/reservation.repository.port';
 import { RESERVATION_REPOSITORY } from '../../ports/reservation.repository.port';
-import type { Reservation, CoursesReady } from '../../../domain/entities/reservation.entity';
+import type {
+  Reservation,
+  CoursesReady,
+} from '../../../domain/entities/reservation.entity';
 import { ReservationStatus } from '../../../domain/enums/reservation-status.enum';
 
 export type CourseType = 'entry' | 'mainCourse' | 'dessert' | 'drink';
@@ -17,7 +20,8 @@ export class MarkCourseReadyUseCase {
     reservationId: number,
     course: CourseType,
   ): Promise<Reservation | null> {
-    const reservation = await this.reservationRepository.findById(reservationId);
+    const reservation =
+      await this.reservationRepository.findById(reservationId);
     if (!reservation) {
       return null;
     }
@@ -67,7 +71,12 @@ export class MarkCourseReadyUseCase {
     }
 
     // Check if all ordered courses are marked as ready
-    for (const courseType of ['entry', 'mainCourse', 'dessert', 'drink'] as const) {
+    for (const courseType of [
+      'entry',
+      'mainCourse',
+      'dessert',
+      'drink',
+    ] as const) {
       if (orderedCourses[courseType] && !coursesReady[courseType]) {
         return false;
       }

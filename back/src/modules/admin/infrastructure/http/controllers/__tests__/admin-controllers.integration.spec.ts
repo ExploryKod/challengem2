@@ -888,8 +888,14 @@ describe('Admin Controllers (Integration)', () => {
 
         const organizer = reservation.guests.find((g) => g.isOrganizer);
         expect(organizer?.firstName).toBe('John');
-        expect(organizer?.meals.entry).toEqual({ mealId: testMeals[0].id, quantity: 1 });
-        expect(organizer?.meals.mainCourse).toEqual({ mealId: testMeals[1].id, quantity: 1 });
+        expect(organizer?.meals.entry).toEqual({
+          mealId: testMeals[0].id,
+          quantity: 1,
+        });
+        expect(organizer?.meals.mainCourse).toEqual({
+          mealId: testMeals[1].id,
+          quantity: 1,
+        });
       });
 
       it('should return 400 for invalid input (empty guests)', async () => {

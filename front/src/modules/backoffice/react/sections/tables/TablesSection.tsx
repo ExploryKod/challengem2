@@ -68,7 +68,7 @@ export const TablesSection: React.FC<TablesSectionProps> = ({ restaurantId }) =>
 
     const getTableOrderUrl = (tableId: number) => {
         const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-        return `${baseUrl}/terminal?table=${tableId}&restaurant=${restaurantId}`;
+        return `${baseUrl}/order?table=${tableId}&restaurant=${restaurantId}`;
     };
 
     const downloadQR = () => {
@@ -225,9 +225,14 @@ export const TablesSection: React.FC<TablesSectionProps> = ({ restaurantId }) =>
                             level="H"
                         />
                     </div>
-                    <p className="text-xs text-luxury-text-secondary text-center break-all max-w-[300px]">
+                    <a
+                        href={qrModalTable ? getTableOrderUrl(qrModalTable.id) : '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-luxury-gold hover:text-luxury-gold-light underline text-center break-all max-w-[300px]"
+                    >
                         {qrModalTable && getTableOrderUrl(qrModalTable.id)}
-                    </p>
+                    </a>
                     <div className="flex gap-4">
                         <LuxuryButton onClick={downloadQR}>
                             <Download className="w-4 h-4 mr-2" />

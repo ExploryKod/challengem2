@@ -36,7 +36,12 @@ export class GuestOrmEntity {
   @Column({ name: 'main_course_id', type: 'int', nullable: true })
   mainCourseId: number | null;
 
-  @Column({ name: 'main_course_quantity', type: 'int', nullable: true, default: 1 })
+  @Column({
+    name: 'main_course_quantity',
+    type: 'int',
+    nullable: true,
+    default: 1,
+  })
   mainCourseQuantity: number | null;
 
   @Column({ name: 'dessert_id', type: 'int', nullable: true })

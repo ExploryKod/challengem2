@@ -311,8 +311,14 @@ describe('Controllers (Integration)', () => {
       // Verify organizer guest
       const organizer = reservation.guests.find((g) => g.isOrganizer);
       expect(organizer?.firstName).toBe('John');
-      expect(organizer?.meals.entry).toEqual({ mealId: testMeals[0].id, quantity: 1 });
-      expect(organizer?.meals.mainCourse).toEqual({ mealId: testMeals[1].id, quantity: 1 });
+      expect(organizer?.meals.entry).toEqual({
+        mealId: testMeals[0].id,
+        quantity: 1,
+      });
+      expect(organizer?.meals.mainCourse).toEqual({
+        mealId: testMeals[1].id,
+        quantity: 1,
+      });
     });
 
     it('should reject invalid reservation (missing guests)', async () => {

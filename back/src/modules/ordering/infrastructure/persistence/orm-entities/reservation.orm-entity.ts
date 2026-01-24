@@ -45,7 +45,8 @@ export class ReservationOrmEntity {
   @Column({
     name: 'courses_ready',
     type: 'jsonb',
-    default: () => `'{"entry": false, "mainCourse": false, "dessert": false, "drink": false}'::jsonb`,
+    default: () =>
+      `'{"entry": false, "mainCourse": false, "dessert": false, "drink": false}'::jsonb`,
   })
   coursesReady: CoursesReady;
 
