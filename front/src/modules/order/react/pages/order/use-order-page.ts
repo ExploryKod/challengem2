@@ -73,9 +73,9 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
     const initQrModeFlow = useCallback(async (restaurantId: string, tableId: string) => {
         try {
             const restaurants = await dependencies.restaurantGateway?.getRestaurants() || [];
-            const restaurant = restaurants.find(r => r.id === restaurantId);
+            const restaurant = restaurants.find(r => String(r.id) === restaurantId);
             if (restaurant) {
-                setRestaurantList({ restaurants: [restaurant], restaurantId });
+                setRestaurantList({ restaurants: [restaurant], restaurantId: restaurant.id });
                 fetchMealsForRestaurant();
             }
             dispatch(initQrMode({ restaurantId, tableId }));

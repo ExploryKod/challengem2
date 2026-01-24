@@ -72,4 +72,47 @@ describe("Init QR mode", () => {
         expect(state.availableTables.data).toEqual(tables);
         expect(state.availableTables.status).toBe("success");
     });
+
+    it("should navigate to EXISTING_ORDER step when table has active order", async () => {
+        const stubGateway = new StubTableGateway(tables);
+        stubGateway.setActiveOrder({
+            id: 42,
+            reservationCode: "XYZ789",
+            status: "SEATED",
+            guestCount: 3
+        });
+        const store = createTestStore({
+            dependencies: {
+                tableGateway: stubGateway,
+            },
+        });
+
+        await store.dispatch(initQrMode({ restaurantId: "resto-1", tableId: "table-2" }));
+
+        const state = store.getState().ordering;
+        expect(state.isQrMode).toBe(true);
+        expect(state.step).toBe(OrderingDomainModel.OrderingStep.EXISTING_ORDER);
+        expect(state.existingOrder).toEqual({
+            id: 42,
+            reservationCode: "XYZ789",
+            status: "SEATED",
+            guestCount: 3
+        });
+    });
+
+    it("should proceed to QR_GUESTS when table has no active order", async () => {
+        const stubGateway = new StubTableGateway(tables);
+        // No active order set (default is null)
+        const store = createTestStore({
+            dependencies: {
+                tableGateway: stubGateway,
+            },
+        });
+
+        await store.dispatch(initQrMode({ restaurantId: "resto-1", tableId: "table-1" }));
+
+        const state = store.getState().ordering;
+        expect(state.step).toBe(OrderingDomainModel.OrderingStep.QR_GUESTS);
+        expect(state.existingOrder).toBeNull();
+    });
 });

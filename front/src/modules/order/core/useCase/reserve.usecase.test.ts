@@ -34,6 +34,7 @@ const orderingState: OrderingState = {
     qrTableCapacity: null,
     qrError: null,
     selectedMenuId: null,
+    existingOrder: null,
     availableTables: {
         status: "idle",
         error: null,

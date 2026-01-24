@@ -10,6 +10,7 @@ export const useMeals = () => {
     const [currentGuestIndex, setCurrentGuestIndex] = useState(0);
     const menus: OrderingDomainModel.Menu[] = useSelector((state: AppState) => state.ordering.availableMenus.data);
     const selectedMenuId = useSelector((state: AppState) => state.ordering.selectedMenuId);
+    const isQrMode = useSelector((state: AppState) => state.ordering.isQrMode);
     const dispatch = useAppDispatch();
     const meals: OrderingDomainModel.Meal[] = useSelector((state: AppState) => state.ordering.availableMeals.data);
     const initialState = useSelector((state: AppState) => state.ordering.form);
@@ -200,7 +201,10 @@ export const useMeals = () => {
     }
 
     function onPrevious() {
-        dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.GUESTS));
+        const previousStep = isQrMode
+            ? OrderingDomainModel.OrderingStep.QR_GUESTS
+            : OrderingDomainModel.OrderingStep.GUESTS;
+        dispatch(orderingSlice.actions.setStep(previousStep));
     }
 
     function onSkip() {

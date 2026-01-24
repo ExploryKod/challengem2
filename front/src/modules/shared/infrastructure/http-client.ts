@@ -66,4 +66,8 @@ export class HttpClient {
     delete<T = void>(endpoint: string): Promise<T> {
         return this.request<T>(endpoint, { method: 'DELETE' });
     }
+
+    patch<T>(endpoint: string, body: any): Promise<T> {
+        return this.request<T>(endpoint, { method: 'PATCH', body });
+    }
 }

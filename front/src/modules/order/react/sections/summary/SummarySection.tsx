@@ -24,17 +24,19 @@ export const SummarySection = () => {
             </h3>
             <div className="h-1 w-16 bg-luminous-gold mx-auto mb-6" />
 
-            <div className="bg-luminous-bg-secondary border border-luminous-gold-border rounded-xl p-4 mx-auto max-w-[400px]">
-                <p className='mb-2 font-display font-medium text-center text-base sm:text-lg text-luminous-text-primary'>
-                    Emplacement de la table
-                </p>
-                <div className="flex justify-center mb-2">
-                    <Table className="w-8 h-8 text-luminous-gold" />
+            {!presenter.isQrMode && (
+                <div className="bg-luminous-bg-secondary border border-luminous-gold-border rounded-xl p-4 mx-auto max-w-[400px]">
+                    <p className='mb-2 font-display font-medium text-center text-base sm:text-lg text-luminous-text-primary'>
+                        Emplacement de la table
+                    </p>
+                    <div className="flex justify-center mb-2">
+                        <Table className="w-8 h-8 text-luminous-gold" />
+                    </div>
+                    <p className="text-sm sm:text-base italic text-center text-luminous-gold">
+                        {presenter.summary.table.title}
+                    </p>
                 </div>
-                <p className="text-sm sm:text-base italic text-center text-luminous-gold">
-                    {presenter.summary.table.title}
-                </p>
-            </div>
+            )}
         </div>
 
         <div className="flex flex-col mx-auto w-full max-w-75">

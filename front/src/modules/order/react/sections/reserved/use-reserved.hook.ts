@@ -6,6 +6,7 @@ import OrderingStep = OrderingDomainModel.OrderingStep;
 export const useReserved = () => {
     const dispatch = useAppDispatch();
     const isTerminalMode = useAppSelector((state) => state.ordering.isTerminalMode);
+    const isQrMode = useAppSelector((state) => state.ordering.isQrMode);
     const reservation = useAppSelector((state) => state.ordering.reservation);
 
     const reservationCode = reservation.status === 'success' ? reservation.reservationCode : null;
@@ -17,6 +18,7 @@ export const useReserved = () => {
     return {
         onNewTable,
         isTerminalMode,
+        isQrMode,
         reservationCode,
     };
 };

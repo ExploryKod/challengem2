@@ -13,6 +13,7 @@ import { ReservedSection } from "@taotask/modules/order/react/sections/reserved/
 import { ProgressBar } from "@taotask/modules/order/react/components/progress/ProgressBar";
 import { MealsPreviewSection } from "@taotask/modules/order/react/sections/meals-preview/MealsPreviewSection";
 import { QrGuestSection } from "@taotask/modules/order/react/sections/qr-guests/QrGuestSection";
+import { ExistingOrderSection } from "@taotask/modules/order/react/sections/existing-order/ExistingOrderSection";
 
 export interface OrderPageProps {
   restaurantId?: string;
@@ -68,6 +69,9 @@ export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId, tableId, qrR
 
         {/* QR Guest Section */}
         {step === OrderingDomainModel.OrderingStep.QR_GUESTS && <QrGuestSection />}
+
+        {/* Existing Order Section */}
+        {step === OrderingDomainModel.OrderingStep.EXISTING_ORDER && <ExistingOrderSection />}
 
         {presenter.restaurantList.restaurantId &&
           step === OrderingDomainModel.OrderingStep.GUESTS && (

@@ -15,6 +15,7 @@ const STEP_LABELS: Record<OrderingDomainModel.OrderingStep, string> = {
   [OrderingDomainModel.OrderingStep.SUMMARY]: 'Résumé',
   [OrderingDomainModel.OrderingStep.RESERVED]: 'Confirmé',
   [OrderingDomainModel.OrderingStep.QR_GUESTS]: 'Nombre de convives',
+  [OrderingDomainModel.OrderingStep.EXISTING_ORDER]: 'Commande existante',
 };
 
 // QR mode has 3 steps: QR_GUESTS (1), MEALS (2), SUMMARY (3)

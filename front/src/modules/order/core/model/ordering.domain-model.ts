@@ -82,7 +82,15 @@ export namespace OrderingDomainModel {
         MEALS = 4,
         SUMMARY = 5,
         RESERVED = 6,
-        QR_GUESTS = 7
+        QR_GUESTS = 7,
+        EXISTING_ORDER = 8
+    }
+
+    export type ExistingOrder = {
+        id: number;
+        reservationCode: string;
+        status: string;
+        guestCount: number;
     }
 
     export type Table = {

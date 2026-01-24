@@ -10,6 +10,7 @@ export type OrderingState = {
     qrTableCapacity: number | null;
     qrError: string | null;
     selectedMenuId: string | null;
+    existingOrder: OrderingDomainModel.ExistingOrder | null;
     availableTables: {
         data: OrderingDomainModel.Table[];
         status: 'idle' | 'loading' | 'success' | 'error';
@@ -47,6 +48,7 @@ export const initialState: OrderingState = {
     qrTableCapacity: null,
     qrError: null,
     selectedMenuId: null,
+    existingOrder: null,
     availableTables: {
         status: 'idle',
         error: null,
@@ -177,6 +179,12 @@ export const orderingSlice = createSlice({
         },
         chooseQrGuestCount: (state, action: PayloadAction<OrderingDomainModel.Form>) => {
             state.form = action.payload;
+        },
+        setExistingOrder: (state, action: PayloadAction<OrderingDomainModel.ExistingOrder | null>) => {
+            state.existingOrder = action.payload;
+        },
+        clearExistingOrder: (state) => {
+            state.existingOrder = null;
         }
     }
 });

@@ -64,7 +64,9 @@ const selectSummary = (state: AppState, menus: OrderingDomainModel.Menu[]): Summ
     }
 
     const tableId = state.ordering.form.tableId;
-    const table = state.ordering.availableTables.data.find((table: OrderingDomainModel.Table) => table.id === tableId)!;
+    const table = state.ordering.availableTables.data.find((table: OrderingDomainModel.Table) =>
+        tableId !== null && String(table.id) === String(tableId)
+    );
 
     const organizerId = state.ordering.form.organizerId;
     const guests = state.ordering.form.guests.map((guest: OrderingDomainModel.Guest) => {
@@ -88,16 +90,27 @@ const selectSummary = (state: AppState, menus: OrderingDomainModel.Menu[]): Summ
 
     return {
         table: {
-            id: table.id,
-            title: table.title
+            id: table?.id ?? '',
+            title: table?.title ?? 'Table non trouvée'
         },
         guests
     };
 };
 
+function calculateGuestMealsTotal(guestMeals: GuestSummary['meals']): number {
+    const allMeals = [
+        ...guestMeals.entries,
+        ...guestMeals.mainCourses,
+        ...guestMeals.desserts,
+        ...guestMeals.drinks
+    ];
+    return allMeals.reduce((sum, meal) => sum + meal.price * meal.quantity, 0);
+}
+
 export const useSummary = () => {
     const dispatch = useAppDispatch();
     const menus = useSelector((state: AppState) => state.ordering.availableMenus.data);
+    const isQrMode = useSelector((state: AppState) => state.ordering.isQrMode);
     const summary: Summary = useSelector((state: AppState) => selectSummary(state, menus));
 
     function onNext() {
@@ -109,17 +122,12 @@ export const useSummary = () => {
     }
 
     const totalPrice = useMemo(() => {
-        let total = 0;
-        summary.guests.forEach((guest: GuestSummary) => {
+        const total = summary.guests.reduce((sum, guest) => {
             if (guest.menuId && guest.menuPrice) {
-                total += guest.menuPrice;
-            } else {
-                guest.meals.entries.forEach(m => total += m.price * m.quantity);
-                guest.meals.mainCourses.forEach(m => total += m.price * m.quantity);
-                guest.meals.desserts.forEach(m => total += m.price * m.quantity);
-                guest.meals.drinks.forEach(m => total += m.price * m.quantity);
+                return sum + guest.menuPrice;
             }
-        });
+            return sum + calculateGuestMealsTotal(guest.meals);
+        }, 0);
         return total.toFixed(2);
     }, [summary.guests]);
 
@@ -134,13 +142,10 @@ export const useSummary = () => {
             return acc;
         }, {} as Record<string, { count: number; price: number }>);
 
-        let alaCarteTotal = 0;
-        alaCarteGuests.forEach(guest => {
-            guest.meals.entries.forEach(m => alaCarteTotal += m.price * m.quantity);
-            guest.meals.mainCourses.forEach(m => alaCarteTotal += m.price * m.quantity);
-            guest.meals.desserts.forEach(m => alaCarteTotal += m.price * m.quantity);
-            guest.meals.drinks.forEach(m => alaCarteTotal += m.price * m.quantity);
-        });
+        const alaCarteTotal = alaCarteGuests.reduce(
+            (sum, guest) => sum + calculateGuestMealsTotal(guest.meals),
+            0
+        );
 
         return { menusByType, alaCarteTotal, hasAlaCarte: alaCarteGuests.length > 0 };
     }, [summary.guests]);
@@ -150,6 +155,7 @@ export const useSummary = () => {
         onPrevious,
         summary,
         totalPrice,
-        priceBreakdown
+        priceBreakdown,
+        isQrMode
     };
 };

@@ -37,6 +37,10 @@ export class InMemoryTableGateway implements ITableGateway {
                 capacity: 8
             })
         ]
-        
+    }
+
+    async getActiveOrder(): Promise<OrderingDomainModel.ExistingOrder | null> {
+        // In-memory gateway returns no existing order by default
+        return null;
     }
 }

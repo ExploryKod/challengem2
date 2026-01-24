@@ -3,8 +3,35 @@ import { LuminousCard } from '@taotask/modules/order/react/components/ui/Luminou
 import { LuminousButton } from '@taotask/modules/order/react/components/ui/LuminousButton';
 import { CheckCircle, QrCode } from 'lucide-react';
 
+type ModeType = 'terminal' | 'qr' | 'standard';
+
+const MESSAGES: Record<ModeType, { title: string; body: string; footer: string }> = {
+    terminal: {
+        title: "Un membre de notre equipe va vous accueillir",
+        body: "Veuillez patienter, un membre de notre equipe viendra vous placer a votre table.",
+        footer: "Merci de votre patience."
+    },
+    qr: {
+        title: "Votre commande a ete envoyee",
+        body: "Votre commande a ete transmise en cuisine.",
+        footer: "Bon appetit !"
+    },
+    standard: {
+        title: "Merci pour votre reservation",
+        body: "En reservant chez nous, vous pouvez vous attendre a un service de qualite et a un restaurant convivial.",
+        footer: "Nous vous remercions de votre confiance et nous esperons vous revoir bientot."
+    }
+};
+
 export const ReservedSection = () => {
     const presenter = useReserved();
+
+    const mode: ModeType = presenter.isTerminalMode ? 'terminal' 
+        : presenter.isQrMode ? 'qr' 
+        : 'standard';
+    const messages = MESSAGES[mode];
+    const showReservationCode = mode === 'standard' && presenter.reservationCode;
+    const showActions = mode !== 'qr';
 
     return (
     <LuminousCard className="mx-auto py-8 sm:py-12 w-full max-w-[1200px] animate-fade-in-down">
@@ -13,15 +40,12 @@ export const ReservedSection = () => {
                 <CheckCircle className="w-10 h-10 text-luminous-sage" />
             </div>
             <h3 className="mx-auto my-3 font-display font-medium text-luminous-text-primary text-xl sm:text-2xl text-center">
-                {presenter.isTerminalMode
-                    ? "Un membre de notre equipe va vous accueillir"
-                    : "Merci pour votre reservation"}
+                {messages.title}
             </h3>
             <div className="h-1 w-16 bg-luminous-gold mx-auto my-4" />
         </div>
 
-        {/* Reservation Code Display */}
-        {!presenter.isTerminalMode && presenter.reservationCode && (
+        {showReservationCode && (
             <div className="flex flex-col mx-auto mb-8">
                 <div className="bg-luminous-bg-secondary border-2 border-luminous-gold mx-auto px-6 sm:px-10 py-6 sm:py-8 rounded-xl w-full max-w-[600px]">
                     <div className="flex items-center justify-center gap-2 mb-4">
@@ -43,45 +67,43 @@ export const ReservedSection = () => {
         <div className="flex flex-col mx-auto mb-8">
             <div className="bg-luminous-bg-secondary border border-luminous-gold-border mx-auto px-6 sm:px-10 py-6 sm:py-8 rounded-xl w-full max-w-[600px]">
                 <p className="mb-3 text-sm sm:text-base text-center text-luminous-text-secondary">
-                    {presenter.isTerminalMode
-                        ? "Veuillez patienter, un membre de notre equipe viendra vous placer a votre table."
-                        : "En reservant chez nous, vous pouvez vous attendre a un service de qualite et a un restaurant convivial."}
+                    {messages.body}
                 </p>
-                {!presenter.isTerminalMode && (
+                {mode === 'standard' && (
                     <p className="mb-3 text-sm sm:text-base text-center text-luminous-text-secondary">
                         Notre equipe met tout en oeuvre pour vous offrir une experience culinaire exceptionnelle.
                     </p>
                 )}
                 <p className="text-sm sm:text-base text-center text-luminous-gold font-medium">
-                    {presenter.isTerminalMode
-                        ? "Merci de votre patience."
-                        : "Nous vous remercions de votre confiance et nous esperons vous revoir bientot."}
+                    {messages.footer}
                 </p>
             </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-center gap-3 mx-auto w-full">
-            <LuminousButton
-                onClick={presenter.onNewTable}
-                variant="primary"
-            >
-                Nouvelle reservation
-            </LuminousButton>
-            {!presenter.isTerminalMode && (
-                <a
-                    href="/"
-                    className="
-                        px-6 py-3 rounded-lg font-medium uppercase tracking-wider text-sm text-center
-                        transition-all duration-200 ease-in-out
-                        bg-transparent border border-luminous-gold text-luminous-gold
-                        hover:bg-luminous-gold-glow
-                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-luminous-bg-primary focus:ring-luminous-gold/30
-                    "
+        {showActions && (
+            <div className="flex flex-col sm:flex-row justify-center gap-3 mx-auto w-full">
+                <LuminousButton
+                    onClick={presenter.onNewTable}
+                    variant="primary"
                 >
-                    Retour Accueil
-                </a>
-            )}
-        </div>
+                    Nouvelle reservation
+                </LuminousButton>
+                {mode === 'standard' && (
+                    <a
+                        href="/"
+                        className="
+                            px-6 py-3 rounded-lg font-medium uppercase tracking-wider text-sm text-center
+                            transition-all duration-200 ease-in-out
+                            bg-transparent border border-luminous-gold text-luminous-gold
+                            hover:bg-luminous-gold-glow
+                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-luminous-bg-primary focus:ring-luminous-gold/30
+                        "
+                    >
+                        Retour Accueil
+                    </a>
+                )}
+            </div>
+        )}
     </LuminousCard>
     )
 }

@@ -4,5 +4,5 @@ import { OrderingDomainModel } from "@taotask/modules/order/core/model/ordering.
 // Aprés on doit créer un adapteur pour implémenter ce port
 export interface ITableGateway {
     getTables(): Promise<OrderingDomainModel.Table[]>;
-  
+    getActiveOrder(tableId: string): Promise<OrderingDomainModel.ExistingOrder | null>;
 }

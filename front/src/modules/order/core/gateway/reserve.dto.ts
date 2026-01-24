@@ -1,6 +1,6 @@
 import { OrderingDomainModel } from "@taotask/modules/order/core/model/ordering.domain-model";
 
-type Guest = {
+export type GuestDTO = {
     id?: string | number,
     firstName: string,
     lastName: string,
@@ -16,5 +16,5 @@ type Guest = {
 
 export type ReserveDTO = {
     tableId: string,
-    guests: Array<Guest>
+    guests: Array<GuestDTO>
 }
