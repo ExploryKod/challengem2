@@ -9,7 +9,7 @@ import {
   HttpKitchenGateway,
 } from './src/modules/kitchen';
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
 const gateway = new HttpKitchenGateway(BASE_URL);
 
 type SelectedRestaurant = {
