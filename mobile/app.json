@@ -25,6 +25,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c0f69c43-452c-42d0-8df2-d807a196af70"
+      }
+    },
+    "owner": "nasssdev",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c0f69c43-452c-42d0-8df2-d807a196af70"
     }
   }
 }
