@@ -56,7 +56,7 @@ export const HeroSection: React.FC = () => {
                                 Ouvrir dans Google Maps
                             </a>
                         </div>
-                        <div className="button opacity-0 flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <div className="button opacity-0 flex flex-col sm:flex-row items-center justify-center gap-4 mx-auto w-fit">
                             <button type="button"
                                 onClick={handleDiscover}
                                 className="font-mono rounded border-2 border-luxury-gold px-6 sm:px-[46px] pt-3 sm:pt-[14px] pb-2.5 sm:pb-[12px]
