@@ -1,54 +1,104 @@
-# Projet Taste Federation
+# Taste Federation
 
-Étudiants : Nassim Assiaoui, Amaury Franssen.
+Application de réservation de restaurant avec commande de repas en ligne.
 
-Ce projet se compose de trois parties :
-- Front web (PWA) : dossier `front`
-- API backend (NestJS) : dossier `back`
-- Application mobile (React Native) : dossier `mobile`
+**Étudiants** : Nassim Assiaoui, Amaury Franssen
 
-Consultez le PDF du projet pour le détail des parcours.
+## Fonctionnalités
 
-## Documentation
-- API backend : [back/README.md](back/README.md)
-- Front web : [front/README.md](front/README.md)
+- **Réservation en ligne** : Parcours client pour réserver une table et pré-commander des repas
+- **Mode QR Code** : Scan d'un QR code à table pour commander directement
+- **Terminal d'accueil** : Borne pour identifier les clients avec leur code de réservation
+- **Backoffice admin** : Gestion des restaurants, tables, menus et réservations
+- **Kitchen Display** : Application mobile pour le suivi des commandes en cuisine
+
+## Architecture
+
+```
+├── front/          # Application web Next.js (PWA)
+├── back/           # API NestJS + PostgreSQL
+├── mobile/         # Application Expo (Kitchen Display)
+├── docs/           # Documentation et plans
+└── docker-compose.yml
+```
 
 ## Prérequis
+
 - Docker et Docker Compose
-- Node.js + pnpm
-- (Optionnel) Environnement React Native pour `mobile`
+- Node.js 18+ et pnpm
+- (Optionnel) Expo Go pour l'app mobile
 
-## Démarrer en local
+## Démarrage rapide
 
-### 1) Base de données (Docker)
-Dans `/back`, lancez Postgres :
-```
+### Option 1 : Docker (recommandé pour la production)
+
+```bash
+# Copier et configurer l'environnement
+cp .env.example .env
+# Éditer .env avec vos valeurs
+
+# Lancer tous les services
 docker compose up -d
 ```
 
-### 2) API (NestJS)
-Dans `/back` :
+L'application sera disponible sur `http://localhost:3001`
+
+### Option 2 : Développement local
+
+#### 1. Base de données
+
+```bash
+cd back
+docker compose up -d    # Lance PostgreSQL sur le port 5433
 ```
+
+#### 2. Backend (API)
+
+```bash
+cd back
 pnpm install
-pnpm run start:dev
+pnpm seed              # Seed la base de données
+pnpm start:dev         # Démarre sur http://localhost:3000
 ```
-L’API démarre sur `http://localhost:3000`.
 
-### 3) Front (Next.js)
-Dans `/front` :
-```
+#### 3. Frontend (Web)
+
+```bash
+cd front
 pnpm install
-pnpm run dev
-```
-Le front démarre sur `http://localhost:3001`.
-
-### 4) Seeding (optionnel)
-Dans `/back` :
-```
-pnpm run seed
+pnpm dev               # Démarre sur http://localhost:3001
 ```
 
-## Structure
-- `front/` : application web (PWA)
-- `back/` : API NestJS + base de données
-- `mobile/` : app mobile (suivi des commandes)
+#### 4. Mobile (Kitchen Display)
+
+```bash
+cd mobile
+npm install
+npx expo start         # Scanner le QR code avec Expo Go
+```
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [back/README.md](back/README.md) | API endpoints et architecture backend |
+| [front/README.md](front/README.md) | Architecture frontend et conventions |
+| [front/ARCHITECTURE.md](front/ARCHITECTURE.md) | Clean Architecture détaillée |
+
+## Variables d'environnement
+
+Voir [.env.example](.env.example) pour la liste complète. Variables principales :
+
+| Variable | Description |
+|----------|-------------|
+| `POSTGRES_PASSWORD` | Mot de passe PostgreSQL |
+| `NEXT_PUBLIC_API_URL` | URL de l'API (accessible depuis le navigateur) |
+| `BETTER_AUTH_SECRET` | Secret pour l'authentification admin |
+
+## Parcours utilisateur
+
+1. **Client web** : Accueil → Choix restaurant → Nombre de convives → Table → Repas → Récapitulatif → Confirmation
+2. **Mode QR** : Scan QR → Commande directe à table
+3. **Terminal** : Code réservation → Vérification → Place assignée
+4. **Admin** : Login → Dashboard → Gestion restaurants/tables/menus/réservations
+5. **Cuisine** : Sélection restaurant → Liste commandes → Marquage plats prêts
