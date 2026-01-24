@@ -362,7 +362,7 @@ describe('Admin Controllers (Integration)', () => {
         // Delete the restaurant via API
         await request(app.getHttpServer() as App)
           .delete(`/admin/restaurants/${tempRestaurant.id}`)
-          .expect(200);
+          .expect(204);
 
         // Verify restaurant is deleted
         const deletedRestaurant = await restaurantRepo.findOne({
@@ -583,7 +583,7 @@ describe('Admin Controllers (Integration)', () => {
         // Delete the table via API
         await request(app.getHttpServer() as App)
           .delete(`/admin/tables/${tempTable.id}`)
-          .expect(200);
+          .expect(204);
 
         // Verify table is deleted
         const deletedTable = await tableRepo.findOne({
@@ -820,7 +820,7 @@ describe('Admin Controllers (Integration)', () => {
         // Delete the meal via API
         await request(app.getHttpServer() as App)
           .delete(`/admin/meals/${tempMeal.id}`)
-          .expect(200);
+          .expect(204);
 
         // Verify meal is deleted
         const deletedMeal = await mealRepo.findOne({
@@ -1074,7 +1074,7 @@ describe('Admin Controllers (Integration)', () => {
         // Delete the reservation via API
         await request(app.getHttpServer() as App)
           .delete(`/admin/reservations/${tempReservation.id}`)
-          .expect(200);
+          .expect(204);
 
         // Verify reservation is deleted
         const deletedReservation = await reservationRepo.findOne({
