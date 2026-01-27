@@ -15,9 +15,9 @@ export class GuestForm {
             // je peux travailler sur draft comme si c'était un state, de façon immutable dans p. imp.
             draft.guests.push({
                 id: this.idProvider.generate(),
-                firstName: 'John',
-                lastName: 'Doe',
-                age: 24,
+                firstName: '',
+                lastName: '',
+                age: 0,
                 restaurantId: null,
                 isOrganizer: false,
                 menuId: menuId,
@@ -59,13 +59,16 @@ export class GuestForm {
         // }
     }
 
-    changeOrganizer(state: OrderingDomainModel.Form, id:string) {
-        
+    changeOrganizer(state: OrderingDomainModel.Form, id: string | null) {
         return produce(state, (draft: any) => {
+            if (id === null) {
+                draft.organizerId = null;
+                return;
+            }
+
             const exists = draft.guests.some((guest: any) => guest.id === id);
-            
-            if(!exists) {
-                return
+            if (!exists) {
+                return;
             }
             draft.organizerId = id;
         });
@@ -84,6 +87,7 @@ export class GuestForm {
         return (
             state.organizerId !== null
             && state.guests.length > 0
+            && state.guests.every((guest) => guest.firstName.trim().length > 0)
             && state.guests.every((guest) => guest.age > 0)
         )
     }
@@ -95,17 +99,14 @@ export class GuestForm {
                     id: this.idProvider.generate(),
                     firstName: '',
                     lastName: '',
-                    age: 24,
+                    age: 0,
                     restaurantId: null,
                     isOrganizer: false,
                     menuId: menuId,
                     meals: { entries: [], mainCourses: [], desserts: [], drinks: [] }
                 });
             }
-            // Set the first guest as organizer by default
-            if (draft.guests.length > 0) {
-                draft.organizerId = draft.guests[0].id;
-            }
+            draft.organizerId = null;
         });
     }
 

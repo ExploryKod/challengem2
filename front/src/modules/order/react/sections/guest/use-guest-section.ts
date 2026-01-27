@@ -16,13 +16,13 @@ export const useGuestSection = () => {
     const bottomGuestRef = useRef<HTMLDivElement>(null);
     const checkBoxOrganizer = useRef<HTMLInputElement>(null);
     const initialState = useSelector((state: AppState) => state.ordering.form);
-    const hasInitialized = useRef(false);
-
     const tableCapacity = useSelector((state: AppState) => {
         const tableId = state.ordering.form.tableId;
         const table = state.ordering.availableTables.data?.find(t => t.id === tableId);
         return table?.capacity || 0;
     });
+
+    const hasInitialized = useRef(false);
 
     const [form, setForm] = useState<OrderingDomainModel.Form>(() => {
         if (initialState.guests.length === 0 && tableCapacity > 0) {
@@ -55,7 +55,7 @@ export const useGuestSection = () => {
         setForm(newState);
     }
 
-    function changeOrganizer(id:string) {
+    function changeOrganizer(id: string | null) {
         const newState = guestForm.current.changeOrganizer(form, id);
         setForm(newState);
     }
