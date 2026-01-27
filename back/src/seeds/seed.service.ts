@@ -5,6 +5,10 @@ import { RestaurantOrmEntity } from '../modules/ordering/infrastructure/persiste
 import { TableOrmEntity } from '../modules/ordering/infrastructure/persistence/orm-entities/table.orm-entity';
 import { MealOrmEntity } from '../modules/ordering/infrastructure/persistence/orm-entities/meal.orm-entity';
 import { MealType } from '../modules/ordering/domain/enums/meal-type.enum';
+import { ReservationOrmEntity } from '../modules/ordering/infrastructure/persistence/orm-entities/reservation.orm-entity';
+import { GuestOrmEntity } from '../modules/ordering/infrastructure/persistence/orm-entities/guest.orm-entity';
+import { MenuOrmEntity } from '../modules/ordering/infrastructure/persistence/orm-entities/menu.orm-entity';
+import { MenuItemOrmEntity } from '../modules/ordering/infrastructure/persistence/orm-entities/menu-item.orm-entity';
 
 @Injectable()
 export class SeedService {
@@ -15,14 +19,25 @@ export class SeedService {
     private readonly tableRepository: Repository<TableOrmEntity>,
     @InjectRepository(MealOrmEntity)
     private readonly mealRepository: Repository<MealOrmEntity>,
+    @InjectRepository(ReservationOrmEntity)
+    private readonly reservationRepository: Repository<ReservationOrmEntity>,
+    @InjectRepository(GuestOrmEntity)
+    private readonly guestRepository: Repository<GuestOrmEntity>,
+    @InjectRepository(MenuOrmEntity)
+    private readonly menuRepository: Repository<MenuOrmEntity>,
+    @InjectRepository(MenuItemOrmEntity)
+    private readonly menuItemRepository: Repository<MenuItemOrmEntity>,
   ) {}
 
   async seed(): Promise<void> {
-    const existingRestaurants = await this.restaurantRepository.count();
-    if (existingRestaurants > 0) {
-      console.log('Database already seeded, skipping...');
-      return;
-    }
+    console.log('Resetting database data...');
+    await this.guestRepository.createQueryBuilder().delete().execute();
+    await this.reservationRepository.createQueryBuilder().delete().execute();
+    await this.menuItemRepository.createQueryBuilder().delete().execute();
+    await this.menuRepository.createQueryBuilder().delete().execute();
+    await this.mealRepository.createQueryBuilder().delete().execute();
+    await this.tableRepository.createQueryBuilder().delete().execute();
+    await this.restaurantRepository.createQueryBuilder().delete().execute();
 
     console.log('Seeding database...');
 
@@ -203,6 +218,23 @@ export class SeedService {
     ]);
 
     console.log(`Created ${meals.length} meals`);
+    const menu = await this.menuRepository.save({
+      restaurantId: restaurant.id,
+      title: 'Menu découverte',
+      description: 'Entrée, plat et dessert au choix',
+      price: 32.0,
+      imageUrl:
+        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400',
+      isActive: true,
+    });
+
+    await this.menuItemRepository.save([
+      { menuId: menu.id, mealType: MealType.ENTRY, quantity: 1 },
+      { menuId: menu.id, mealType: MealType.MAIN_COURSE, quantity: 1 },
+      { menuId: menu.id, mealType: MealType.DESSERT, quantity: 1 },
+    ]);
+
+    console.log('Created menu and menu items');
     console.log('Seeding completed!');
   }
 }
