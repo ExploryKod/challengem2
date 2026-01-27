@@ -44,6 +44,7 @@ export const GuestSection: React.FC<{
                             firstName={guest.firstName}
                             lastName={guest.lastName}
                             guestIndex={index}
+                            age={guest.age}
                             onChange={presenter.updateGuest}
                             remove={presenter.removeGuest}
                             changeOrganizer={presenter.changeOrganizer}
@@ -91,6 +92,7 @@ const GuestRows: React.FC<{
     firstName: string,
     lastName: string,
     guestIndex: number,
+    age: number,
     isOrganizer: boolean,
     onChange: <T extends keyof OrderingDomainModel.Guest>
         (id:string | number,
@@ -100,9 +102,10 @@ const GuestRows: React.FC<{
     remove: (id:string | number) => void,
     changeOrganizer: (id: string | number | null) => void
     checkboxRef: any
-}> = ({id, firstName, lastName, guestIndex, onChange, remove, changeOrganizer, isOrganizer, checkboxRef}) => {
+}> = ({id, firstName, lastName, guestIndex, age, onChange, remove, changeOrganizer, isOrganizer, checkboxRef}) => {
     const firstNameId = `guest-${id}-first-name`;
     const lastNameId = `guest-${id}-last-name`;
+    const ageId = `guest-${id}-age`;
     const organizerLabelId = `guest-${id}-organizer-label`;
     const organizerMobileLabelId = `guest-${id}-organizer-label-mobile`;
     const guestNumber = guestIndex + 1;
@@ -137,6 +140,20 @@ const GuestRows: React.FC<{
                 </label>
             </div>
 
+
+            <div className="relative flex flex-col justify-center items-center">
+                <label className="block" htmlFor={ageId}>
+                    <span className="block font-medium text-luminous-gold-muted text-xs uppercase tracking-wider mb-1">Age</span>
+                        <input type="number"
+                        id={ageId}
+                        min="0"
+                        value={age === 0 ? '' : age}
+                        className="block border-luminous-gold-border focus:border-luminous-gold bg-luminous-bg-card mt-1 px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-luminous-gold/30 w-full text-sm text-luminous-text-primary placeholder-luminous-text-muted focus:outline-none transition-all duration-200"
+                        placeholder="18"
+                        onChange={(e) => onChange(id, 'age', Number(e.target.value))}
+                        />
+                </label>
+            </div>
 
             <div className="relative md:flex flex-col justify-center items-center hidden">
                 <span id={organizerLabelId} className="text-luminous-gold-muted text-xs uppercase tracking-wider mb-1">Organisateur</span>

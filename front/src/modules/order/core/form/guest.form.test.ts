@@ -24,6 +24,17 @@ const JohnDoe: OrderingDomainModel.Guest = GuestFactory.create({
     meals: {entries: [], mainCourses: [], desserts: [], drinks: []}
 });
 
+const EmptyGuest: OrderingDomainModel.Guest = GuestFactory.create({
+    id:"1",
+    firstName: '',
+    lastName: '',
+    age: 0,
+    restaurantId: null,
+    isOrganizer: false,
+    menuId: null,
+    meals: {entries: [], mainCourses: [], desserts: [], drinks: []}
+});
+
 const BrigitteMonin: OrderingDomainModel.Guest = GuestFactory.create({
     id:"2",
     firstName: 'Brigitte',
@@ -48,39 +59,16 @@ const form = new GuestForm(idProvider);
 describe('Add a Guest', () => {
     it('It should add a guest', () => {
         const state = form.addGuest(initialEmptyState);
-        expect(state.guests).toEqual(
-            [{
-                id:"1",
-                firstName: 'John',
-                lastName: 'Doe',
-                age: 24,
-                restaurantId: null,
-                isOrganizer: false,
-                menuId: null,
-                meals: {entries: [], mainCourses: [], desserts: [], drinks: []}
-            }]
-        );
+        expect(state.guests).toEqual([EmptyGuest]);
     });
     it('It should add a guest when there is already one', () => {
         const state = form.addGuest(stateWithOneUser);
-        expect(state.guests).toEqual([JohnDoe, JohnDoe]);
+        expect(state.guests).toEqual([JohnDoe, EmptyGuest]);
     });
 
     it('It should add a guest when there is already two', () => {
         const state = form.addGuest(stateWithTwoUsers);
-        expect(state.guests).toEqual(
-            [JohnDoe, BrigitteMonin,
-            {
-                id:"1",
-                firstName: 'John',
-                lastName: 'Doe',
-                age: 24,
-                restaurantId: null,
-                isOrganizer: false,
-                menuId: null,
-                meals: {entries: [], mainCourses: [], desserts: [], drinks: []}
-            }]
-        );
+        expect(state.guests).toEqual([JohnDoe, BrigitteMonin, EmptyGuest]);
     });
 });
 
@@ -222,12 +210,12 @@ describe('Initialize guests', () => {
     it('creates guests for table capacity and sets organizer', () => {
         const state = form.initializeGuests(initialEmptyState, 2, 'menu-1');
         expect(state.guests).toHaveLength(2);
-        expect(state.organizerId).toEqual("1");
+        expect(state.organizerId).toBeNull();
         expect(state.guests[0]).toEqual({
             id:"1",
             firstName: '',
             lastName: '',
-            age: 24,
+            age: 0,
             restaurantId: null,
             isOrganizer: false,
             menuId: 'menu-1',
