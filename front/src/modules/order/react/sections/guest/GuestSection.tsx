@@ -98,7 +98,7 @@ const GuestRows: React.FC<{
         value: OrderingDomainModel.Guest[T]
         ) => void,
     remove: (id:string | number) => void,
-    changeOrganizer: (id:string | number) => void
+    changeOrganizer: (id: string | number | null) => void
     checkboxRef: any
 }> = ({id, firstName, lastName, guestIndex, onChange, remove, changeOrganizer, isOrganizer, checkboxRef}) => {
     const firstNameId = `guest-${id}-first-name`;
@@ -141,8 +141,8 @@ const GuestRows: React.FC<{
             <div className="relative md:flex flex-col justify-center items-center hidden">
                 <span id={organizerLabelId} className="text-luminous-gold-muted text-xs uppercase tracking-wider mb-1">Organisateur</span>
                 <Checkbox.Root
-                    defaultChecked={isOrganizer}
-                    onCheckedChange={() => changeOrganizer(id)}
+                    checked={isOrganizer}
+                    onCheckedChange={(checked) => changeOrganizer(checked ? id : null)}
                     ref={checkboxRef}
                     className="bg-luminous-bg-card border-2 border-luminous-gold-border rounded-lg w-7 h-7 flex items-center justify-center data-[state=checked]:bg-luminous-gold data-[state=checked]:border-luminous-gold hover:border-luminous-gold transition-all duration-200"
                     aria-labelledby={organizerLabelId}
@@ -166,8 +166,8 @@ const GuestRows: React.FC<{
             <div className="flex justify-between items-center md:hidden mx-auto w-full max-w-[220px] mt-2">
                 <div className="flex items-center gap-2">
                     <Checkbox.Root
-                        defaultChecked={isOrganizer}
-                        onCheckedChange={() => changeOrganizer(id)}
+                        checked={isOrganizer}
+                        onCheckedChange={(checked) => changeOrganizer(checked ? id : null)}
                         ref={checkboxRef}
                         className="bg-luminous-bg-card border-2 border-luminous-gold-border rounded-lg w-7 h-7 flex items-center justify-center data-[state=checked]:bg-luminous-gold data-[state=checked]:border-luminous-gold hover:border-luminous-gold transition-all duration-200"
                         aria-labelledby={organizerMobileLabelId}

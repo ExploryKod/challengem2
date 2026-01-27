@@ -128,6 +128,14 @@ describe('Set an organizer', () => {
         const state = form.changeOrganizer(stateWithOneUser, "1")
         expect(state.organizerId).toEqual("1")
     })
+    it("clears the organizer when id is null", () =>{
+        const stateWithOrganizer = {
+            ...stateWithOneUser,
+            organizerId: "1"
+        }
+        const state = form.changeOrganizer(stateWithOrganizer, null)
+        expect(state.organizerId).toEqual(null)
+    })
 });
 
 describe('Set Is Submittable', () => {
@@ -135,7 +143,7 @@ describe('Set Is Submittable', () => {
         const isSubmitable = form.isSubmitable(initialEmptyState)
         expect(isSubmitable).toEqual(false)
     })
-    it("When there is one organizer, it can be submittable", () =>{
+    it("When there is one organizer and all guests have first names, it can be submittable", () =>{
         const withOrganizerState = {
             ...stateWithOneUser,
             organizerId: "1"
@@ -144,8 +152,19 @@ describe('Set Is Submittable', () => {
         expect(isSubmitable).toEqual(true)
     })
 
-    // Note: firstName and lastName are no longer required for submitting
-    // because the app uses placeholder defaults (e.g., "Invité 1")
+    it("When a guest has an empty first name, it can't be submittable", () =>{
+        const withOrganizerState = {
+            ...stateWithOneUser,
+            organizerId: "1",
+            guests: [{
+                ...JohnDoe,
+                firstName: " "
+            }]
+        }
+        const isSubmitable = form.isSubmitable(withOrganizerState)
+        expect(isSubmitable).toEqual(false)
+    })
+
     it("When age is 0, it can't be submittable", () =>{
         const withOrganizerState = {
             ...stateWithOneUser,
@@ -197,6 +216,50 @@ describe('Set Is Submittable', () => {
 //         const isSubmitable = form.isSubmitable(withOrganizerState)
 //         expect(isSubmitable).toEqual(false)
 //     })
+});
+
+describe('Initialize guests', () => {
+    it('creates guests for table capacity and sets organizer', () => {
+        const state = form.initializeGuests(initialEmptyState, 2, 'menu-1');
+        expect(state.guests).toHaveLength(2);
+        expect(state.organizerId).toEqual("1");
+        expect(state.guests[0]).toEqual({
+            id:"1",
+            firstName: '',
+            lastName: '',
+            age: 24,
+            restaurantId: null,
+            isOrganizer: false,
+            menuId: 'menu-1',
+            meals: {entries: [], mainCourses: [], desserts: [], drinks: []}
+        });
+    });
+
+    it('defaults menuId to null when omitted', () => {
+        const state = form.initializeGuests(initialEmptyState, 1);
+        expect(state.guests).toHaveLength(1);
+        expect(state.guests[0].menuId).toBeNull();
+    });
+});
+
+describe('Apply placeholder defaults', () => {
+    it('fills missing names with defaults', () => {
+        const stateWithMissingNames: OrderingDomainModel.Form = {
+            guests: [
+                { ...JohnDoe, firstName: '', lastName: '   ' },
+                { ...BrigitteMonin, firstName: '  ', lastName: '' }
+            ],
+            organizerId: "1",
+            tableId: null
+        };
+
+        const state = form.applyPlaceholderDefaults(stateWithMissingNames);
+
+        expect(state.guests[0].firstName).toEqual('Invité 1');
+        expect(state.guests[0].lastName).toEqual('');
+        expect(state.guests[1].firstName).toEqual('Invité 2');
+        expect(state.guests[1].lastName).toEqual('');
+    });
 });
 
 describe('Update a guest', () => {

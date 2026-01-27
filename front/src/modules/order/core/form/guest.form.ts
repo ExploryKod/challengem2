@@ -59,13 +59,16 @@ export class GuestForm {
         // }
     }
 
-    changeOrganizer(state: OrderingDomainModel.Form, id:string) {
-        
+    changeOrganizer(state: OrderingDomainModel.Form, id: string | null) {
         return produce(state, (draft: any) => {
+            if (id === null) {
+                draft.organizerId = null;
+                return;
+            }
+
             const exists = draft.guests.some((guest: any) => guest.id === id);
-            
-            if(!exists) {
-                return
+            if (!exists) {
+                return;
             }
             draft.organizerId = id;
         });
@@ -84,6 +87,7 @@ export class GuestForm {
         return (
             state.organizerId !== null
             && state.guests.length > 0
+            && state.guests.every((guest) => guest.firstName.trim().length > 0)
             && state.guests.every((guest) => guest.age > 0)
         )
     }

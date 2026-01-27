@@ -179,19 +179,30 @@ export const MealsSection = () => {
                   );
                   const isDisabled = isAgeRestricted || (!isSelected && !canAddMore);
 
+                  const handleMealSelect = () => {
+                    if (!isDisabled || isSelected) {
+                      presenter.onMealSelected(String(presenter.currentGuest.id), meal.id, type);
+                    }
+                  };
+
+                  const isSelectable = !isDisabled || isSelected;
+
                   return (
-                    <button
+                    <div
                       key={meal.id}
-                      type="button"
-                      onClick={() => {
-                        if (!isDisabled || isSelected) {
-                          presenter.onMealSelected(String(presenter.currentGuest.id), meal.id, type);
+                      role="button"
+                      tabIndex={isSelectable ? 0 : -1}
+                      onClick={handleMealSelect}
+                      onKeyDown={(event) => {
+                        if (!isSelectable) return;
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          handleMealSelect();
                         }
                       }}
                       aria-pressed={isSelected}
-                      aria-disabled={isDisabled && !isSelected}
-                      disabled={isAgeRestricted}
-                      className={`flex-shrink-0 w-[140px] sm:w-[180px] snap-start text-left ${isDisabled && !isSelected ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luminous-gold/60 rounded-xl`}
+                      aria-disabled={!isSelectable}
+                      className={`flex-shrink-0 w-[140px] sm:w-[180px] snap-start text-left ${isSelectable ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luminous-gold/60 rounded-xl`}
                     >
                       <div className={`relative rounded-xl overflow-hidden border-2 ${isSelected ? 'border-luminous-gold' : 'border-luminous-gold-border'} bg-luminous-bg-card shadow-[0_4px_20px_rgba(201,162,39,0.08)] hover:shadow-[0_8px_30px_rgba(201,162,39,0.12)] transition-all duration-300`}>
                         {/* Meal type badge */}
@@ -262,7 +273,7 @@ export const MealsSection = () => {
                           )}
                         </div>
                       </div>
-                    </button>
+                    </div>
                   );
                 })}
               </div>
