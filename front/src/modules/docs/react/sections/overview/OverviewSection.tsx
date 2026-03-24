@@ -114,6 +114,17 @@ export const OverviewSection: React.FC = () => {
           </div>
         </div>
 
+        <div className="bg-luminous-gold/10 border border-luminous-gold/30 rounded-xl p-5 mb-10 text-center">
+          <h3 className="font-sans font-medium text-luminous-gold mb-2">
+            Mode demo (portfolio)
+          </h3>
+          <p className="text-luminous-text-secondary text-sm">
+            Deux restaurants d&apos;exemple sont toujours disponibles pour
+            presenter l&apos;application, meme sans API connectee. Ils sont
+            identifies par un badge &quot;Restaurant demo&quot;.
+          </p>
+        </div>
+
         {/* Modules */}
         <div>
           <h3 className="font-sans font-medium text-luminous-text-primary mb-6 text-center">

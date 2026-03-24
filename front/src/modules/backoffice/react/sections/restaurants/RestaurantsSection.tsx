@@ -6,6 +6,7 @@ import { LuxuryButton } from '../../components/ui/LuxuryButton';
 import { LuxuryModal } from '../../components/ui/LuxuryModal';
 import { LuxuryInput } from '../../components/ui/LuxuryInput';
 import { useRestaurants } from './use-restaurants.hook';
+import { isDemoRestaurantId } from '@taotask/modules/shared/demo/demo-restaurants.store';
 
 export const RestaurantsSection: React.FC = () => {
     const router = useRouter();
@@ -52,7 +53,13 @@ export const RestaurantsSection: React.FC = () => {
                     </div>
                 )}
 
-                {!isLoading && !error && restaurants.length === 0 && (
+                {!isLoading && restaurants.some((restaurant) => isDemoRestaurantId(restaurant.id)) && (
+                    <div className="bg-luxury-bg-secondary border border-luxury-gold-border text-luxury-text-secondary px-6 py-4 rounded-lg mb-8 text-sm">
+                        Mode demo : restaurants d&apos;exemple affiches.
+                    </div>
+                )}
+
+                {!isLoading && restaurants.length === 0 && (
                     <div className="text-center py-16">
                         <p className="text-luxury-text-secondary text-lg mb-6">
                             Aucun etablissement cree pour le moment.
@@ -63,7 +70,7 @@ export const RestaurantsSection: React.FC = () => {
                     </div>
                 )}
 
-                {!isLoading && !error && restaurants.length > 0 && (
+                {!isLoading && restaurants.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
                         {restaurants.map((restaurant) => {
                             const isNotVisible = restaurant.tableCount === 0 || restaurant.mealCount === 0;
@@ -78,6 +85,11 @@ export const RestaurantsSection: React.FC = () => {
                                     <h3 className="text-xl font-serif text-luxury-text-primary">
                                         {restaurant.name}
                                     </h3>
+                                    {isDemoRestaurantId(restaurant.id) && (
+                                        <span className="inline-flex items-center rounded-full bg-luxury-gold/15 px-3 py-1 text-xs font-medium text-luxury-gold">
+                                            Restaurant demo
+                                        </span>
+                                    )}
                                     {isNotVisible && (
                                         <div className="relative group">
                                             <div className="flex items-center gap-1 bg-luxury-rose/30 text-luxury-rose px-2 py-1 rounded-full text-xs font-medium cursor-help">

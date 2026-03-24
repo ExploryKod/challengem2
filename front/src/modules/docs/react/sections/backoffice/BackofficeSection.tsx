@@ -61,6 +61,19 @@ export const BackofficeSection: React.FC = () => {
         </p>
       </ContentBlock>
 
+      <ContentBlock className="mt-6">
+        <div className="bg-luxury-gold/10 border border-luxury-gold/30 rounded-lg p-4">
+          <h4 className="font-sans font-medium text-luxury-gold mb-2">
+            Restaurants demo
+          </h4>
+          <p className="text-luminous-text-secondary text-sm">
+            Pour les besoins de demonstration, deux restaurants demo sont
+            pre-charges. Ils sont modifiables comme des restaurants normaux et
+            affichent un badge &quot;Restaurant demo&quot;.
+          </p>
+        </div>
+      </ContentBlock>
+
       <VideoPlayer
         src="/videos/backoffice-demo.mp4"
         title="Espace Administration"
