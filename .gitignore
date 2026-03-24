@@ -2,16 +2,6 @@
 papilles-des-suds
 placeholder-menu.jpg
 
-# Videos (large files)
-videos/
-front/public/videos/
-
-# Environment files
-.env
-.env.local
-.env.*.local
-!.env.example
-
 # Worktrees
 .worktrees/
 
@@ -38,5 +28,3 @@ front/public/videos/
 
 # Claude
 .claude/
-
-/docs
