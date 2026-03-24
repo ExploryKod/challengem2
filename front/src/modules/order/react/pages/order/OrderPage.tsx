@@ -27,7 +27,7 @@ export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId, tableId, qrR
   const qrError = useSelector((state: AppState) => state.ordering.qrError);
 
   const restaurantName = presenter.restaurantList.restaurants.find(
-    r => r.id === presenter.restaurantList.restaurantId
+    r => String(r.id) === String(presenter.restaurantList.restaurantId)
   )?.restaurantName || '';
 
   return (

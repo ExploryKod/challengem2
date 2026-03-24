@@ -22,12 +22,15 @@ export const RestaurantSection: React.FC<RestaurantSectionProps> = ({
     const noticeDurationMs = 5000;
 
     const isRestaurantStep = step === OrderingDomainModel.OrderingStep.RESTAURANT;
-    const showRestaurantList = isRestaurantStep || !restaurantList.restaurantId;
-    const showWelcomeMessage = !isRestaurantStep && restaurantList.restaurantId;
 
     const selectedRestaurant = restaurantList.restaurants.find(
-        (r) => r.id === restaurantList.restaurantId
+        (r) => String(r.id) === String(restaurantList.restaurantId)
     );
+    const hasSelectedRestaurant = Boolean(selectedRestaurant);
+    const showRestaurantList =
+        isRestaurantStep || !restaurantList.restaurantId || !hasSelectedRestaurant;
+    const showWelcomeMessage =
+        !isRestaurantStep && restaurantList.restaurantId && hasSelectedRestaurant;
 
     return (
     <>
