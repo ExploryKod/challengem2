@@ -4,12 +4,21 @@ import { OrderingDomainModel } from '@taotask/modules/order/core/model/ordering.
 import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
 import { isDemoRestaurantId } from '@taotask/modules/shared/demo/demo-restaurants.store';
 
-export const RestaurantSection: React.FC<{
+type RestaurantSectionProps = {
     restaurantList: OrderingDomainModel.RestaurantList,
     selectRestaurant: (id: string) => void,
     step: OrderingDomainModel.OrderingStep,
     restaurantNotice?: { type: 'info' | 'error'; message: string } | null,
-}> = ({restaurantList, selectRestaurant, step, restaurantNotice}) => {
+    restaurantsStatus?: 'idle' | 'loading' | 'success' | 'error',
+};
+
+export const RestaurantSection: React.FC<RestaurantSectionProps> = ({
+    restaurantList,
+    selectRestaurant,
+    step,
+    restaurantNotice,
+    restaurantsStatus = 'idle',
+}) => {
     const noticeDurationMs = 5000;
 
     const isRestaurantStep = step === OrderingDomainModel.OrderingStep.RESTAURANT;
@@ -48,7 +57,14 @@ export const RestaurantSection: React.FC<{
 
                 <div className="w-full mx-auto flex flex-col justify-center gap-2">
                     <div className="flex gap-4 justify-center items-center flex-wrap">
-                        {restaurantList.restaurants.length > 0 ? restaurantList.restaurants
+                        {restaurantsStatus === 'loading' && (
+                            <div className="my-5 mx-auto w-full sm:w-1/2 rounded-xl px-5 py-4 bg-luminous-gold/10 border border-luminous-gold text-luminous-gold">
+                                <p className="text-center font-medium text-sm sm:text-base">
+                                    Chargement des restaurants...
+                                </p>
+                            </div>
+                        )}
+                        {restaurantsStatus !== 'loading' && restaurantList.restaurants.length > 0 ? restaurantList.restaurants
                         .filter((restaurant) => restaurant.id)
                         .map((restaurant) => (
                             <div key={restaurant.id} className="w-full sm:w-auto">
@@ -62,13 +78,13 @@ export const RestaurantSection: React.FC<{
                                     selectedRestaurantId={restaurantList.restaurantId ? restaurantList.restaurantId.toString() : ""}
                                 />
                             </div>
-                        )) : (
+                        )) : restaurantsStatus !== 'loading' ? (
                             <div className="my-5 mx-auto w-full sm:w-1/2 rounded-xl px-5 py-4 bg-luminous-bg-secondary border border-luminous-gold-border">
                                 <p className="text-center font-medium text-luminous-text-secondary text-sm sm:text-base">
                                     Aucun restaurant n&apos;est disponible
                                 </p>
                             </div>
-                        )}
+                        ) : null}
                     </div>
                 </div>
             </>

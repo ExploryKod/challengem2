@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { OrderingDomainModel } from "@taotask/modules/order/core/model/ordering.domain-model";
 import { GuestSection } from "@taotask/modules/order/react/sections/guest/GuestSection";
-import { RestaurantSection } from "@taotask/modules/order/react/sections/restaurant/RestaurantSection";
+import { RestaurantSection } from "../../sections/restaurant/RestaurantSection";
 import { useOrderPage } from "@taotask/modules/order/react/pages/order/use-order-page";
 import { AppState } from "@taotask/modules/store/store";
 import { MealsSection } from "@taotask/modules/order/react/sections/meals/MealsSection";
@@ -54,6 +54,7 @@ export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId, tableId, qrR
               selectRestaurant={presenter.selectRestaurant}
               step={step}
               restaurantNotice={presenter.restaurantNotice}
+              restaurantsStatus={presenter.restaurantsStatus}
             />
           )}
 

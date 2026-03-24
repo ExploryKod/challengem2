@@ -28,6 +28,7 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
     const bottomRef = useRef<HTMLDivElement>(null);
     const lastNonEmptyRestaurants = useRef<OrderingDomainModel.Restaurant[]>([]);
     const [restaurantList, setRestaurantList] = useState<OrderingDomainModel.RestaurantList>(EMPTY_RESTAURANT_LIST);
+    const [restaurantsStatus, setRestaurantsStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [meals, setMeals] = useState<OrderingDomainModel.Meal[]>([]);
     const [restaurantNotice, setRestaurantNotice] = useState<{ type: 'info' | 'error'; message: string } | null>(null);
 
@@ -91,6 +92,7 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
 
     const displayRestaurants = useCallback(async () => {
         try {
+            setRestaurantsStatus('loading');
             const restaurants = await dependencies.restaurantGateway?.getRestaurants() || [];
             if (restaurants.length > 0) {
                 lastNonEmptyRestaurants.current = restaurants;
@@ -99,14 +101,17 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
                 restaurants.length > 0 ? restaurants : lastNonEmptyRestaurants.current;
             setRestaurantList({ restaurants: nextRestaurants, restaurantId: "" });
             updateRestaurantNotice(nextRestaurants);
+            setRestaurantsStatus('success');
         } catch (error) {
             console.error('Failed to fetch restaurants:', error);
             if (lastNonEmptyRestaurants.current.length > 0) {
                 setRestaurantList({ restaurants: lastNonEmptyRestaurants.current, restaurantId: "" });
                 updateRestaurantNotice(lastNonEmptyRestaurants.current);
+                setRestaurantsStatus('success');
             } else {
                 setRestaurantList(EMPTY_RESTAURANT_LIST);
                 setRestaurantNotice(null);
+                setRestaurantsStatus('error');
             }
         }
     }, [dependencies.restaurantGateway, updateRestaurantNotice]);
@@ -174,6 +179,7 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
         bottomRef,
         selectRestaurant,
         restaurantList,
+        restaurantsStatus,
         meals,
         restaurantNotice,
         animText
