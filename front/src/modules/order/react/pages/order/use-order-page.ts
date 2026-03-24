@@ -55,11 +55,11 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
         if (gatewayError) {
             const { kind, message } = classifyApiError(gatewayError);
             const prefix = kind === 'connection'
-                ? "Mode demo : API indisponible."
+                ? "Mode démo : API indisponible."
                 : `Erreur API : ${message}.`;
             setRestaurantNotice({
                 type: 'error',
-                message: `${prefix} Restaurants demo affiches.`,
+                message: `${prefix} Nous affichons donc deux restaurants d'exemple. Le reste doit être ajouté via l'api.`,
             });
             return;
         }
@@ -67,13 +67,26 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
         if (hasDemoRestaurants) {
             setRestaurantNotice({
                 type: 'info',
-                message: "Mode demo : restaurants d'exemple affiches.",
+                message: "Mode démo : nous affichons deux restaurants d'exemple. Le reste doit être ajouté via l'api.",
             });
             return;
         }
 
         setRestaurantNotice(null);
     }, [dependencies.restaurantGateway]);
+
+    useEffect(() => {
+        if (!restaurantNotice) {
+            return;
+        }
+        const timeoutId = window.setTimeout(() => {
+            setRestaurantNotice(null);
+        }, 5000);
+
+        return () => {
+            window.clearTimeout(timeoutId);
+        };
+    }, [restaurantNotice]);
 
     const displayRestaurants = useCallback(async () => {
         try {

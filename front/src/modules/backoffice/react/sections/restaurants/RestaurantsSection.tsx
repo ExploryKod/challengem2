@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuxuryCard } from '../../components/ui/LuxuryCard';
 import { LuxuryButton } from '../../components/ui/LuxuryButton';
@@ -13,6 +13,8 @@ export const RestaurantsSection: React.FC = () => {
     const { restaurants, isLoading, error, createRestaurant, refetch } = useRestaurants();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({ name: '', type: '', stars: 1 });
+    const [showDemoNotice, setShowDemoNotice] = useState(false);
+    const noticeDurationMs = 5000;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const target = e.target as HTMLInputElement;
@@ -26,7 +28,24 @@ export const RestaurantsSection: React.FC = () => {
         setIsModalOpen(false);
     };
 
+    useEffect(() => {
+        if (!restaurants.some((restaurant) => isDemoRestaurantId(restaurant.id))) {
+            setShowDemoNotice(false);
+            return;
+        }
+
+        setShowDemoNotice(true);
+        const timeoutId = window.setTimeout(() => {
+            setShowDemoNotice(false);
+        }, 5000);
+
+        return () => {
+            window.clearTimeout(timeoutId);
+        };
+    }, [restaurants]);
+
     return (
+        <>
         <section className="bg-luxury-bg-primary">
             <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-8 sm:mb-12">
@@ -48,14 +67,22 @@ export const RestaurantsSection: React.FC = () => {
                 )}
 
                 {error && (
-                    <div className="bg-luxury-rose/20 border border-luxury-rose text-luxury-text-primary px-6 py-4 rounded-lg mb-8">
+                    <div className="bg-orange-500/10 border border-orange-500/40 text-orange-300 px-6 py-4 rounded-lg mb-8 text-xs relative overflow-hidden">
                         {error}
+                        <div
+                            className="absolute bottom-0 left-0 h-1 w-full bg-orange-500/40 origin-left"
+                            style={{ animation: `noticeShrink ${noticeDurationMs}ms linear forwards` }}
+                        />
                     </div>
                 )}
 
-                {!isLoading && restaurants.some((restaurant) => isDemoRestaurantId(restaurant.id)) && (
-                    <div className="bg-luxury-bg-secondary border border-luxury-gold-border text-luxury-text-secondary px-6 py-4 rounded-lg mb-8 text-sm">
-                        Mode demo : restaurants d&apos;exemple affiches.
+                {!isLoading && showDemoNotice && (
+                    <div className="bg-orange-500/10 border border-orange-500/30 text-orange-300 px-6 py-4 rounded-lg mb-8 text-xs relative overflow-hidden">
+                        Mode démo : restaurants d&apos;exemple affichés.
+                        <div
+                            className="absolute bottom-0 left-0 h-1 w-full bg-orange-500/40 origin-left"
+                            style={{ animation: `noticeShrink ${noticeDurationMs}ms linear forwards` }}
+                        />
                     </div>
                 )}
 
@@ -164,5 +191,12 @@ export const RestaurantsSection: React.FC = () => {
                 </div>
             </LuxuryModal>
         </section>
+        <style jsx>{`
+            @keyframes noticeShrink {
+                from { transform: scaleX(1); }
+                to { transform: scaleX(0); }
+            }
+        `}</style>
+        </>
     );
 };

@@ -10,6 +10,7 @@ export const RestaurantSection: React.FC<{
     step: OrderingDomainModel.OrderingStep,
     restaurantNotice?: { type: 'info' | 'error'; message: string } | null,
 }> = ({restaurantList, selectRestaurant, step, restaurantNotice}) => {
+    const noticeDurationMs = 5000;
 
     const isRestaurantStep = step === OrderingDomainModel.OrderingStep.RESTAURANT;
     const showRestaurantList = isRestaurantStep || !restaurantList.restaurantId;
@@ -20,6 +21,7 @@ export const RestaurantSection: React.FC<{
     );
 
     return (
+    <>
     <LuminousCard className="mx-auto py-8 sm:py-12 w-full max-w-[1200px] animate-fade-in-down">
         {showRestaurantList && (
             <>
@@ -31,12 +33,16 @@ export const RestaurantSection: React.FC<{
                 </div>
 
                 {restaurantNotice && (
-                    <div className={`mx-auto mb-6 w-full sm:w-2/3 rounded-xl px-5 py-4 border text-sm sm:text-base text-center ${
+                    <div className={`mx-auto mb-6 w-full sm:w-2/3 rounded-xl px-5 py-4 border text-xs text-center relative overflow-hidden ${
                         restaurantNotice.type === 'error'
-                            ? 'bg-luminous-rose/10 border-luminous-rose text-luminous-rose'
-                            : 'bg-luminous-bg-secondary border-luminous-gold-border text-luminous-text-secondary'
+                            ? 'bg-orange-500/10 border-orange-500/40 text-orange-400'
+                            : 'bg-orange-500/10 border-orange-500/30 text-orange-300'
                     }`}>
                         {restaurantNotice.message}
+                        <div
+                            className="absolute bottom-0 left-0 h-1 w-full bg-orange-500/40 origin-left"
+                            style={{ animation: `noticeShrink ${noticeDurationMs}ms linear forwards` }}
+                        />
                     </div>
                 )}
 
@@ -80,6 +86,13 @@ export const RestaurantSection: React.FC<{
             </div>
         )}
     </LuminousCard>
+    <style jsx>{`
+        @keyframes noticeShrink {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+    `}</style>
+    </>
     )
 }
 
