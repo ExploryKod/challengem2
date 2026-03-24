@@ -24,7 +24,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           {title}
         </p>
         <p className="text-luminous-text-secondary text-sm mt-2">
-          {fallbackMessage || 'Vidéo indisponible'}
+          {fallbackMessage || 'Aucune vidéo disponible pour le moment.'}
         </p>
       </div>
     );
