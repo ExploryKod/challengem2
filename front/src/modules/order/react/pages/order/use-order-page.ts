@@ -26,6 +26,7 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
 
     const animText = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
+    const lastNonEmptyRestaurants = useRef<OrderingDomainModel.Restaurant[]>([]);
     const [restaurantList, setRestaurantList] = useState<OrderingDomainModel.RestaurantList>(EMPTY_RESTAURANT_LIST);
     const [meals, setMeals] = useState<OrderingDomainModel.Meal[]>([]);
     const [restaurantNotice, setRestaurantNotice] = useState<{ type: 'info' | 'error'; message: string } | null>(null);
@@ -91,12 +92,22 @@ export const useOrderPage = (options?: UseOrderPageOptions) => {
     const displayRestaurants = useCallback(async () => {
         try {
             const restaurants = await dependencies.restaurantGateway?.getRestaurants() || [];
-            setRestaurantList({ restaurants, restaurantId: "" });
-            updateRestaurantNotice(restaurants);
+            if (restaurants.length > 0) {
+                lastNonEmptyRestaurants.current = restaurants;
+            }
+            const nextRestaurants =
+                restaurants.length > 0 ? restaurants : lastNonEmptyRestaurants.current;
+            setRestaurantList({ restaurants: nextRestaurants, restaurantId: "" });
+            updateRestaurantNotice(nextRestaurants);
         } catch (error) {
             console.error('Failed to fetch restaurants:', error);
-            setRestaurantList(EMPTY_RESTAURANT_LIST);
-            setRestaurantNotice(null);
+            if (lastNonEmptyRestaurants.current.length > 0) {
+                setRestaurantList({ restaurants: lastNonEmptyRestaurants.current, restaurantId: "" });
+                updateRestaurantNotice(lastNonEmptyRestaurants.current);
+            } else {
+                setRestaurantList(EMPTY_RESTAURANT_LIST);
+                setRestaurantNotice(null);
+            }
         }
     }, [dependencies.restaurantGateway, updateRestaurantNotice]);
 
