@@ -49,7 +49,7 @@ export const QrOrderSection: React.FC = () => {
         icon="QrCode"
       />
 
-      <ContentBlock className="mt-6">
+      <ContentBlock className="mt-6 mb-2">
         <p className="text-luminous-text-secondary italic border-l-4 border-luminous-gold pl-4">
           Chaque table dispose d\'un QR code unique. Scannez-le avec votre
           smartphone pour accéder directement à l\'interface de commande, sans

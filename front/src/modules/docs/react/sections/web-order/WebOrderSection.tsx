@@ -60,7 +60,7 @@ export const WebOrderSection: React.FC = () => {
         icon="Globe"
       />
 
-      <ContentBlock className="mt-6">
+      <ContentBlock className="mt-6 mb-2">
         <p className="text-luminous-text-secondary italic border-l-4 border-luminous-gold pl-4">
           Taste Federation vous permet de réserver une table dans nos
           restaurants partenaires et de pré-commander vos repas en quelques

@@ -44,7 +44,7 @@ export const TerminalOrderSection: React.FC = () => {
         icon="Monitor"
       />
 
-      <ContentBlock className="mt-6">
+      <ContentBlock className="mt-6 mb-2">
         <p className="text-luminous-text-secondary italic border-l-4 border-luminous-gold pl-4">
           À votre arrivée au restaurant, une borne tactile vous permet de
           finaliser votre commande. Idéal si vous n'avez pas pré-commandé en
