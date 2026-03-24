@@ -9,7 +9,7 @@ const DEMO_ID_THRESHOLD = 0;
 
 const createInitialDemoRestaurants = (): DemoRestaurant[] => [
   { id: -1, name: 'Papilles des Suds (Demo)', type: 'Mediterraneen', stars: 3 },
-  { id: -2, name: 'L Atelier du Ventoux (Demo)', type: 'Gastronomique', stars: 4 },
+  { id: -2, name: 'L\'Atelier du Ventoux (Demo)', type: 'Gastronomique', stars: 4 },
 ];
 
 export const isDemoRestaurantId = (id: string | number): boolean => {
