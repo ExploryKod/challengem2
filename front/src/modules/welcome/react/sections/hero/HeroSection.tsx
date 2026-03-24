@@ -45,7 +45,9 @@ export const HeroSection: React.FC = () => {
                             <p className="text-[14px] leading-relaxed text-luxury-text-primary">
                                 Taste Federation se donne pour but de rendre accessible en ligne la réservation auprés d&apos;un ensemble de restaurants de luxe parmis les meilleurs de France. Le Hub est basé dans le Mas des Alouettes en Provence au coeur d&apos;un écrin de verdure au{" "}
                                 <span className="font-semibold">18 route de Senanque sur la D177 prés de Sorgues</span>.
-                                <span className="font-semibold">Ce site est un site de démonstration, les données sont fictives.</span>
+                            </p>
+                            <p className="text-[14px] leading-relaxed text-luxury-text-primary">
+                                Site de démonstration : les données sont fictives. Le backoffice et l'api n'est pas toujours disponible.
                             </p>
                             <a
                                 className="mt-2 block text-center text-xs sm:text-sm text-luxury-gold underline underline-offset-4 hover:text-luxury-gold/80"
