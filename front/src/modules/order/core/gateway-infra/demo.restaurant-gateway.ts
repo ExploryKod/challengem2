@@ -15,11 +15,14 @@ const mergeRestaurants = (
 
 export class DemoRestaurantGateway implements IRestaurantGateway {
   private lastError: unknown = null;
+  private readonly fallbackDemo: OrderingDomainModel.Restaurant[];
 
   constructor(
     private readonly primary: IRestaurantGateway | null,
     private readonly demoStore: DemoRestaurantsStore,
-  ) {}
+  ) {
+    this.fallbackDemo = this.demoStore.list().map(mapDemoToOrderRestaurant);
+  }
 
   getLastError(): unknown {
     return this.lastError;
@@ -39,7 +42,10 @@ export class DemoRestaurantGateway implements IRestaurantGateway {
       this.lastError = null;
     }
 
-    const demoRestaurants = this.demoStore.list().map(mapDemoToOrderRestaurant);
-    return mergeRestaurants(demoRestaurants, apiRestaurants);
+    const demoRestaurants =
+      this.demoStore.list().map(mapDemoToOrderRestaurant) || [];
+    const safeDemoRestaurants =
+      demoRestaurants.length > 0 ? demoRestaurants : this.fallbackDemo;
+    return mergeRestaurants(safeDemoRestaurants, apiRestaurants);
   }
 }
