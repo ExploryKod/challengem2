@@ -1,4 +1,5 @@
-import React from 'react';
+"use client";
+import React, { useState } from 'react';
 import { PlayCircle } from 'lucide-react';
 
 interface VideoPlayerProps {
@@ -13,7 +14,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   title,
   fallbackMessage,
 }) => {
-  if (!src) {
+  const [isUnavailable, setIsUnavailable] = useState(false);
+
+  if (!src || isUnavailable) {
     return (
       <div className="aspect-video bg-luminous-bg-secondary rounded-xl border border-luminous-gold-border flex flex-col items-center justify-center p-8">
         <PlayCircle className="w-16 h-16 text-luminous-gold mb-4" />
@@ -21,7 +24,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           {title}
         </p>
         <p className="text-luminous-text-secondary text-sm mt-2">
-          {fallbackMessage || 'Video bientot disponible'}
+          {fallbackMessage || 'Vidéo indisponible'}
         </p>
       </div>
     );
@@ -32,6 +35,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       src={src}
       controls
       className="w-full aspect-video rounded-xl border border-luminous-gold-border"
+      onError={() => setIsUnavailable(true)}
     >
       <track kind="captions" />
       Votre navigateur ne supporte pas la lecture de videos.
