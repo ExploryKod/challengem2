@@ -62,7 +62,7 @@ export const BackofficeSection: React.FC = () => {
       </ContentBlock>
 
       <ContentBlock className="mt-6">
-        <div className="bg-luxury-gold/10 border border-luxury-gold/30 rounded-lg p-4">
+        <div className="my-3 bg-luxury-gold/10 border border-luxury-gold/30 rounded-lg p-4">
           <h4 className="font-sans font-medium text-luxury-gold mb-2">
             Restaurants démo
           </h4>
@@ -102,7 +102,7 @@ export const BackofficeSection: React.FC = () => {
       </div>
 
       <ContentBlock className="mt-8">
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+        <div className="my-3 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
           <h4 className="font-sans font-medium text-amber-400 mb-2">
             Note sur la gestion du temps
           </h4>

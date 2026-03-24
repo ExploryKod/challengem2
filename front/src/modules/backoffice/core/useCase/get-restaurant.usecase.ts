@@ -26,8 +26,9 @@ export const getRestaurants = () =>
                 const { kind, message } = classifyApiError(lastError);
                 const prefix = kind === 'connection'
                     ? "Mode démo : API indisponible."
-                    : `Erreur API : ${message}.`;
-                dispatch(backofficeSlice.actions.setError(`${prefix} Restaurants démo affichés.`));
+                    : `Erreur API : passage en mode démo. `;
+                dispatch(backofficeSlice.actions.setError(`${prefix} Restaurants de démo affichés.`));
+                console.error(message);
             } else {
                 dispatch(backofficeSlice.actions.setError(null));
             }
