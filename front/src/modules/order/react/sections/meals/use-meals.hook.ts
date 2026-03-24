@@ -9,6 +9,7 @@ import { chooseMeal } from "@taotask/modules/order/core/useCase/choose-meal.usec
 export const useMeals = () => {
     const [currentGuestIndex, setCurrentGuestIndex] = useState(0);
     const menus: OrderingDomainModel.Menu[] = useSelector((state: AppState) => state.ordering.availableMenus.data);
+    const menusStatus = useSelector((state: AppState) => state.ordering.availableMenus.status);
     const selectedMenuId = useSelector((state: AppState) => state.ordering.selectedMenuId);
     const isQrMode = useSelector((state: AppState) => state.ordering.isQrMode);
     const dispatch = useAppDispatch();
@@ -208,6 +209,7 @@ export const useMeals = () => {
     }
 
     function onSkip() {
+        dispatch(chooseMeal(form));
         dispatch(orderingSlice.actions.setStep(OrderingDomainModel.OrderingStep.SUMMARY));
     }
 
@@ -261,6 +263,7 @@ export const useMeals = () => {
         isSubmittable: isSubmittable(),
         // Menu
         menus,
+        menusStatus,
         selectedMenuId,
         selectedMenu,
         getGuestMenu,

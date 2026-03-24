@@ -81,7 +81,7 @@ export const MealsSection = () => {
       </div>
 
       {/* Menu Selection Section */}
-      {presenter.menus.length > 0 && (
+      {presenter.menusStatus === 'success' && presenter.menus.length > 0 && (
         <div className="mb-10">
           <h4 className="text-lg font-display font-medium text-luminous-text-primary mb-4 uppercase tracking-wide">
             Nos Menus

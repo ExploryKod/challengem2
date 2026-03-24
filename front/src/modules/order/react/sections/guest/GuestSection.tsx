@@ -13,6 +13,11 @@ export const GuestSection: React.FC<{
 }> = ({restaurantList, meals = []}) => {
     const presenter:any = useGuestSection();
 
+    const selectedRestaurant = restaurantList.restaurants.find(
+        (restaurant: OrderingDomainModel.Restaurant) =>
+            String(restaurant.id) === String(restaurantList.restaurantId)
+    );
+
     return (
         <div className="flex flex-col gap-6">
             {/* Guest Form Section */}
@@ -21,8 +26,7 @@ export const GuestSection: React.FC<{
                     {restaurantList.restaurantId ?
                         <>
                             <h2 className="mx-auto my-3 font-display font-medium text-luminous-text-primary text-xl sm:text-2xl text-center">
-                                Qui voulez-vous inviter chez &quot;{restaurantList.restaurants
-                                .filter((restaurant:OrderingDomainModel.Restaurant) => restaurant.id === restaurantList.restaurantId)[0].restaurantName}&quot; ?
+                                Qui voulez-vous inviter chez &quot;{selectedRestaurant?.restaurantName ?? 'votre restaurant'}&quot; ?
                             </h2>
                             {presenter.tableCapacity > 0 && (
                                 <p className="text-center text-luminous-gold text-sm mb-2">

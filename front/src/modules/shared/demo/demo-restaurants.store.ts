@@ -16,6 +16,10 @@ export const isDemoRestaurantId = (id: string | number): boolean => {
   if (typeof id === 'number') {
     return id < DEMO_ID_THRESHOLD;
   }
+  const asNumber = Number(id);
+  if (!Number.isNaN(asNumber)) {
+    return asNumber < DEMO_ID_THRESHOLD;
+  }
   return id.startsWith('demo-');
 };
 

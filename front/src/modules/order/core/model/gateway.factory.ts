@@ -4,9 +4,9 @@ import { IMenuGateway } from "@taotask/modules/order/core/gateway/menu.gateway";
 import { IReservationGateway } from "@taotask/modules/order/core/gateway/reservation.gateway";
 import { IRestaurantGateway } from "@taotask/modules/order/core/gateway/restaurant.gateway";
 import { ITerminalReservationGateway } from "@taotask/modules/terminal/core/gateway/terminal-reservation.gateway";
-import { InMemoryTableGateway } from "@taotask/modules/order/core/gateway-infra/in-memory.table-gateway";
-import { InMemoryMealGateway } from "@taotask/modules/order/core/gateway-infra/in-memory.meal-gateway";
 import { DemoRestaurantGateway } from "@taotask/modules/order/core/gateway-infra/demo.restaurant-gateway";
+import { DemoTableGateway } from "@taotask/modules/order/core/gateway-infra/demo.table-gateway";
+import { DemoMealGateway } from "@taotask/modules/order/core/gateway-infra/demo.meal-gateway";
 import { HttpTableGateway } from "@taotask/modules/order/core/gateway/http.table-gateway";
 import { HttpMealGateway } from "@taotask/modules/order/core/gateway/http.meal-gateway";
 import { HttpMenuGateway } from "@taotask/modules/order/core/gateway/http.menu-gateway";
@@ -18,22 +18,30 @@ import { AppState } from "@taotask/modules/store/store";
 import { MockReservationGateway } from "@taotask/modules/order/core/testing/mock.reservation-gateway";
 import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
 import { DemoRestaurantsStore } from "@taotask/modules/shared/demo/demo-restaurants.store";
+import { DemoTablesStore } from "@taotask/modules/shared/demo/demo-tables.store";
+import { DemoMealsStore } from "@taotask/modules/shared/demo/demo-meals.store";
 
 export class GatewayFactory {
     private static httpClient = new HttpClient();
 
-    static createTableGateway(getState: () => AppState): ITableGateway {
-        if (API_CONFIG.isApiAvailable()) {
-            return new HttpTableGateway(this.httpClient, getState);
-        }
-        return new InMemoryTableGateway();
+    static createTableGateway(
+        getState: () => AppState,
+        demoTablesStore: DemoTablesStore,
+    ): ITableGateway {
+        const primary = API_CONFIG.isApiAvailable()
+            ? new HttpTableGateway(this.httpClient, getState)
+            : null;
+        return new DemoTableGateway(primary, demoTablesStore, getState);
     }
 
-    static createMealGateway(getState: () => AppState): IMealGateway {
-        if (API_CONFIG.isApiAvailable()) {
-            return new HttpMealGateway(this.httpClient, getState);
-        }
-        return new InMemoryMealGateway();
+    static createMealGateway(
+        getState: () => AppState,
+        demoMealsStore: DemoMealsStore,
+    ): IMealGateway {
+        const primary = API_CONFIG.isApiAvailable()
+            ? new HttpMealGateway(this.httpClient, getState)
+            : null;
+        return new DemoMealGateway(primary, demoMealsStore, getState);
     }
 
     static createReservationGateway(getState: () => AppState): IReservationGateway {
