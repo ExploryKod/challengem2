@@ -2197,7 +2197,7 @@ import { Suspense } from "react";
 import { TerminalPage } from "@taotask/modules/terminal/react/pages/TerminalPage";
 
 export const metadata: Metadata = {
-    title: "Terminal - Smart Cafe",
+    title: "Terminal - Taste Federation",
     description: "Borne de commande",
     robots: {
         index: false,

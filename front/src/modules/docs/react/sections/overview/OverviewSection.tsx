@@ -58,7 +58,7 @@ export const OverviewSection: React.FC = () => {
             <Utensils className="w-8 h-8 text-luminous-gold" />
           </div>
           <h2 className="font-display text-3xl text-luminous-text-primary mb-3">
-            Smart Cafe
+            Taste Federation
           </h2>
           <p className="text-luminous-text-secondary text-lg max-w-2xl mx-auto">
             Solution complète de gestion de restaurant avec réservation de table
@@ -116,12 +116,12 @@ export const OverviewSection: React.FC = () => {
 
         <div className="bg-luminous-gold/10 border border-luminous-gold/30 rounded-xl p-5 mb-10 text-center">
           <h3 className="font-sans font-medium text-luminous-gold mb-2">
-            Mode demo (portfolio)
+            Mode démo (portfolio)
           </h3>
           <p className="text-luminous-text-secondary text-sm">
             Deux restaurants d&apos;exemple sont toujours disponibles pour
-            presenter l&apos;application, meme sans API connectee. Ils sont
-            identifies par un badge &quot;Restaurant demo&quot;.
+            présenter l&apos;application, même sans API connectée. Ils sont
+            identifiés par un badge &quot;Restaurant démo&quot;.
           </p>
         </div>
 

@@ -64,12 +64,12 @@ export const BackofficeSection: React.FC = () => {
       <ContentBlock className="mt-6">
         <div className="bg-luxury-gold/10 border border-luxury-gold/30 rounded-lg p-4">
           <h4 className="font-sans font-medium text-luxury-gold mb-2">
-            Restaurants demo
+            Restaurants démo
           </h4>
           <p className="text-luminous-text-secondary text-sm">
-            Pour les besoins de demonstration, deux restaurants demo sont
-            pre-charges. Ils sont modifiables comme des restaurants normaux et
-            affichent un badge &quot;Restaurant demo&quot;.
+            Pour les besoins de démonstration, deux restaurants démo sont
+            préchargés. Ils sont modifiables comme des restaurants normaux et
+            affichent un badge &quot;Restaurant démo&quot;.
           </p>
         </div>
       </ContentBlock>

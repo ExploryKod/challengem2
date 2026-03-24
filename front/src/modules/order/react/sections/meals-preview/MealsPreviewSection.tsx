@@ -29,7 +29,7 @@ export const MealsPreviewSection: React.FC<MealsPreviewSectionProps> = ({ meals,
   const presenter = useMealsPreview({ meals, restaurantName });
 
   const mealTypes: Record<OrderingDomainModel.MealType, string> = {
-    "ENTRY": "Entree",
+    "ENTRY": "Entrée",
     "MAIN_COURSE": "Plat",
     "DESSERT": "Dessert",
     "DRINK": "Boisson",
@@ -60,7 +60,7 @@ export const MealsPreviewSection: React.FC<MealsPreviewSectionProps> = ({ meals,
     <LuminousCard className="mx-auto py-8 sm:py-12 w-full max-w-[1200px] animate-fade-in-down">
       <div className="flex flex-col mx-auto mb-5 w-full">
         <h3 className="mx-auto my-3 font-display font-medium text-luminous-text-primary text-xl sm:text-2xl uppercase text-center tracking-wide">
-          Decouvrez notre carte
+          Découvrez notre carte
         </h3>
         {presenter.restaurantName && (
           <p className="text-center text-luminous-gold text-sm sm:text-base mb-2">
@@ -117,7 +117,7 @@ export const MealsPreviewSection: React.FC<MealsPreviewSectionProps> = ({ meals,
           <div className="flex items-center my-8">
             <div className="flex-1 h-px bg-luminous-gold-border"></div>
             <span className="px-4 text-sm text-luminous-text-muted italic">
-              Ou composez a la carte
+              Ou composez à la carte
             </span>
             <div className="flex-1 h-px bg-luminous-gold-border"></div>
           </div>
@@ -185,7 +185,7 @@ export const MealsPreviewSection: React.FC<MealsPreviewSectionProps> = ({ meals,
           onClick={presenter.onPrevious}
           variant="secondary"
         >
-          Precedent
+          Précédent
         </LuminousButton>
         <LuminousButton
           onClick={presenter.onContinue}

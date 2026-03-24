@@ -76,7 +76,7 @@ export const SummarySection = () => {
                                 </span>
                             ) : (
                                 <span className="bg-luminous-bg-secondary text-luminous-text-muted px-2 py-0.5 rounded text-xs">
-                                    A la carte
+                                    À la carte
                                 </span>
                             )}
                         </div>
@@ -84,7 +84,7 @@ export const SummarySection = () => {
                         <div className="flex flex-col justify-center items-center grow gap-1">
                             {hasAlcohol && guest.isOrganizer && (
                                 <p className="my-2 text-center text-luminous-rose text-sm italic">
-                                    Eviter l&#39;alcool car vous organisez
+                                    Éviter l&#39;alcool car vous organisez
                                 </p>
                             )}
                             {guest.meals.entries.length > 0 && (
@@ -130,7 +130,7 @@ export const SummarySection = () => {
         {/* Price Total */}
         <div className="bg-luminous-bg-secondary border-2 border-luminous-gold rounded-xl p-4 mx-auto max-w-[400px] mt-6">
             <p className="text-center font-display font-medium text-lg text-luminous-text-primary mb-3">
-                Recapitulatif
+                Récapitulatif
             </p>
 
             {/* Menu breakdown */}
@@ -141,10 +141,10 @@ export const SummarySection = () => {
                 </div>
             ))}
 
-            {/* A la carte */}
+            {/* À la carte */}
             {presenter.priceBreakdown.hasAlaCarte && (
                 <div className="flex justify-between text-sm text-luminous-text-secondary mb-1">
-                    <span>A la carte</span>
+                    <span>À la carte</span>
                     <span>{presenter.priceBreakdown.alaCarteTotal.toFixed(2)} €</span>
                 </div>
             )}
@@ -152,7 +152,7 @@ export const SummarySection = () => {
             <div className="border-t border-luminous-gold-border my-2"></div>
 
             <div className="flex justify-between">
-                <span className="font-medium text-luminous-text-primary">Total estime</span>
+                <span className="font-medium text-luminous-text-primary">Total estimé</span>
                 <span className="text-xl font-bold text-luminous-gold">{presenter.totalPrice} €</span>
             </div>
             <p className="text-center text-xs text-luminous-text-muted mt-1 italic">

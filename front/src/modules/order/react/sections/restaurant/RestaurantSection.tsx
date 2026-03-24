@@ -141,7 +141,7 @@ const RestaurantRows: React.FC<{
             <div className="flex flex-col gap-2 sm:gap-3 items-center justify-center">
                 {isDemo && (
                     <span className="inline-flex items-center rounded-full bg-luminous-gold/15 px-3 py-1 text-xs font-medium text-luminous-gold">
-                        Restaurant demo
+                        Restaurant démo
                     </span>
                 )}
                 <h3 className={`text-lg sm:text-xl font-display font-medium \${isSelected ? "text-luminous-gold" : "text-luminous-text-primary"}`}>

@@ -5,7 +5,7 @@
 
 ## Overview
 
-Comprehensive enhancement of the Smart Café system including:
+Comprehensive enhancement of the Taste Federation system including:
 - New "Digital Concierge" terminal flow for luxury restaurants
 - Order module bug fixes
 - Backoffice enhancements (menus, reservations, QR codes)

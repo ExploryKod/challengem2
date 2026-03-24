@@ -7,19 +7,19 @@ type ModeType = 'terminal' | 'qr' | 'standard';
 
 const MESSAGES: Record<ModeType, { title: string; body: string; footer: string }> = {
     terminal: {
-        title: "Un membre de notre equipe va vous accueillir",
-        body: "Veuillez patienter, un membre de notre equipe viendra vous placer a votre table.",
+        title: "Un membre de notre équipe va vous accueillir",
+        body: "Veuillez patienter, un membre de notre équipe viendra vous placer à votre table.",
         footer: "Merci de votre patience."
     },
     qr: {
-        title: "Votre commande a ete envoyee",
-        body: "Votre commande a ete transmise en cuisine.",
-        footer: "Bon appetit !"
+        title: "Votre commande a été envoyée",
+        body: "Votre commande a été transmise en cuisine.",
+        footer: "Bon appétit !"
     },
     standard: {
-        title: "Merci pour votre reservation",
-        body: "En reservant chez nous, vous pouvez vous attendre a un service de qualite et a un restaurant convivial.",
-        footer: "Nous vous remercions de votre confiance et nous esperons vous revoir bientot."
+        title: "Merci pour votre réservation",
+        body: "En réservant chez nous, vous pouvez vous attendre à un service de qualité et à un restaurant convivial.",
+        footer: "Nous vous remercions de votre confiance et nous espérons vous revoir bientôt."
     }
 };
 
@@ -51,14 +51,14 @@ export const ReservedSection = () => {
                     <div className="flex items-center justify-center gap-2 mb-4">
                         <QrCode className="w-6 h-6 text-luminous-gold" />
                         <p className="text-luminous-text-secondary text-sm">
-                            Votre code de reservation
+                            Votre code de réservation
                         </p>
                     </div>
                     <p className="text-4xl sm:text-5xl font-bold text-luminous-gold tracking-wider text-center mb-4">
                         {presenter.reservationCode}
                     </p>
                     <p className="text-sm text-center text-luminous-text-muted">
-                        Conservez ce code pour le terminal a votre arrivee
+                        Conservez ce code pour le terminal à votre arrivée
                     </p>
                 </div>
             </div>
@@ -71,7 +71,7 @@ export const ReservedSection = () => {
                 </p>
                 {mode === 'standard' && (
                     <p className="mb-3 text-sm sm:text-base text-center text-luminous-text-secondary">
-                        Notre equipe met tout en oeuvre pour vous offrir une experience culinaire exceptionnelle.
+                        Notre équipe met tout en œuvre pour vous offrir une expérience culinaire exceptionnelle.
                     </p>
                 )}
                 <p className="text-sm sm:text-base text-center text-luminous-gold font-medium">
@@ -86,7 +86,7 @@ export const ReservedSection = () => {
                     onClick={presenter.onNewTable}
                     variant="primary"
                 >
-                    Nouvelle reservation
+                    Nouvelle réservation
                 </LuminousButton>
                 {mode === 'standard' && (
                     <a
