@@ -43,7 +43,7 @@ export default function MentionsLegales() {
             du service.
           </p>
           <p className="text-gray-700">
-            <strong>Contact :</strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a>
+            <strong>Contact :</strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a>
           </p>
         </section>
 
@@ -53,7 +53,7 @@ export default function MentionsLegales() {
             Le directeur de la publication est l&apos;équipe de développement du projet Taste Federation.
           </p>
           <p className="text-gray-700">
-            <strong>Contact :</strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a>
+            <strong>Contact :</strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a>
           </p>
         </section>
 
@@ -80,7 +80,7 @@ export default function MentionsLegales() {
             à l&apos;adresse email suivante :
           </p>
           <p className="text-gray-700 mb-4">
-            <strong>Email :</strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a>
+            <strong>Email :</strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a>
           </p>
           <p className="text-gray-700">
             Nous nous engageons à répondre à vos demandes dans les meilleurs délais.
@@ -124,7 +124,7 @@ export default function MentionsLegales() {
           </p>
           <p className="text-gray-700 mb-4">
             Pour signaler un tel contenu, vous pouvez nous contacter à l&apos;adresse email suivante : 
-            <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>.
+            <strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a></strong>.
           </p>
           <p className="text-gray-700 mb-4">
             Votre signalement doit contenir les informations suivantes :
@@ -145,7 +145,7 @@ export default function MentionsLegales() {
           <p className="text-gray-600 text-sm">
             Ces mentions légales sont fournies à titre informatif pour le site de démonstration Taste Federation. 
             Pour toute question, veuillez nous contacter à l&apos;adresse 
-            <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>.
+            <strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a></strong>.
           </p>
         </footer>
       </div>
