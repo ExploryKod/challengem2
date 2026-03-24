@@ -11,6 +11,7 @@ Application de réservation de restaurant avec commande de repas en ligne.
 - **Terminal d'accueil** : Borne pour identifier les clients avec leur code de réservation
 - **Backoffice admin** : Gestion des restaurants, tables, menus et réservations
 - **Kitchen Display** : Application mobile pour le suivi des commandes en cuisine
+- **Mode démo (portfolio)** : Deux restaurants d'exemple toujours disponibles sur le front, même sans API
 
 ## Architecture
 
@@ -94,6 +95,11 @@ Voir [.env.example](.env.example) pour la liste complète. Variables principales
 | `POSTGRES_PASSWORD` | Mot de passe PostgreSQL |
 | `NEXT_PUBLIC_API_URL` | URL de l'API (accessible depuis le navigateur) |
 | `BETTER_AUTH_SECRET` | Secret pour l'authentification admin |
+
+## Mode démo (restaurants d'exemple)
+
+Pour une présentation MVP sans API, le front expose toujours deux restaurants d'exemple (badgés "Restaurant demo").
+Ils coexistent avec les restaurants réels si l'API est disponible, et restent modifiables depuis le backoffice (édition/suppression locales).
 
 ## Parcours utilisateur
 

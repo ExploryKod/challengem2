@@ -239,7 +239,7 @@ export default function PolitiqueConfidentialite() {
           </ul>
           <p className="text-gray-700 mb-4">
             Pour exercer vos droits, vous pouvez nous contacter à l&apos;adresse email suivante : 
-            <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>. 
+            <strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a></strong>. 
             Nous nous engageons à répondre à votre demande dans un délai d&apos;un mois à compter de la réception de votre demande.
           </p>
           <p className="text-gray-700">
@@ -313,7 +313,7 @@ export default function PolitiqueConfidentialite() {
             vous pouvez nous contacter à l&apos;adresse email suivante :
           </p>
           <p className="text-gray-700 mb-4">
-            <strong>Email :</strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a>
+            <strong>Email :</strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a>
           </p>
           <p className="text-gray-700">
             <strong>Important :</strong> Taste Federation étant un site de démonstration à des fins éducatives, certaines fonctionnalités 
@@ -325,7 +325,7 @@ export default function PolitiqueConfidentialite() {
           <p className="text-gray-600 text-sm">
             Cette politique de protection des données est fournie à titre informatif pour le site de démonstration Taste Federation. 
             Pour toute question concernant cette politique ou l&apos;exercice de vos droits, veuillez nous contacter à l&apos;adresse 
-            <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>.
+            <strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a></strong>.
           </p>
         </footer>
       </div>

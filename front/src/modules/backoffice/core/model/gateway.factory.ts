@@ -6,28 +6,35 @@ import { HttpRestaurantManagementGateway } from "../gateway/http.restaurant-mana
 import { HttpMealManagementGateway } from "../gateway/http.meal-management-gateway";
 import { HttpReservationManagementGateway } from "../gateway/http.reservation-management-gateway";
 import { HttpTableManagementGateway } from "../gateway/http.table-management-gateway";
-import { InMemoryRestaurantManagementGateway } from "../gateway-infra/in-memory.restaurant-management-gateway";
-import { InMemoryMealManagementGateway } from "../gateway-infra/in-memory.meal-management-gateway";
 import { InMemoryReservationManagementGateway } from "../gateway-infra/in-memory.reservation-management-gateway";
-import { InMemoryTableManagementGateway } from "../gateway-infra/in-memory.table-management-gateway";
 import { API_CONFIG } from "@taotask/modules/app/config/api.config";
 import { HttpClient } from "@taotask/modules/shared/infrastructure/http-client";
+import { DemoRestaurantsStore } from "@taotask/modules/shared/demo/demo-restaurants.store";
+import { DemoRestaurantManagementGateway } from "../gateway-infra/demo.restaurant-management-gateway";
+import { DemoTablesStore } from "@taotask/modules/shared/demo/demo-tables.store";
+import { DemoMealsStore } from "@taotask/modules/shared/demo/demo-meals.store";
+import { DemoTableManagementGateway } from "../gateway-infra/demo.table-management-gateway";
+import { DemoMealManagementGateway } from "../gateway-infra/demo.meal-management-gateway";
 
 export class BackofficeGatewayFactory {
     private static httpClient = new HttpClient();
 
-    static createRestaurantManagementGateway(): IRestaurantManagementGateway {
-        if (API_CONFIG.isApiAvailable()) {
-            return new HttpRestaurantManagementGateway(this.httpClient);
-        }
-        return new InMemoryRestaurantManagementGateway();
+    static createRestaurantManagementGateway(
+        demoStore: DemoRestaurantsStore,
+    ): IRestaurantManagementGateway {
+        const primary = API_CONFIG.isApiAvailable()
+            ? new HttpRestaurantManagementGateway(this.httpClient)
+            : null;
+        return new DemoRestaurantManagementGateway(primary, demoStore);
     }
 
-    static createMealManagementGateway(): IMealManagementGateway {
-        if (API_CONFIG.isApiAvailable()) {
-            return new HttpMealManagementGateway(this.httpClient);
-        }
-        return new InMemoryMealManagementGateway();
+    static createMealManagementGateway(
+        demoMealsStore: DemoMealsStore,
+    ): IMealManagementGateway {
+        const primary = API_CONFIG.isApiAvailable()
+            ? new HttpMealManagementGateway(this.httpClient)
+            : null;
+        return new DemoMealManagementGateway(primary, demoMealsStore);
     }
 
     static createReservationManagementGateway(): IReservationManagementGateway {
@@ -37,10 +44,13 @@ export class BackofficeGatewayFactory {
         return new InMemoryReservationManagementGateway();
     }
 
-    static createTableManagementGateway(): ITableManagementGateway {
-        if (API_CONFIG.isApiAvailable()) {
-            return new HttpTableManagementGateway(this.httpClient);
-        }
-        return new InMemoryTableManagementGateway();
+    static createTableManagementGateway(
+        demoTablesStore: DemoTablesStore,
+    ): ITableManagementGateway {
+        const primary = API_CONFIG.isApiAvailable()
+            ? new HttpTableManagementGateway(this.httpClient)
+            : null;
+        return new DemoTableManagementGateway(primary, demoTablesStore);
     }
+
 }

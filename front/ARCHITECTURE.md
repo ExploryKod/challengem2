@@ -244,6 +244,30 @@ export class InMemoryRestaurantGateway implements IRestaurantGateway {
 - Les tests sont rapides car ils n'appellent pas de vraies API
 - On peut changer de backend sans toucher au code métier
 
+### 4.3 Mode démo (restaurants d'exemple)
+
+Pour la présentation MVP, le front expose toujours **deux restaurants d'exemple**, même si l'API est indisponible ou vide.
+Cette logique reste conforme à la Clean Architecture :
+
+- **Store neutre** : un store `DemoRestaurantsStore` conserve des restaurants démo sans dépendre des domaines `order` ou `backoffice`.
+- **Mappers par contexte** : chaque bounded context adapte ces données via un mapper dédié.
+- **Décorateurs de gateway** : les gateways HTTP sont enveloppés pour fusionner `API + demo` et router les CRUD :
+  - Si l'ID est démo → stockage local
+  - Sinon → API
+
+Schéma simplifié :
+```
+DemoRestaurantsStore (shared)
+    ↓ map (order)
+DemoRestaurantGateway → IRestaurantGateway
+    ↓ map (backoffice)
+DemoRestaurantManagementGateway → IRestaurantManagementGateway
+```
+
+**Effets visibles côté UI** :
+- Badge "Restaurant demo" sur les cartes.
+- Message informatif quand le mode démo est actif.
+
 ### 4.2 HttpClient mutualisé
 
 **Terme technique** : Shared Infrastructure

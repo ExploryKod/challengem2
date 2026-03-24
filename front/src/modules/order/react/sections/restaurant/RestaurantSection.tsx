@@ -2,12 +2,15 @@
 import React from 'react';
 import { OrderingDomainModel } from '@taotask/modules/order/core/model/ordering.domain-model';
 import { LuminousCard } from '@taotask/modules/order/react/components/ui/LuminousCard';
+import { isDemoRestaurantId } from '@taotask/modules/shared/demo/demo-restaurants.store';
 
 export const RestaurantSection: React.FC<{
     restaurantList: OrderingDomainModel.RestaurantList,
     selectRestaurant: (id: string) => void,
     step: OrderingDomainModel.OrderingStep,
-}> = ({restaurantList, selectRestaurant, step}) => {
+    restaurantNotice?: { type: 'info' | 'error'; message: string } | null,
+}> = ({restaurantList, selectRestaurant, step, restaurantNotice}) => {
+    const noticeDurationMs = 5000;
 
     const isRestaurantStep = step === OrderingDomainModel.OrderingStep.RESTAURANT;
     const showRestaurantList = isRestaurantStep || !restaurantList.restaurantId;
@@ -18,6 +21,7 @@ export const RestaurantSection: React.FC<{
     );
 
     return (
+    <>
     <LuminousCard className="mx-auto py-8 sm:py-12 w-full max-w-[1200px] animate-fade-in-down">
         {showRestaurantList && (
             <>
@@ -27,6 +31,20 @@ export const RestaurantSection: React.FC<{
                     </h2>
                     <div className="h-1 w-16 bg-luminous-gold mx-auto my-4" />
                 </div>
+
+                {restaurantNotice && (
+                    <div className={`mx-auto mb-6 w-full sm:w-2/3 rounded-xl px-5 py-4 border text-xs text-center relative overflow-hidden ${
+                        restaurantNotice.type === 'error'
+                            ? 'bg-orange-500/10 border-orange-500/40 text-orange-400'
+                            : 'bg-orange-500/10 border-orange-500/30 text-orange-300'
+                    }`}>
+                        {restaurantNotice.message}
+                        <div
+                            className="absolute bottom-0 left-0 h-1 w-full bg-orange-500/40 origin-left"
+                            style={{ animation: `noticeShrink ${noticeDurationMs}ms linear forwards` }}
+                        />
+                    </div>
+                )}
 
                 <div className="w-full mx-auto flex flex-col justify-center gap-2">
                     <div className="flex gap-4 justify-center items-center flex-wrap">
@@ -39,6 +57,7 @@ export const RestaurantSection: React.FC<{
                                     restaurantName={restaurant.restaurantName}
                                     restaurantType={restaurant.restaurantType}
                                     stars={restaurant.stars}
+                                    isDemo={isDemoRestaurantId(restaurant.id)}
                                     selectRestaurant={selectRestaurant}
                                     selectedRestaurantId={restaurantList.restaurantId ? restaurantList.restaurantId.toString() : ""}
                                 />
@@ -67,6 +86,13 @@ export const RestaurantSection: React.FC<{
             </div>
         )}
     </LuminousCard>
+    <style jsx>{`
+        @keyframes noticeShrink {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+    `}</style>
+    </>
     )
 }
 
@@ -76,8 +102,9 @@ const RestaurantRows: React.FC<{
     restaurantName: string,
     restaurantType: string,
     stars: number,
+    isDemo: boolean,
     selectRestaurant: (id: string) => void,
-}> = ({id, restaurantName, restaurantType, stars, selectRestaurant, selectedRestaurantId}) => {
+}> = ({id, restaurantName, restaurantType, stars, isDemo, selectRestaurant, selectedRestaurantId}) => {
     const isSelected = selectedRestaurantId === id;
 
     return (
@@ -96,6 +123,11 @@ const RestaurantRows: React.FC<{
             }
         `}>
             <div className="flex flex-col gap-2 sm:gap-3 items-center justify-center">
+                {isDemo && (
+                    <span className="inline-flex items-center rounded-full bg-luminous-gold/15 px-3 py-1 text-xs font-medium text-luminous-gold">
+                        Restaurant demo
+                    </span>
+                )}
                 <h3 className={`text-lg sm:text-xl font-display font-medium \${isSelected ? "text-luminous-gold" : "text-luminous-text-primary"}`}>
                     {restaurantName}
                 </h3>

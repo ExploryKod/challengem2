@@ -1,17 +1,20 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuxuryCard } from '../../components/ui/LuxuryCard';
 import { LuxuryButton } from '../../components/ui/LuxuryButton';
 import { LuxuryModal } from '../../components/ui/LuxuryModal';
 import { LuxuryInput } from '../../components/ui/LuxuryInput';
 import { useRestaurants } from './use-restaurants.hook';
+import { isDemoRestaurantId } from '@taotask/modules/shared/demo/demo-restaurants.store';
 
 export const RestaurantsSection: React.FC = () => {
     const router = useRouter();
     const { restaurants, isLoading, error, createRestaurant, refetch } = useRestaurants();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({ name: '', type: '', stars: 1 });
+    const [showDemoNotice, setShowDemoNotice] = useState(false);
+    const noticeDurationMs = 5000;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const target = e.target as HTMLInputElement;
@@ -25,7 +28,24 @@ export const RestaurantsSection: React.FC = () => {
         setIsModalOpen(false);
     };
 
+    useEffect(() => {
+        if (!restaurants.some((restaurant) => isDemoRestaurantId(restaurant.id))) {
+            setShowDemoNotice(false);
+            return;
+        }
+
+        setShowDemoNotice(true);
+        const timeoutId = window.setTimeout(() => {
+            setShowDemoNotice(false);
+        }, 5000);
+
+        return () => {
+            window.clearTimeout(timeoutId);
+        };
+    }, [restaurants]);
+
     return (
+        <>
         <section className="bg-luxury-bg-primary">
             <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-8 sm:mb-12">
@@ -47,12 +67,26 @@ export const RestaurantsSection: React.FC = () => {
                 )}
 
                 {error && (
-                    <div className="bg-luxury-rose/20 border border-luxury-rose text-luxury-text-primary px-6 py-4 rounded-lg mb-8">
+                    <div className="bg-orange-500/10 border border-orange-500/40 text-orange-300 px-6 py-4 rounded-lg mb-8 text-xs relative overflow-hidden">
                         {error}
+                        <div
+                            className="absolute bottom-0 left-0 h-1 w-full bg-orange-500/40 origin-left"
+                            style={{ animation: `noticeShrink ${noticeDurationMs}ms linear forwards` }}
+                        />
                     </div>
                 )}
 
-                {!isLoading && !error && restaurants.length === 0 && (
+                {!isLoading && showDemoNotice && (
+                    <div className="bg-orange-500/10 border border-orange-500/30 text-orange-300 px-6 py-4 rounded-lg mb-8 text-xs relative overflow-hidden">
+                        Mode démo : restaurants d&apos;exemple affichés.
+                        <div
+                            className="absolute bottom-0 left-0 h-1 w-full bg-orange-500/40 origin-left"
+                            style={{ animation: `noticeShrink ${noticeDurationMs}ms linear forwards` }}
+                        />
+                    </div>
+                )}
+
+                {!isLoading && restaurants.length === 0 && (
                     <div className="text-center py-16">
                         <p className="text-luxury-text-secondary text-lg mb-6">
                             Aucun etablissement cree pour le moment.
@@ -63,7 +97,7 @@ export const RestaurantsSection: React.FC = () => {
                     </div>
                 )}
 
-                {!isLoading && !error && restaurants.length > 0 && (
+                {!isLoading && restaurants.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
                         {restaurants.map((restaurant) => {
                             const isNotVisible = restaurant.tableCount === 0 || restaurant.mealCount === 0;
@@ -78,6 +112,11 @@ export const RestaurantsSection: React.FC = () => {
                                     <h3 className="text-xl font-serif text-luxury-text-primary">
                                         {restaurant.name}
                                     </h3>
+                                    {isDemoRestaurantId(restaurant.id) && (
+                                        <span className="inline-flex items-center rounded-full bg-luxury-gold/15 px-3 py-1 text-xs font-medium text-luxury-gold">
+                                            Restaurant demo
+                                        </span>
+                                    )}
                                     {isNotVisible && (
                                         <div className="relative group">
                                             <div className="flex items-center gap-1 bg-luxury-rose/30 text-luxury-rose px-2 py-1 rounded-full text-xs font-medium cursor-help">
@@ -152,5 +191,12 @@ export const RestaurantsSection: React.FC = () => {
                 </div>
             </LuxuryModal>
         </section>
+        <style jsx>{`
+            @keyframes noticeShrink {
+                from { transform: scaleX(1); }
+                to { transform: scaleX(0); }
+            }
+        `}</style>
+        </>
     );
 };

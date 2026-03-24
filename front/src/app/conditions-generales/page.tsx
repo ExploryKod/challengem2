@@ -218,7 +218,7 @@ export default function ConditionsGenerales() {
           <p className="text-gray-700 mb-4">
             <strong>Résiliation par l&apos;utilisateur :</strong> L&apos;utilisateur peut à tout moment cesser d&apos;utiliser 
             le Site et demander la suppression de ses données en nous contactant à l&apos;adresse 
-            <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>.
+            <strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a></strong>.
           </p>
           <p className="text-gray-700 mb-4">
             <strong>Résiliation par l&apos;éditeur :</strong> Étant donné que Taste Federation est un site de démonstration à des fins 
@@ -275,7 +275,7 @@ export default function ConditionsGenerales() {
           <p className="text-gray-700">
             Avant toute action judiciaire, les parties s&apos;engagent à rechercher une solution amiable. 
             À cet effet, vous pouvez nous contacter à l&apos;adresse suivante : 
-            <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>.
+            <strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a></strong>.
           </p>
         </section>
 
@@ -286,7 +286,7 @@ export default function ConditionsGenerales() {
             vous pouvez nous contacter à l&apos;adresse email suivante :
           </p>
           <p className="text-gray-700 mb-4">
-            <strong>Email :</strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a>
+            <strong>Email :</strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a>
           </p>
           <p className="text-gray-700">
             Nous nous engageons à répondre à vos demandes dans les meilleurs délais.
@@ -296,7 +296,7 @@ export default function ConditionsGenerales() {
         <footer className="mt-8 pt-6 border-t border-gray-200">
           <p className="text-gray-600 text-sm">
             Pour toute question relative aux présentes conditions, veuillez nous contacter à l&apos;adresse 
-            <strong> <a href="mailto:contact@amaury-franssen-dev.com" className="text-[#458236] hover:underline">contact@amaury-franssen-dev.com</a></strong>.
+            <strong> <a href="mailto:eklati@protonmail.com" className="text-[#458236] hover:underline">eklati@protonmail.com</a></strong>.
           </p>
         </footer>
       </div>

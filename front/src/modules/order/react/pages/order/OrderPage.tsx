@@ -53,6 +53,7 @@ export const OrderPage: React.FC<OrderPageProps> = ({ restaurantId, tableId, qrR
               restaurantList={presenter.restaurantList}
               selectRestaurant={presenter.selectRestaurant}
               step={step}
+              restaurantNotice={presenter.restaurantNotice}
             />
           )}
 
